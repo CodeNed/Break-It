@@ -14,7 +14,10 @@ public class Player extends Mob {
 	private int score;
 	private int rank = -1;
 	private String scoreStr = "";
-	private int to1up = 20000;
+	
+	private final int TO_1ST_1UP = 20000;
+	private final int TO_NEXT_1UP = 30000;
+	private int to1up = TO_1ST_1UP;
 
 	private int lives = 3;
 
@@ -59,7 +62,8 @@ public class Player extends Mob {
 		scoreStr = Hud.parseScore(score);
 		if (score >= to1up) {
 			lives++;
-			to1up += 30000;
+			if(to1up == TO_1ST_1UP)
+				to1up += TO_NEXT_1UP;
 			SoundFX.oneup.play();
 		}
 
