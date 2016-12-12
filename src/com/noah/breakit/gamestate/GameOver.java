@@ -79,13 +79,13 @@ public class GameOver extends GameState {
 					random.nextInt(0xffffff));
 
 		String string = "game over";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), (screen.getHeight() >> 3) + 4,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), (screen.getHeight() >> 3) + 4,
 				col, string);
 
 		String title = "-high scores-";
 		int titlex = (screen.getWidth() >> 1) - ((title.length() << 3) >> 1);
 		int titley = ((screen.getHeight() >> 1) - 4) - ((hiScoreStr.length >> 1) << 3) - 4;
-		screen.renderString(titlex, titley - 8 - 4, ~col, title);
+		screen.renderString8x8(titlex, titley - 8 - 4, ~col, title);
 
 		int hudx = (screen.getWidth() >> 1) - ((hiScoreStr[0].length() << 3) >> 1);
 		int hudy = ((screen.getHeight() >> 1) - 4) - ((hiScoreStr.length >> 1) << 3);
@@ -95,8 +95,8 @@ public class GameOver extends GameState {
 			int col = 0xffffff;
 			if (i == rank){
 				col = this.col;
-				screen.renderString(hudx - 8, hudy +(i<<3) + ofs, ~col, "@");
-				screen.renderString(hudx + (hiScoreStr[i].length() << 3) + 1, hudy +(i<<3) + ofs, ~col, "@");
+				screen.renderString8x8(hudx - 8, hudy +(i<<3) + ofs, ~col, "@");
+				screen.renderString8x8(hudx + (hiScoreStr[i].length() << 3) + 1, hudy +(i<<3) + ofs, ~col, "@");
 			}
 			Hud.renderScore(screen, hudx, hudy + (i << 3) + ofs, col, hiScoreStr[i]);
 			ofs += 4;

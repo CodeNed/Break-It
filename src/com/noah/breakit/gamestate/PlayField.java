@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.noah.breakit.entity.mob.Ball;
+import com.noah.breakit.entity.mob.FloatingScore;
 import com.noah.breakit.entity.mob.Particle;
 import com.noah.breakit.entity.mob.Player;
 import com.noah.breakit.entity.mob.Target;
@@ -25,6 +26,7 @@ public class PlayField extends GameState {
 	private List<Target> targets = new ArrayList<Target>();
 	private List<Particle> particles = new ArrayList<Particle>();
 	private List<Spawner> spawners = new ArrayList<Spawner>();
+	private List<FloatingScore> floatingScores = new ArrayList<FloatingScore>();
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 	private PixelDrip pixelDrip = new PixelDrip();
@@ -95,11 +97,15 @@ public class PlayField extends GameState {
 
 		for (Spawner s : spawners)
 			s.update();
+		
+		for(FloatingScore f : floatingScores)
+			f.update();
 
 		checkMobCollision();
 		removeTargets();
 		removeParticles();
 		removeSpawners();
+		removeFloatingScores();
 
 		if (targets.size() == 0) {
 			captureScreen();
@@ -131,6 +137,9 @@ public class PlayField extends GameState {
 
 		for (Particle p : particles)
 			p.render(screen);
+		
+		for (FloatingScore f : floatingScores)
+			f.render(screen);
 
 		ball.render(screen);
 		player.render(screen);
@@ -153,6 +162,11 @@ public class PlayField extends GameState {
 	public void addTarget(Target t) {
 		targets.add(t);
 		t.init(this);
+	}
+	
+	public void addFloatingScore(FloatingScore f) {
+		floatingScores.add(f);
+		f.init(this);
 	}
 
 	private void generateTargets() {
@@ -187,6 +201,11 @@ public class PlayField extends GameState {
 	private void removeSpawners() {
 		for (int i = 0; i < spawners.size(); i++)
 			if (spawners.get(i).isRemoved()) spawners.remove(i);
+	}
+	
+	private void removeFloatingScores() {
+		for(int i = 0; i < floatingScores.size(); i++)
+			if(floatingScores.get(i).isRemoved()) floatingScores.remove(i);
 	}
 
 	public Ball getBall() {

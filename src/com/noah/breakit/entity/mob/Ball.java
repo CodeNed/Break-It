@@ -98,9 +98,9 @@ public class Ball extends Mob {
 			int xofs = playField.getWidth() >> 1;
 			int yofs = playField.getHeight() >> 1;
 
-			screen.renderString(xofs - (s0.length() * 8 >> 1), yofs - 10, 0xffffff, s0);
-			screen.renderString(xofs - (s1.length() * 8 >> 1), yofs, 0xffffff, s1);
-			screen.renderString(xofs - (s2.length() * 8 >> 1), yofs + 10, 0xffffff, s2);
+			screen.renderString8x8(xofs - (s0.length() * 8 >> 1), yofs - 10, 0xffffff, s0);
+			screen.renderString8x8(xofs - (s1.length() * 8 >> 1), yofs, 0xffffff, s1);
+			screen.renderString8x8(xofs - (s2.length() * 8 >> 1), yofs + 10, 0xffffff, s2);
 		}
 
 		if (!died) screen.fillRect(x, y, width, height, col);

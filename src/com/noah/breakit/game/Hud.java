@@ -34,10 +34,10 @@ public class Hud {
 	}
 
 	public static void renderScore(Screen screen, int x, int y, int col, String scoreStr) {
-		screen.renderString(x, y, col, scoreStr);
+		screen.renderString8x8(x, y, col, scoreStr);
 	}
 
 	public static void renderLives(Screen screen, int lives) {
-		screen.renderString(Game.width - (8 << 3), 4, 0xffffff, "rest: " + (lives - 1));
+		screen.renderString8x8(Game.width - (8 << 3), 4, 0xffffff, "rest: " + (lives - 1));
 	}
 }

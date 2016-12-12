@@ -1,6 +1,6 @@
 package com.noah.breakit.graphics;
 
-public class Font {
+public class Font8x8 extends Font {
 	
 	private static final int[] space = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 								   		 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -430,7 +430,7 @@ public class Font {
 										 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 ,
 										 0 ,'#', 0 , 0 , 0 , 0 ,'#', 0 ,
 										 0 , 0 ,'#','#','#','#', 0 , 0 
-};
+	};
 	
 	public static int[] getChar(char c){
 		
@@ -438,92 +438,92 @@ public class Font {
 		
 		switch(c){
 			case 'A':
-				return Font.A;
+				return Font8x8.A;
 			case 'B':
-				return Font.B;
+				return Font8x8.B;
 			case 'C':
-				return Font.C;
+				return Font8x8.C;
 			case 'D':
-				return Font.D;
+				return Font8x8.D;
 			case 'E':
-				return Font.E;
+				return Font8x8.E;
 			case 'F':
-				return Font.F;
+				return Font8x8.F;
 			case 'G':
-				return Font.G;
+				return Font8x8.G;
 			case 'H':
-				return Font.H;
+				return Font8x8.H;
 			case 'I':
-				return Font.I;
+				return Font8x8.I;
 			case 'J':
-				return Font.J;
+				return Font8x8.J;
 			case 'K':
-				return Font.K;
+				return Font8x8.K;
 			case 'L':
-				return Font.L;
+				return Font8x8.L;
 			case 'M':
-				return Font.M;
+				return Font8x8.M;
 			case 'N':
-				return Font.N;
+				return Font8x8.N;
 			case 'O':
-				return Font.O;
+				return Font8x8.O;
 			case 'P':
-				return Font.P;
+				return Font8x8.P;
 			case 'Q':
-				return Font.Q;
+				return Font8x8.Q;
 			case 'R':
-				return Font.R;
+				return Font8x8.R;
 			case 'S':
-				return Font.S;
+				return Font8x8.S;
 			case 'T':
-				return Font.T;
+				return Font8x8.T;
 			case 'U':
-				return Font.U;
+				return Font8x8.U;
 			case 'V':
-				return Font.V;
+				return Font8x8.V;
 			case 'W':
-				return Font.W;
+				return Font8x8.W;
 			case 'X':
-				return Font.X;
+				return Font8x8.X;
 			case 'Y':
-				return Font.Y;
+				return Font8x8.Y;
 			case 'Z':
-				return Font.Z;
+				return Font8x8.Z;
 			case '0':
-				return Font._0;
+				return Font8x8._0;
 			case '1':
-				return Font._1;
+				return Font8x8._1;
 			case '2':
-				return Font._2;
+				return Font8x8._2;
 			case '3':
-				return Font._3;
+				return Font8x8._3;
 			case '4':
-				return Font._4;
+				return Font8x8._4;
 			case '5':
-				return Font._5;
+				return Font8x8._5;
 			case '6':
-				return Font._6;
+				return Font8x8._6;
 			case '7':
-				return Font._7;
+				return Font8x8._7;
 			case '8':
-				return Font._8;
+				return Font8x8._8;
 			case '9':
-				return Font._9;
+				return Font8x8._9;
 			case ' ':
-				return Font.space;
+				return Font8x8.space;
 			case ':':
-				return Font.colon;
+				return Font8x8.colon;
 			case '-':
-				return Font.dash;
+				return Font8x8.dash;
 			case '!':
-				return Font.excla;
+				return Font8x8.excla;
 			case '<':
-				return Font.left;
+				return Font8x8.left;
 			case '>':
-				return Font.right;
+				return Font8x8.right;
 			case '@':
-				return Font.heart;
+				return Font8x8.heart;
 		}
-		return Font.space;
+		return Font8x8.space;
 	}
 }

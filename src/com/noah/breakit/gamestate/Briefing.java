@@ -80,67 +80,67 @@ public class Briefing extends GameState {
 		
 		int height = (screen.getHeight() >> 3) + 4;
 		String string = "-how to play-";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				col, string);
 		
 		height += 20;
 		string = "use a and d";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height += 10;
 		string =  "or <- and ->";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "to intercept the";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "ball! score bonus";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "points by breaking";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "more than one";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "brick per pass!";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=20;
 		string = "first 1up at 20000";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "pts! additional";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "1ups each 30000";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=10;
 		string = "pts!";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 		
 		height +=20;
 		string = "@good luck!@";
-		screen.renderString((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
+		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~col, string);
 	}
 

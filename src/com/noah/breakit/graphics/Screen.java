@@ -41,7 +41,7 @@ public class Screen {
 		}
 	}
 
-	public void renderChar(int x, int y, int col, int[] character) {
+	public void renderChar8x8(int x, int y, int col, int[] character) {
 
 		for (int yy = 0; yy < 8; yy++) {
 			for (int xx = 0; xx < 8; xx++) {
@@ -51,11 +51,29 @@ public class Screen {
 			}
 		}
 	}
+	
+	public void renderChar5x5(int x, int y, int col, int[] character) {
 
-	public void renderString(int x, int y, int col, String string) {
+		for (int yy = 0; yy < 5; yy++) {
+			for (int xx = 0; xx < 5; xx++) {
+				if (character[xx + (yy * 5)] == '#') {
+					drawRect(x + xx, y + yy, 1, 1, col);
+				}
+			}
+		}
+	}
+
+	public void renderString8x8(int x, int y, int col, String string) {
 
 		for (int i = 0; i < string.length(); i++) {
-			renderChar(x + (i << 3), y, col, Font.getChar(string.charAt(i)));
+			renderChar8x8(x + (i << 3), y, col, Font8x8.getChar(string.charAt(i)));
+		}
+	}
+	
+	public void renderString5x5(int x, int y, int col, String string) {
+
+		for (int i = 0; i < string.length(); i++) {
+			renderChar5x5(x + (i * 5), y, col, Font5x5.getChar(string.charAt(i)));
 		}
 	}
 

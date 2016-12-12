@@ -21,10 +21,12 @@ public class Target extends Mob {
 
 	public void processCollision() {
 		if (--life == 0) {
+			int points = 100 * playField.getBall().multiplier;
 			remove();
 			playField.setStagePattern(((x - 1) >> 4) + ((y >> 3) - 2) * 10, '0');
 			playField.addSpawner(new Spawner(x + (width >> 1), y + (width >> 1), 50));
-			playField.getPlayer().addToScore(100 * playField.getBall().multiplier);
+			playField.addFloatingScore(new FloatingScore(x, y + 1, points));
+			playField.getPlayer().addToScore(points);
 			playField.getBall().multiplier++; 
 			SoundFX.explode.play();
 		}

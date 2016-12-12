@@ -46,26 +46,26 @@ public class CreditScreen extends GameState{
 		screen.renderCol(0x559955);
 		
 		String str = "a bitburger";
-		screen.renderString(50, 30, 0x000000, str);
+		screen.renderString8x8(50, 30, 0x000000, str);
 		str =  "production";
-		screen.renderString(50, 40, 0x000000, str);
+		screen.renderString8x8(50, 40, 0x000000, str);
 		
 		str = "sfx courtesy of";
-		screen.renderString(Game.width / 2  - (str.length() * 8) / 2, 92, 0x000000, str);
+		screen.renderString8x8(Game.width / 2  - (str.length() * 8) / 2, 92, 0x000000, str);
 		bitBurgerSprite.render(screen);
 		littleRobotSprite.render(screen);
 		
 		str = "music by";
-		screen.renderString(Game.width / 2  - (str.length() * 8) / 2, 162, 0x000000, str);
+		screen.renderString8x8(Game.width / 2  - (str.length() * 8) / 2, 162, 0x000000, str);
 		
 		str = "sketchylogic";
-		screen.renderString(Game.width / 2  - (str.length() * 8) / 2, 172, 0x0000ff, str);
+		screen.renderString8x8(Game.width / 2  - (str.length() * 8) / 2, 172, 0x0000ff, str);
 		
 		str = "programmed by";
-		screen.renderString(Game.width / 2  - (str.length() * 8) / 2, 202, 0x000000, str);
+		screen.renderString8x8(Game.width / 2  - (str.length() * 8) / 2, 202, 0x000000, str);
 		
 		str = "daytripperid";
-		screen.renderString(Game.width / 2  - (str.length() * 8) / 2, 212, 0xff0000, str);
+		screen.renderString8x8(Game.width / 2  - (str.length() * 8) / 2, 212, 0xff0000, str);
 	}
 
 	public void updateTX() {

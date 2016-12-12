@@ -110,10 +110,10 @@ public class TitleScreen extends GameState {
 
 		int hudx = (screen.getWidth() >> 1) - ((7 << 3) >> 1) + (1 << 3);
 		int hudy = 8;
-		screen.renderString(hudx - (3 << 3), hudy, ~col, "hi:");
+		screen.renderString8x8(hudx - (3 << 3), hudy, ~col, "hi:");
 		Hud.renderScore(screen, hudx, hudy, ~col, hiScoreStr);
 
-		screen.renderString(30, 125, ~col, "press enter!");
+		screen.renderString8x8(30, 125, ~col, "press enter!");
 	}
 
 	public void renderTX(Screen screen) {
