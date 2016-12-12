@@ -1,6 +1,6 @@
 package com.noah.breakit.graphics;
 
-public class Font5x5 extends Font {
+public class Font5x5 {
 	
 	public static final int[] _0 = {  0 , '#', '#', '#',  0 ,
 									 '#',  0 ,  0 ,  0 , '#',

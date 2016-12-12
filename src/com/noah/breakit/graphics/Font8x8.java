@@ -1,6 +1,6 @@
 package com.noah.breakit.graphics;
 
-public class Font8x8 extends Font {
+public class Font8x8 {
 	
 	private static final int[] space = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 								   		 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
