@@ -3,7 +3,7 @@ package com.noah.breakit.gamestate;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
-import com.noah.breakit.sound.Jukebox;
+import com.noah.breakit.sound.Song;
 import com.noah.breakit.transition.PixelDrip;
 
 public class Briefing extends GameState {
@@ -26,7 +26,7 @@ public class Briefing extends GameState {
 	public void updateGS() {
 		
 		if(!songStarted){
-			Jukebox.briefingsong.play(true);
+			Song.briefingsong.play(true);
 			songStarted = true;
 		}
 
@@ -146,7 +146,7 @@ public class Briefing extends GameState {
 
 	public void updateTX() {
 		pixelDrip.pixelDrip(0x00ffff, pixels);
-		finished = Jukebox.fadeToBlack(Jukebox.briefingsong) && pixelDrip.isFinished();
+		finished = Song.briefingsong.fadeToBlack() && pixelDrip.isFinished();
 	}
 
 	public void renderTX(Screen screen) {
