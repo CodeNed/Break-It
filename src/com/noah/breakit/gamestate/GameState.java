@@ -13,9 +13,6 @@ public abstract class GameState {
 
 	public boolean transition;
 	public boolean finished;
-	
-	protected boolean introPlayed;
-	protected boolean songStarted;
 
 	public void addPlayer(Player player) {
 	}

@@ -7,8 +7,8 @@ import com.noah.breakit.game.Game;
 import com.noah.breakit.game.Hud;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
-import com.noah.breakit.sound.Song;
 import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 
 public class TitleScreen extends GameState {
@@ -45,9 +45,8 @@ public class TitleScreen extends GameState {
 
 	public void updateGS() {
 		
-		if(!songStarted){
-			Song.titlesong.play(true);
-			songStarted = true;
+		if(!Jukebox.playing()){
+			Jukebox.play("titlesong", true);
 		}
 
 		int r = (col & 0xff0000) >> 16;
@@ -85,7 +84,7 @@ public class TitleScreen extends GameState {
 
 	public void updateTX() {
 		pixelSpatter.pixelSpatter(0x00ffff, pixels);
-		finished = Song.titlesong.fadeToBlack() && pixelSpatter.isFinished();
+		finished = Jukebox.fadeToBlack() && pixelSpatter.isFinished();
 	}
 
 	public void renderGS(Screen screen) {

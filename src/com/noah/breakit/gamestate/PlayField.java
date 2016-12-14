@@ -11,7 +11,7 @@ import com.noah.breakit.entity.mob.Target;
 import com.noah.breakit.entity.spawner.Spawner;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.sound.Song;
+import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
 import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.transition.PixelSpatter;
@@ -71,15 +71,11 @@ public class PlayField extends GameState {
 
 	public void updateGS() {
 		
-		if(!introPlayed) {
-			Song.playfieldintro.play(false);
-			introPlayed = true;
-		}
-		
-		if(!songStarted && Song.playfieldintro.done()){
-			Song.playfieldintro.rewind();
-			Song.playfieldbody.play(true);
-			songStarted = true;
+		if(!Jukebox.playing() && !Jukebox.songNameIs("playfieldintro"))
+			Jukebox.play("playfieldintro", false);
+		else if(!Jukebox.playing()){
+			Jukebox.rewind();
+			Jukebox.play("playfieldbody", true);
 		}
 		
 		if (!levelUp) {
@@ -116,11 +112,11 @@ public class PlayField extends GameState {
 		
 		if (levelUp){
 			pixelSpatter.pixelSpatter(0x00ffff, pixels);
-			finished = Song.playfieldbody.fadeToBlack() && pixelSpatter.isFinished();
+			finished = Jukebox.fadeToBlack() && pixelSpatter.isFinished();
 			
 		} else {
 			pixelDrip.pixelDrip(0xff00ff, pixels);
-			finished = Song.playfieldbody.fadeToBlack() && pixelDrip.isFinished();
+			finished = Jukebox.fadeToBlack() && pixelDrip.isFinished();
 		}
 	}
 

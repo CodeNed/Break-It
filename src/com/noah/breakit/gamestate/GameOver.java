@@ -6,7 +6,7 @@ import com.noah.breakit.game.Game;
 import com.noah.breakit.game.Hud;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
-import com.noah.breakit.sound.Song;
+import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 
 public class GameOver extends GameState {
@@ -36,10 +36,8 @@ public class GameOver extends GameState {
 
 	public void updateGS() {
 		
-		if(!songStarted){
-			Song.gameoversong.play(true);
-			songStarted = true;
-		}
+		if(!Jukebox.playing())
+			Jukebox.play("gameoversong", true);
 
 		int r = (col & 0xff0000) >> 16;
 		int g = (col & 0xff00) >> 8;
@@ -69,7 +67,7 @@ public class GameOver extends GameState {
 
 	public void updateTX() {
 		pixelSpatter.pixelSpatter(0xff00ff, pixels);
-		finished = Song.gameoversong.fadeToBlack() &&  pixelSpatter.isFinished();
+		finished = Jukebox.fadeToBlack() &&  pixelSpatter.isFinished();
 	}
 
 	public void renderGS(Screen screen) {
