@@ -85,9 +85,8 @@ public class PlayField extends GameState {
 		if (!levelUp) {
 			player.update();
 			ball.update();
-		} else {
+		} else
 			if (count++ == 60 * 3) transition = true;
-		}
 
 		for (Target t : targets)
 			t.update();
@@ -135,11 +134,12 @@ public class PlayField extends GameState {
 		for (Target t : targets)
 			t.render(screen);
 
+		for (FloatingScore f : floatingScores)
+			f.render(screen);
+		
 		for (Particle p : particles)
 			p.render(screen);
 		
-		for (FloatingScore f : floatingScores)
-			f.render(screen);
 
 		ball.render(screen);
 		player.render(screen);
@@ -178,6 +178,9 @@ public class PlayField extends GameState {
 	}
 
 	private void checkMobCollision() {
+		if(!player.isAlive() || !ball.isAlive())
+			return;
+		
 		if (ball.collidesWith(player)) ball.processCollision(player);
 		for (int i = 0; i < targets.size(); i++) {
 			if (ball.collidesWith(targets.get(i))) {
@@ -234,8 +237,8 @@ public class PlayField extends GameState {
 
 	public GameState getNextGameState() {
 		if (player.getLives() > 0) {
-			if (player.died) {
-				player.died = false;
+			if (!player.isAlive()) {
+				player.setIsAlive(true);
 				return new PlayField(width, height, hiScores, player.setCoordinates(width / 2, height - 8),
 						stagePattern, stage);
 			}

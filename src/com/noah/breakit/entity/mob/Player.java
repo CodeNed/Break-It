@@ -21,7 +21,6 @@ public class Player extends Mob {
 
 	private int lives = 3;
 
-	public boolean died;
 	private int count;
 
 	public Player(int x, int y, Keyboard key) {
@@ -37,7 +36,7 @@ public class Player extends Mob {
 
 	public void update() {
 
-		if (died) {
+		if (!isAlive) {
 			if (count++ == 60 * 2) {
 				count = 0;
 				playField.getPlayer().addToLives(-1);
@@ -71,7 +70,7 @@ public class Player extends Mob {
 	}
 
 	public void render(Screen screen) {
-		if (!died) screen.fillRect(x, y, width, height, col);
+		if (isAlive) screen.fillRect(x, y, width, height, col);
 
 		Hud.renderScore(screen, 4, 4, 0xffffff, scoreStr);
 		Hud.renderLives(screen, lives);

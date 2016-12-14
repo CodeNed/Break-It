@@ -19,6 +19,8 @@ public abstract class Mob extends Entity {
 
 	protected int col;
 	
+	protected boolean isAlive = true;
+	
 
 	public Mob(int x, int y) {
 		this.x = x;
@@ -78,6 +80,14 @@ public abstract class Mob extends Entity {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
+	public void setIsAlive(boolean alive) {
+		isAlive = alive;
 	}
 
 	public void processCollision() {

@@ -10,7 +10,6 @@ public class Ball extends Mob {
 
 	private Keyboard key;
 	private boolean released;
-	private boolean died;
 	public int multiplier = 1;
 
 	public Ball(int x, int y, Keyboard key) {
@@ -30,7 +29,7 @@ public class Ball extends Mob {
 
 	public void update() {
 
-		if (died) return;
+		if (!isAlive) return;
 
 		key.update();
 
@@ -71,8 +70,8 @@ public class Ball extends Mob {
 				break;
 			}
 			if (b > playField.getHeight()) {
-				died = true;
-				playField.getPlayer().died = true;
+				isAlive = false;
+				playField.getPlayer().isAlive = false;
 				playField.addSpawner(new Spawner(x + width / 2, y + height / 2, 100));
 				playField.addSpawner(new Spawner(playField.getPlayer().getx() + playField.getPlayer().width / 2,
 						playField.getPlayer().gety() + playField.getPlayer().height / 2, 100));
@@ -103,7 +102,7 @@ public class Ball extends Mob {
 			screen.renderString8x8(xofs - (s2.length() * 8 >> 1), yofs + 10, 0xffffff, s2);
 		}
 
-		if (!died) screen.fillRect(x, y, width, height, col);
+		if (isAlive) screen.fillRect(x, y, width, height, col);
 	}
 
 	public void processCollision(Mob m) {
