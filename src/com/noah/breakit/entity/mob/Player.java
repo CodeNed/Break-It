@@ -2,10 +2,13 @@ package com.noah.breakit.entity.mob;
 
 import java.util.Collections;
 
+import com.noah.breakit.game.Game;
 import com.noah.breakit.game.Hud;
+import com.noah.breakit.gamestate.PauseMenu;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.sound.music.Jukebox;
 
 public class Player extends Mob {
 
@@ -53,6 +56,12 @@ public class Player extends Mob {
 		if (key.left && x > 0 + xspeed) xdir = -1;
 
 		if (key.right && x < playField.getWidth() - width - xspeed) xdir = 1;
+		
+		if(key.esc && !key.escLast) {
+			Jukebox.pause();
+			playField.captureScreen();
+			Game.gsm.push(new PauseMenu(key, playField.pixels));
+		}
 
 		xa = xdir * xspeed;
 
