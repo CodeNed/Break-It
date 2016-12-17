@@ -30,8 +30,6 @@ public class TitleScreen extends GameState {
 	private int titleHeight = 5;
 	private int titleWidth = 31;
 
-	private ColorFlasher colorFlash = new ColorFlasher(0x0000ff);
-
 	private int count;
 	private boolean startGame;
 	
@@ -48,8 +46,6 @@ public class TitleScreen extends GameState {
 		if(!Jukebox.playing()){
 			Jukebox.play("titlesong", true);
 		}
-
-		colorFlash.update();
 
 		key.update();
 		if (key.enter) {
@@ -80,22 +76,22 @@ public class TitleScreen extends GameState {
 		for (int y = start; y < Game.height; y += 4) {
 			for (int x = start; x < Game.width; x += 4) {
 				if (x == start || x == Game.width - 4 || y == start || y == Game.height - 4)
-					screen.fillRect(x, y, 4, 4, colorFlash.col);
+					screen.fillRect(x, y, 4, 4, ColorFlasher.col);
 			}
 		}
 
 		for (int y = 0; y < titleHeight; y++) {
 			for (int x = 0; x < titleWidth; x++) {
-				if (title[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~colorFlash.col);
+				if (title[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~ColorFlasher.col);
 			}
 		}
 
 		int hudx = (screen.getWidth() >> 1) - ((7 << 3) >> 1) + (1 << 3);
 		int hudy = 8;
-		screen.renderString8x8(hudx - (3 << 3), hudy, ~colorFlash.col, "hi:");
-		Hud.renderScore(screen, hudx, hudy, ~colorFlash.col, hiScoreStr);
+		screen.renderString8x8(hudx - (3 << 3), hudy, ~ColorFlasher.col, "hi:");
+		Hud.renderScore(screen, hudx, hudy, ~ColorFlasher.col, hiScoreStr);
 
-		screen.renderString8x8(30, 125, ~colorFlash.col, "press enter!");
+		screen.renderString8x8(30, 125, ~ColorFlasher.col, "press enter!");
 	}
 
 	public void renderTX(Screen screen) {

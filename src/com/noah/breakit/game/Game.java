@@ -20,6 +20,7 @@ import com.noah.breakit.gamestate.GameState;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.util.ColorFlasher;
 import com.noah.breakit.util.ShutdownThread;
 
 import kuusisto.tinysound.TinySound;
@@ -136,6 +137,8 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void update() {
+		
+		ColorFlasher.update();
 		
 		gsm.peek().update();
 

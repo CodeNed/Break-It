@@ -3,14 +3,13 @@ package com.noah.breakit.gamestate;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
+import com.noah.breakit.panel.Button;
+import com.noah.breakit.panel.Label;
 import com.noah.breakit.panel.Panel;
-import com.noah.breakit.panel.Selection;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.util.ColorFlasher;
 
 public class PauseMenu extends GameState {
-
-	private ColorFlasher colorFlash = new ColorFlasher(0x0000ff);
 	
 	private Keyboard key;
 	
@@ -39,22 +38,22 @@ public class PauseMenu extends GameState {
 		int y4 = y - h / 2 + 60;
 		
 		panel = new Panel(x - w / 2, y - h / 2, w, h, key, 
-						  new Selection(x1, y1, "pause"),
-						  new Selection(x2, y2, "music"),
-						  new Selection(x3, y3, "quit to title"),
-						  new Selection(x4, y4, "exit program")
+						  new Label(x1, y1, "pause"),
+						  new Button(x2, y2, "music"),
+						  new Button(x3, y3, "quit to title"),
+						  new Button(x4, y4, "exit program")
 						  );
 	}
 	
 	public void updateGS() {
-		
-		colorFlash.update();
 		
 		key.update();
 		if(key.esc && !key.escLast) {
 			finished = true;
 			Jukebox.play();
 		}
+		
+		panel.update();
 	}
 
 	public void renderGS(Screen screen) {

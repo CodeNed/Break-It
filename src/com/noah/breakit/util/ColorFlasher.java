@@ -1,19 +1,13 @@
 package com.noah.breakit.util;
 
 public class ColorFlasher {
-	public int col;
-	public int fade = 1;
+	public static int col = 0x0000ff;
+	public static int fade = 1;
 	
-	public ColorFlasher(int col, int fade) {
-		this.col = col;
-		this.fade = fade;
+	private ColorFlasher() {
 	}
 	
-	public ColorFlasher(int col) {
-		this(col, 1);
-	}
-	
-	public void update() {
+	public static void update() {
 		int r = (col & 0xff0000) >> 16;
 		int g = (col & 0xff00) >> 8;
 		int b = col & 0xff;

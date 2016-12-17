@@ -17,8 +17,6 @@ public class GameOver extends GameState {
 	private List<Integer> hiScores;
 	private String[] hiScoreStr = new String[10];
 	private int rank;
-
-	private ColorFlasher colorFlash = new ColorFlasher(0x0000ff);
 	
 	private int count;
 	
@@ -40,8 +38,6 @@ public class GameOver extends GameState {
 		if(!Jukebox.playing())
 			Jukebox.play("gameoversong", true);
 
-		colorFlash.update();
-
 		key.update();
 		if (key.enter || count++ == 60 * 15){
 			captureScreen();
@@ -62,12 +58,12 @@ public class GameOver extends GameState {
 
 		String string = "game over";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), (screen.getHeight() >> 3) + 4,
-				colorFlash.col, string);
+				ColorFlasher.col, string);
 
 		String title = "-high scores-";
 		int titlex = (screen.getWidth() >> 1) - ((title.length() << 3) >> 1);
 		int titley = ((screen.getHeight() >> 1) - 4) - ((hiScoreStr.length >> 1) << 3) - 4;
-		screen.renderString8x8(titlex, titley - 8 - 4, ~colorFlash.col, title);
+		screen.renderString8x8(titlex, titley - 8 - 4, ~ColorFlasher.col, title);
 
 		int hudx = (screen.getWidth() >> 1) - ((hiScoreStr[0].length() << 3) >> 1);
 		int hudy = ((screen.getHeight() >> 1) - 4) - ((hiScoreStr.length >> 1) << 3);
@@ -76,7 +72,7 @@ public class GameOver extends GameState {
 		for (int i = 0; i < hiScoreStr.length; i++) {
 			int col = 0xffffff;
 			if (i == rank){
-				col = colorFlash.col;
+				col = ColorFlasher.col;
 				screen.renderString8x8(hudx - 8, hudy +(i<<3) + ofs, ~col, "@");
 				screen.renderString8x8(hudx + (hiScoreStr[i].length() << 3) + 1, hudy +(i<<3) + ofs, ~col, "@");
 			}
