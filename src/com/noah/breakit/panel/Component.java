@@ -2,42 +2,41 @@ package com.noah.breakit.panel;
 
 import com.noah.breakit.graphics.Screen;
 
-public class Selection {
-	private int x, y;
-	private int w, h;
+public abstract class Component{
+	protected int x, y;
+	protected int w, h;
 	
-	private String label = null;
+	protected String name = null;
 	
-	private int col = 0xffffff;
-	private boolean solid = false;
+	protected int col = 0xffffff;
+	protected boolean solid = false;
 	
-	public Selection(int x, int y, String label) {
+	public Component(int x, int y, String name) {
 		this.x = x;
 		this.y = y;
 		
-		this.label = label;
+		this.name = name;
 		
-		w = label.length() * 8 + 2;
+		w = name.length() * 8 + 2;
 		h = 12;
 	}
 	
-	public Selection(int x, int y, int col, String label) {
-		this(x, y, label);
+	public Component(int x, int y, int col, String name) {
+		this(x, y, name);
 		this.col = col;
 	}
 	
-	public Selection(int x, int y, String label, boolean solid) {
-		this(x, y, label);
+	public Component(int x, int y, String name, boolean solid) {
+		this(x, y, name);
 		this.solid = solid;
 	}
 	
-	public Selection(int x, int y, int col, String label, boolean solid) {
-		this(x, y, col, label);
+	public Component(int x, int y, int col, String name, boolean solid) {
+		this(x, y, col, name);
 		this.solid = solid;
 	}
 	
-	public void update() {
-	}
+	public abstract void update();
 	
 	public void render(Screen screen) {
 		
@@ -46,6 +45,6 @@ public class Selection {
 		else
 			screen.fillRect(x, y, w, h, col);
 		
-		screen.renderString8x8(x + 1, y + 2, col, label);
+		screen.renderString8x8(x + 1, y + 2, col, name);
 	}
 }
