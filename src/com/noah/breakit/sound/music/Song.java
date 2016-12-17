@@ -23,6 +23,10 @@ import kuusisto.tinysound.TinySound;
 	void play(boolean loop) {
 		song.play(loop);
 	}
+	
+	void pause() {
+		song.pause();
+	}
 		
 	void stop() {
 		song.stop();
