@@ -9,7 +9,7 @@ import com.noah.breakit.graphics.Screen;
 public abstract class GameState {
 
 	protected static Random random = new Random();
-	protected int[] pixels = new int[Game.width * Game.height];
+	public int[] pixels = new int[Game.width * Game.height];
 
 	public boolean transition;
 	public boolean finished;
@@ -21,7 +21,6 @@ public abstract class GameState {
 		for (int i = 0; i < pixels.length; i++)
 			pixels[i] = Screen.pixels[i];
 	}
-
 
 	public final void update() {
 		if (!transition)
@@ -37,7 +36,7 @@ public abstract class GameState {
 			renderTX(screen);
 	}
 
-	public void renderScreenCap(Screen screen) {
+	protected void renderScreenCap(Screen screen) {
 		for (int i = 0; i < pixels.length; i++) {
 			screen.renderPixel(pixels[i], i);
 		}

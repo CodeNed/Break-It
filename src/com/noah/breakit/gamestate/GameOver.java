@@ -8,6 +8,7 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
+import com.noah.breakit.util.ColorFlasher;
 
 public class GameOver extends GameState {
 
@@ -16,8 +17,8 @@ public class GameOver extends GameState {
 	private List<Integer> hiScores;
 	private String[] hiScoreStr = new String[10];
 	private int rank;
-	private int col = 0x0000ff;
-	private int fade = 1;
+
+	private ColorFlasher colorFlash = new ColorFlasher(0x0000ff);
 	
 	private int count;
 	
@@ -39,24 +40,7 @@ public class GameOver extends GameState {
 		if(!Jukebox.playing())
 			Jukebox.play("gameoversong", true);
 
-		int r = (col & 0xff0000) >> 16;
-		int g = (col & 0xff00) >> 8;
-		int b = col & 0xff;
-
-		if (r >= 0 && r <= 255) r += 5 * fade;
-		b += 5 * fade * -1;
-
-		col = (r << 16) | (g << 8) | b;
-
-		if (r >= 255) {
-			fade = -1;
-			r = 254;
-		}
-
-		if (r <= 0) {
-			fade = 1;
-			r = 1;
-		}
+		colorFlash.update();
 
 		key.update();
 		if (key.enter || count++ == 60 * 15){
@@ -78,12 +62,12 @@ public class GameOver extends GameState {
 
 		String string = "game over";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), (screen.getHeight() >> 3) + 4,
-				col, string);
+				colorFlash.col, string);
 
 		String title = "-high scores-";
 		int titlex = (screen.getWidth() >> 1) - ((title.length() << 3) >> 1);
 		int titley = ((screen.getHeight() >> 1) - 4) - ((hiScoreStr.length >> 1) << 3) - 4;
-		screen.renderString8x8(titlex, titley - 8 - 4, ~col, title);
+		screen.renderString8x8(titlex, titley - 8 - 4, ~colorFlash.col, title);
 
 		int hudx = (screen.getWidth() >> 1) - ((hiScoreStr[0].length() << 3) >> 1);
 		int hudy = ((screen.getHeight() >> 1) - 4) - ((hiScoreStr.length >> 1) << 3);
@@ -92,7 +76,7 @@ public class GameOver extends GameState {
 		for (int i = 0; i < hiScoreStr.length; i++) {
 			int col = 0xffffff;
 			if (i == rank){
-				col = this.col;
+				col = colorFlash.col;
 				screen.renderString8x8(hudx - 8, hudy +(i<<3) + ofs, ~col, "@");
 				screen.renderString8x8(hudx + (hiScoreStr[i].length() << 3) + 1, hudy +(i<<3) + ofs, ~col, "@");
 			}

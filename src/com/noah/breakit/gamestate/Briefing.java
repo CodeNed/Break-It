@@ -5,13 +5,13 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelDrip;
+import com.noah.breakit.util.ColorFlasher;
 
 public class Briefing extends GameState {
 
 	private Keyboard key;
 
-	private int col = 0x0000ff;
-	private int fade = 1;
+	private ColorFlasher colorFlash = new ColorFlasher(0x0000ff);
 	
 	private int count;
 	
@@ -28,24 +28,7 @@ public class Briefing extends GameState {
 		if(!Jukebox.playing())
 			Jukebox.play("briefingsong", true);
 
-		int r = (col & 0xff0000) >> 16;
-		int g = (col & 0xff00) >> 8;
-		int b = col & 0xff;
-
-		if (r >= 0 && r <= 255) r += 5 * fade;
-		b += 5 * fade * -1;
-
-		col = (r << 16) | (g << 8) | b;
-
-		if (r >= 255) {
-			fade = -1;
-			r = 254;
-		}
-
-		if (r <= 0) {
-			fade = 1;
-			r = 1;
-		}
+		colorFlash.update();
 		
 		key.update();
 		
@@ -72,74 +55,74 @@ public class Briefing extends GameState {
 		for (int y = start; y < Game.height; y += 4) {
 			for (int x = start; x < Game.width; x += 4) {
 				if (x == start || x == Game.width - 4 || y == start || y == Game.height - 4)
-					screen.fillRect(x, y, 4, 4, col);
+					screen.fillRect(x, y, 4, 4, colorFlash.col);
 			}
 		}
 		
 		int height = (screen.getHeight() >> 3) + 4;
 		String string = "-how to play-";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				col, string);
+				colorFlash.col, string);
 		
 		height += 20;
 		string = "use a and d";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height += 10;
 		string =  "or <- and ->";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "to intercept the";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "ball! score bonus";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "points by breaking";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "more than one";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "brick per pass!";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=20;
 		string = "first 1up at 20000";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "pts! additional";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "1ups each 30000";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=10;
 		string = "pts!";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 		
 		height +=20;
 		string = "@good luck!@";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
-				~col, string);
+				~colorFlash.col, string);
 	}
 
 	public void updateTX() {

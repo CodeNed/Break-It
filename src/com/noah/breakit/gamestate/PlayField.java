@@ -238,7 +238,10 @@ public class PlayField extends GameState {
 				return new PlayField(width, height, hiScores, player.setCoordinates(width / 2, height - 8),
 						stagePattern, stage);
 			}
-			if(++stage > 29) stage = 0;
+
+			if(++stage > 29)
+				stage = 0;
+			
 			return new PlayField(width, height, hiScores, player.setCoordinates(width / 2, height - 8), stage);
 		}
 		return new GameOver(Game.key, hiScores, player.getRank());

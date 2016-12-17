@@ -10,6 +10,7 @@ import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
+import com.noah.breakit.util.ColorFlasher;
 
 public class TitleScreen extends GameState {
 
@@ -29,8 +30,7 @@ public class TitleScreen extends GameState {
 	private int titleHeight = 5;
 	private int titleWidth = 31;
 
-	private int col = 0x0000ff;
-	private int fade = 1;
+	private ColorFlasher colorFlash = new ColorFlasher(0x0000ff);
 
 	private int count;
 	private boolean startGame;
@@ -49,24 +49,7 @@ public class TitleScreen extends GameState {
 			Jukebox.play("titlesong", true);
 		}
 
-		int r = (col & 0xff0000) >> 16;
-		int g = (col & 0xff00) >> 8;
-		int b = col & 0xff;
-
-		if (r >= 0 && r <= 255) r += 5 * fade;
-		b += 5 * fade * -1;
-
-		col = (r << 16) | (g << 8) | b;
-
-		if (r >= 255) {
-			fade = -1;
-			r = 254;
-		}
-
-		if (r <= 0) {
-			fade = 1;
-			r = 1;
-		}
+		colorFlash.update();
 
 		key.update();
 		if (key.enter) {
@@ -97,22 +80,22 @@ public class TitleScreen extends GameState {
 		for (int y = start; y < Game.height; y += 4) {
 			for (int x = start; x < Game.width; x += 4) {
 				if (x == start || x == Game.width - 4 || y == start || y == Game.height - 4)
-					screen.fillRect(x, y, 4, 4, col);
+					screen.fillRect(x, y, 4, 4, colorFlash.col);
 			}
 		}
 
 		for (int y = 0; y < titleHeight; y++) {
 			for (int x = 0; x < titleWidth; x++) {
-				if (title[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~col);
+				if (title[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~colorFlash.col);
 			}
 		}
 
 		int hudx = (screen.getWidth() >> 1) - ((7 << 3) >> 1) + (1 << 3);
 		int hudy = 8;
-		screen.renderString8x8(hudx - (3 << 3), hudy, ~col, "hi:");
-		Hud.renderScore(screen, hudx, hudy, ~col, hiScoreStr);
+		screen.renderString8x8(hudx - (3 << 3), hudy, ~colorFlash.col, "hi:");
+		Hud.renderScore(screen, hudx, hudy, ~colorFlash.col, hiScoreStr);
 
-		screen.renderString8x8(30, 125, ~col, "press enter!");
+		screen.renderString8x8(30, 125, ~colorFlash.col, "press enter!");
 	}
 
 	public void renderTX(Screen screen) {
