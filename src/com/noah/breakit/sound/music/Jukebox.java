@@ -10,6 +10,7 @@ public class Jukebox {
 	
 	private static Song currSong = null;
 	private static String currSongName = null;
+	private static boolean looping = false;
 	
 	private Jukebox() {
 		playList.put("titlesong", Song.titlesong);
@@ -24,18 +25,35 @@ public class Jukebox {
 		play(loop);
 	}
 	
+	public static void play() {
+		if(currSong == null)
+			System.err.println("Error: from Jukebox.play(loop): Song not loaded!");
+		else currSong.play(looping);
+	}
+	
 	public static void play(boolean loop) {
 		if(currSong == null)
 			System.err.println("Error: from Jukebox.play(loop): Song not loaded!");
+		else {
+				looping = loop;
+				currSong.play(looping);
+		}
+	}
+	
+	public static void pause() {
+		if(currSong == null)
+			System.err.println("Error: from Jukebox.pause(): Song not loaded!");
 		else 
-			currSong.play(loop);
+			currSong.pause();
 	}
 	
 	public static void stop() {
 		if(currSong == null)
 			System.err.println("Error: from Jukebox.stop(): Song not loaded!");
-		else	
+		else {	
 			currSong.stop();
+			looping = false;
+		}
 	}
 	
 	public static void rewind() {
