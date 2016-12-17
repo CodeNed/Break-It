@@ -10,6 +10,7 @@ import java.awt.image.DataBufferInt;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -41,7 +42,8 @@ public class Game extends Canvas implements Runnable {
 
 	private Screen screen;
 
-	private GameState gs;
+	//private GameStateManager gsm;
+	public static Stack<GameState> gsm;
 	
 	public static List<Integer> hiScores = new ArrayList<Integer>() {
 		
@@ -73,9 +75,10 @@ public class Game extends Canvas implements Runnable {
 		frame = new JFrame();
 		addKeyListener(key);
 
-		gs = new CreditScreen(key, hiScores);
-		//gs = new TitleScreen(key, hiScores);
-
+		//gsm = new GameStateManager(new CreditScreen(key, hiScores));
+		gsm = new Stack<GameState>();
+		gsm.push(new CreditScreen(key, hiScores));
+		
 		TinySound.init();
 		SoundFX.voidsound.play();
 	}
@@ -133,10 +136,18 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void update() {
+		
+		gsm.peek().update();
 
-		gs.update();
-
-		if (gs.finished) gs = gs.getNextGameState();
+		GameState gs = null;
+		
+		if(gsm.peek().finished) {
+			gs = gsm.peek().getNextGameState();
+			gsm.pop();
+			
+			if(gs != null)
+				gsm.push(gs);
+		}
 	}
 
 	public void render() {
@@ -150,7 +161,7 @@ public class Game extends Canvas implements Runnable {
 
 		screen.clear();
 
-		gs.render(screen);
+		gsm.peek().render(screen);
 
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = Screen.pixels[i];
