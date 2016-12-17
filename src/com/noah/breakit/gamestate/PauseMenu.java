@@ -7,7 +7,6 @@ import com.noah.breakit.panel.Button;
 import com.noah.breakit.panel.Label;
 import com.noah.breakit.panel.Panel;
 import com.noah.breakit.sound.music.Jukebox;
-import com.noah.breakit.util.ColorFlasher;
 
 public class PauseMenu extends GameState {
 	
