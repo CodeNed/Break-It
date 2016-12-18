@@ -1,4 +1,4 @@
-package com.noah.breakit.panel;
+package com.noah.breakit.component;
 
 import com.noah.breakit.graphics.Screen;
 

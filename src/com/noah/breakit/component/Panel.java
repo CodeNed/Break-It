@@ -1,4 +1,4 @@
-package com.noah.breakit.panel;
+package com.noah.breakit.component;
 
 import java.util.ArrayList;
 import java.util.List;

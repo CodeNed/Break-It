@@ -1,11 +1,11 @@
 package com.noah.breakit.gamestate;
 
+import com.noah.breakit.component.Button;
+import com.noah.breakit.component.Label;
+import com.noah.breakit.component.Panel;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
-import com.noah.breakit.panel.Button;
-import com.noah.breakit.panel.Label;
-import com.noah.breakit.panel.Panel;
 import com.noah.breakit.sound.music.Jukebox;
 
 public class PauseMenu extends GameState {
