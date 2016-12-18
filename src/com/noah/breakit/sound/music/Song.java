@@ -10,6 +10,7 @@ import kuusisto.tinysound.TinySound;
 	static final Song playfieldbody = new Song(TinySound.loadMusic("songs/playfieldsongbody.wav"));
 	static final Song briefingsong = new Song(TinySound.loadMusic("songs/briefingsong.wav"));
 	static final Song gameoversong = new Song(TinySound.loadMusic("songs/gameoversong.wav"));
+	static final Song voidsong = new Song(TinySound.loadMusic("voidsound.mp3"));
 	
 	private Music song;
 	private double volume;

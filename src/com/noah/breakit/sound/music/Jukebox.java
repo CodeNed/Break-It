@@ -18,6 +18,7 @@ public class Jukebox {
 		playList.put("playfieldbody", Song.playfieldbody);
 		playList.put("briefingsong", Song.briefingsong);
 		playList.put("gameoversong", Song.gameoversong);
+		playList.put("voidsong", Song.voidsong);
 	}
 	
 	public static void play(String key, boolean loop) {
