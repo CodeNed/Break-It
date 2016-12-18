@@ -20,6 +20,7 @@ import com.noah.breakit.gamestate.GameState;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.util.ColorFlasher;
 import com.noah.breakit.util.ShutdownThread;
 
@@ -82,6 +83,7 @@ public class Game extends Canvas implements Runnable {
 		
 		TinySound.init();
 		SoundFX.voidsound.play();
+		Jukebox.play("voidsong", false);
 	}
 
 	public synchronized void start() {
