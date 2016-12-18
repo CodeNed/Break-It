@@ -1,18 +1,22 @@
 package com.noah.breakit.panel;
 
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.util.ColorFlasher;
 
 public class Button extends Component{
 	
+	private Label label;
+
 	private boolean active = false;
 	
-	public Button(int x, int y, int col, String label) {
-		super(x, y, col, label);
+	public Button(int x, int y, int col, Label label) {
+		super(x, y, col);
+		this.label = label;
+		w = label.w;
+		h = label.h;
 	}
 	
-	public Button(int x, int y, String label) {
-		super(x, y, label);
+	public Button(int x, int y, Label label) {
+		this(x, y, 0xffffff, label);
 	}
 	
 	public void update() {
@@ -20,13 +24,10 @@ public class Button extends Component{
 	
 	public void render(Screen screen) {
 		if(isActive()) {
-			if(solid == false)
-				screen.drawRect(x, y, w, h, ~ColorFlasher.col);
-			else
-				screen.fillRect(x, y, w, h, col);
-			
-			screen.renderString8x8(x + 1, y + 2, ~ColorFlasher.col, name);
-		} else super.render(screen);
+				label.render(screen, true, true);
+		} else {
+			label.render(screen);
+		}
 	}
 	
 	public void setActive(boolean active) {

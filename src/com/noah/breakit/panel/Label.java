@@ -5,19 +5,41 @@ import com.noah.breakit.util.ColorFlasher;
 
 public class Label extends Component 
 {	
+	private String name;
+	
+	private Label(int x, int y, int col, int numChars) {
+		super (x, y, col);
+		w = numChars * 8 + 2;
+		h = 12;
+	}
+	
 	public Label(int x, int y, String name) {
-		super(x, y, name);
+		this(x, y, 0xffffff, name.length());
+		this.name = name;
+	}
+	
+	public Label(int x, int y, int col, String name) {
+		this(x, y, col, name.length());
+		this.name = name;
 	}
 
 	public void update() {
 	}
 	
 	public void render(Screen screen) {
-		if(solid == false)
-			screen.drawRect(x, y, w, h, ColorFlasher.col);
+		screen.drawRect(x,  y,  w,  h,  col);
+		screen.renderString8x8(x + 1, y + 2, col, name);
+	}
+	
+	public void render(Screen screen, boolean flashing, boolean opposite) {
+		if(flashing) {
+			int c = ColorFlasher.col;
+			if(opposite)
+				c = ~c;
+			screen.drawRect(x, y, w, h, c);
+			screen.renderString8x8(x + 1,  y + 2,  c, name);
+		}
 		else
-			screen.fillRect(x, y, w, h, ColorFlasher.col);
-		
-		screen.renderString8x8(x + 1, y + 2, ColorFlasher.col, name);
+			render(screen);
 	}
 }

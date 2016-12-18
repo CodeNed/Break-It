@@ -7,10 +7,7 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.util.ColorFlasher;
 
-public class Panel {
-	private int x, y;
-	private int w, h;
-	private int col = 0x000000;
+public class Panel extends Component {
 	
 	private Keyboard key;
 
@@ -20,17 +17,14 @@ public class Panel {
 	private Button activeButton;
 	private int index = 0;
 
-	private Panel(int x, int y, int w, int h, Keyboard key, Label label) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+	private Panel(int x, int y, int w, int h, int col, Keyboard key, Label label) {
+		super(x, y, w, h, col);
 		this.key = key;
 		this.label = label;
 	}
 
-	public Panel(int x, int y, int w, int h, Keyboard key, Label label, Button...newButtons ) {
-		this(x, y, w, h, key, label);
+	public Panel(int x, int y, int w, int h, int col, Keyboard key, Label label, Button...newButtons) {
+		this(x, y, w, h, col, key, label);
 		
 		for(Button b : newButtons) {
 			buttons.add(b);
@@ -40,11 +34,10 @@ public class Panel {
 		activeButton.setActive(true);
 	}
 	
-	public Panel(int x, int y, int w, int h, int col, Keyboard key, Label label, Button...newButtons) {
-		this(x, y, w, h, key, label, newButtons);
-		this.col = col;
+	public Panel(int x, int y, int w, int h, Keyboard key, Label label, Button...newButtons ) {
+		this(x, y, w, h, 0x000000, key, label, newButtons);
 	}
-
+	
 	public void update() {
 			
 		label.update();
@@ -63,7 +56,7 @@ public class Panel {
 		screen.drawRect(x, y, w, h, ColorFlasher.col);
 		
 		//render label
-		label.render(screen);
+		label.render(screen, true, false);
 		
 		//render buttons
 		for(Button b : buttons)

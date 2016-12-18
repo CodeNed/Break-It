@@ -38,9 +38,9 @@ public class PauseMenu extends GameState {
 		
 		panel = new Panel(x - w / 2, y - h / 2, w, h, key, 
 						  new Label(x1, y1, "pause"),
-						  new Button(x2, y2, "music"),
-						  new Button(x3, y3, "quit to title"),
-						  new Button(x4, y4, "exit program")
+						  new Button(x2, y2, new Label(x2, y2, "music")),
+						  new Button(x3, y3, new Label(x3, y3, "quit to title")),
+						  new Button(x4, y4, new Label(x4, y4, "exit program"))
 						  );
 	}
 	
