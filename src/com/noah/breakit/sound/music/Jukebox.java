@@ -8,9 +8,15 @@ public class Jukebox {
 	
 	public static Jukebox songList = new Jukebox();
 	
+	private static boolean standby = false;
 	private static Song currSong = null;
 	private static String currSongName = null;
+	private static boolean playing = false;
 	private static boolean looping = false;
+	private static double volume = 1.0;
+	
+	public static final double DEFAULT_VOLUME = Song.DEFAULT_VOLUME;
+	public static final double MENU_VOLUME = 0.2;
 	
 	private Jukebox() {
 		playList.put("titlesong", Song.titlesong);
@@ -22,82 +28,94 @@ public class Jukebox {
 	}
 	
 	public static void play(String key, boolean loop) {
+		
+		looping = loop;
+		
+		if(currSong != null) // If a song is already loaded and playing, return. Else, set Jukebox.playing to false.
+			if(currSong.playing())
+				return;
+			else
+				playing = false;
+		
 		setCurrSong(key);
-		play(loop);
-	}
-	
-	public static void play() {
-		if(currSong == null)
-			System.err.println("Error: from Jukebox.play(loop): Song not loaded!");
-		else currSong.play(looping);
-	}
-	
-	public static void play(boolean loop) {
-		if(currSong == null)
-			System.err.println("Error: from Jukebox.play(loop): Song not loaded!");
-		else {
-				looping = loop;
-				currSong.play(looping);
+		
+		if(currSong == null) { // If no song is loaded, the hash map failed to return a value due to invalid key. 
+							   //Print error message and return.
+			System.err.println("Error: from Jukebox.play(loop): No song loaded. Check song name!");
+			return;
+		}
+		
+		if(!standby && !playing) { // If Jukebox is not in standby mode and is not playing a song, set song volume to 
+								   //jukebox volume, rewind song, play song, and set Jukebox.playing to true.
+			currSong.setVolume(volume); 
+			currSong.rewind();
+			currSong.play(looping);
+			playing = true;
 		}
 	}
 	
 	public static void pause() {
-		if(currSong == null)
-			System.err.println("Error: from Jukebox.pause(): Song not loaded!");
-		else 
-			currSong.pause();
+		if(currSong == null) {
+			System.err.println("Error: from Jukebox.pause(): No song loaded!");
+			return;
+		}
+		currSong.pause();
 	}
 	
 	public static void stop() {
-		if(currSong == null)
-			System.err.println("Error: from Jukebox.stop(): Song not loaded!");
-		else {	
-			currSong.stop();
-			looping = false;
+		if(currSong == null) {
+			System.err.println("Error: from Jukebox.stop(): No song loaded!");
+			return;
 		}
-	}
-	
-	public static void rewind() {
-		if(currSong == null)
-			System.err.println("Error: from Jukebox.rewind(): Song not loaded!");
-		else
-			currSong.rewind();
-	}
-	
-	public static boolean playing() {
-		if(currSong == null)
-			return false;
-		return currSong.playing();
+		currSong.stop();
+		looping = false;
 	}
 	
 	public static boolean done() {
 		if(currSong == null) {
-			System.err.println("Error: from Jukebox.done(): Song not loaded!");
+			System.err.println("Error: from Jukebox.done(): No song loaded!");
 			return false;
 		}
 		return currSong.done();
 	}
 	
+	public static void setVolume(double val) {
+		if(currSong == null) {
+			System.err.println("Error: from Jukebox.adjustVolume(): No song loaded!");
+			return;
+		}
+		volume = val;
+		currSong.setVolume(val);
+	}
+	
 	public static boolean fadeToBlack() {
-		if(currSong == null)
+		if(currSong == null) {
+			System.err.println("Error: from Jukebox.fadeToBlack(): No song loaded!");
 			return true;
+		}
 		return currSong.fadeToBlack();
 	}
 	
-	public static String getSongName() {
-		return currSongName;
-	}
-	
-	public static void setCurrSong(String key) {
-		currSongName = key;
-		currSong = playList.get(key);
-	}
-	
-	public static boolean songNameIs(String name) {
-		if(name == null)
+	public static boolean currSongIs(String name) {
+		if(name == null) {
+			System.err.println("Error: from Jukebox.currSongIs(name): No song loaded!");
 			return false;
+		}
 		if(name.equals(currSongName))
 			return true;
 		return false;
+	}
+	
+	public static boolean getStandby() {
+		return standby;
+	}
+	
+	public static void setStandby(boolean b) {
+		standby = b;
+	}
+	
+	private static void setCurrSong(String key) {
+		currSongName = key;
+		currSong = playList.get(key);
 	}
 }

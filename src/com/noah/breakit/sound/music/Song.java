@@ -14,7 +14,7 @@ import kuusisto.tinysound.TinySound;
 	
 	private Music song;
 	private double volume;
-	final double DEFAULT_VOLUME = 1.0;
+	static final double DEFAULT_VOLUME = 1.0;
 		
 	 private Song(Music song) {
 		this.song = song;
@@ -39,6 +39,11 @@ import kuusisto.tinysound.TinySound;
 		
 	double getVolume() {
 		return volume;
+	}
+	
+	void setVolume(double val) {
+		volume = val;
+		song.setVolume(volume);
 	}
 		
 	void adjustVolume(double val) {
