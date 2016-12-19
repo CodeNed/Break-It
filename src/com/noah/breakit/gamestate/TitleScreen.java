@@ -38,9 +38,7 @@ public class TitleScreen extends GameState {
 
 	public void updateGS() {
 		
-		if(!Jukebox.playing()){
-			Jukebox.play("titlesong", true);
-		}
+		Jukebox.play("titlesong", true);
 
 		key.update();
 		if (key.enter && !key.enterLast) {

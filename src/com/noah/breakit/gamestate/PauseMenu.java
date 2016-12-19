@@ -7,6 +7,7 @@ import com.noah.breakit.component.Panel;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
+import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
 
 public class PauseMenu extends GameState {
@@ -46,7 +47,6 @@ public class PauseMenu extends GameState {
 						  new Button(x3, y3, new Label(x3, y3, "quit to title"), (Action)() -> quitToTitle()),
 						  new Button(x4, y4, new Label(x4, y4, "exit program"), (Action)() -> exit())
 						  );
-		panel.init();
 	}
 	
 	public void init() {
@@ -55,10 +55,16 @@ public class PauseMenu extends GameState {
 	
 	public void updateGS() {
 		
+		if(Jukebox.currSongIs("playfieldintro")) {
+			if(Jukebox.done())
+				Jukebox.play("playfieldbody", true);
+		} else Jukebox.play("playfieldintro", false);
+		
 		key.update();
 		if(key.esc && !key.escLast) {
+			SoundFX.menu_3.play();
 			finished = true;
-			Jukebox.play();
+			Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
 		}
 		
 		panel.update();
@@ -84,6 +90,7 @@ public class PauseMenu extends GameState {
 	}
 	
 	private void quitToTitle() {
+		Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
 		parentGameState.setNextGameState(new TitleScreen(key));
 		parentGameState.transition = true;
 		finished = true;

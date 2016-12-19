@@ -7,6 +7,8 @@ import com.noah.breakit.component.Panel;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
+import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.sound.music.Jukebox;
 
 public class MusicMenu extends GameState
 {
@@ -34,16 +36,23 @@ public class MusicMenu extends GameState
 		int y3 = y2 + 16;
 		
 		panel = new Panel(x, y, w, h, key, new Label(x1, y1, "music"),
-								new Button(x2, y2, new Label(x2, y2, "on"), (Action)() -> System.out.println("music on")),
-								new Button(x3, y3, new Label(x3, y3, "off"), (Action)() -> System.out.println("music off")));
-		panel.init();
+								new Button(x2, y2, new Label(x2, y2, "on"), (Action)() -> musicOn()),
+								new Button(x3, y3, new Label(x3, y3, "off"), (Action)() -> musicOff())
+								);
 	}
 	
 	public void updateGS() {
+		if(Jukebox.currSongIs("playfieldintro")) {
+			if(Jukebox.done())
+				Jukebox.play("playfieldbody", true);
+		} else Jukebox.play("playfieldintro", false);
+		
 		key.update();
 		
-		if(key.esc && ! key.escLast)
+		if(key.esc && ! key.escLast) {
+			SoundFX.menu_3.play();
 			finished = true;
+		}
 		
 		panel.update();
 	}
@@ -53,20 +62,29 @@ public class MusicMenu extends GameState
 		panel.render(screen);
 		
 	}
+	
+	private void musicOn() {
+		if(Jukebox.getStandby() == false)
+			return;
+		Jukebox.setStandby(false);
+		Jukebox.play("playfieldintro", false);
+	}
+	
+	private void musicOff() {
+		Jukebox.setStandby(true);
+		Jukebox.stop();
+		//Jukebox.rewind();
+	}
 
 	public void updateTX() {
-		// XXX Auto-generated method stub
-		
+		//unused
 	}
 
 	public void renderTX(Screen screen) {
-		// XXX Auto-generated method stub
-		
+		//unused
 	}
 	
 	protected void loadNextGameState() {
-		// XXX Auto-generated method stub
-		
+		//unused
 	}
-
 }

@@ -31,8 +31,7 @@ public class GameOver extends GameState {
 
 	public void updateGS() {
 		
-		if(!Jukebox.playing())
-			Jukebox.play("gameoversong", true);
+		Jukebox.play("gameoversong", true);
 
 		key.update();
 		if (key.enter || count++ == 60 * 15){

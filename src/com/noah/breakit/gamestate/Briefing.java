@@ -23,8 +23,7 @@ public class Briefing extends GameState {
 
 	public void updateGS() {
 		
-		if(!Jukebox.playing())
-			Jukebox.play("briefingsong", true);
+		Jukebox.play("briefingsong", true);
 		
 		key.update();
 		
