@@ -44,7 +44,6 @@ public class Game extends Canvas implements Runnable {
 
 	private Screen screen;
 
-	//private GameStateManager gsm;
 	public static Stack<GameState> gsm;
 	
 	public static List<Integer> hiScores = new ArrayList<Integer>() {
@@ -65,7 +64,7 @@ public class Game extends Canvas implements Runnable {
 		}
 	};
 
-	public static final Keyboard key = new Keyboard();
+	public final Keyboard key = new Keyboard();
 
 	Game() {
 		
@@ -77,9 +76,8 @@ public class Game extends Canvas implements Runnable {
 		frame = new JFrame();
 		addKeyListener(key);
 
-		//gsm = new GameStateManager(new CreditScreen(key, hiScores));
 		gsm = new Stack<GameState>();
-		gsm.push(new CreditScreen(key, hiScores));
+		gsm.push(new CreditScreen(key));
 		
 		TinySound.init();
 		SoundFX.voidsound.play();
@@ -142,12 +140,12 @@ public class Game extends Canvas implements Runnable {
 		
 		ColorFlasher.update();
 		
-		gsm.peek().update();
-
-		GameState gs = null;
+		GameState gs = gsm.peek();
 		
-		if(gsm.peek().finished) {
-			gs = gsm.peek().getNextGameState();
+		gs.update();
+		
+		if(gs.finished) {
+			gs = gs.getNextGameState();
 			gsm.pop();
 			
 			if(gs != null)
