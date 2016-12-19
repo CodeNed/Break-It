@@ -57,8 +57,9 @@ public class Player extends Mob {
 
 		if (key.right && x < playField.getWidth() - width - xspeed) xdir = 1;
 		
-		if(key.esc && !key.escLast) {
-			Jukebox.pause();
+		if((key.esc && !key.escLast) || (key.enter && !key.enterLast)) {
+			Jukebox.setVolume(Jukebox.MENU_VOLUME);
+			SoundFX.pause.play();
 			playField.captureScreen();
 			PauseMenu p = new PauseMenu(key, playField);
 			p.init();
