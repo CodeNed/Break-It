@@ -60,7 +60,9 @@ public class Player extends Mob {
 		if(key.esc && !key.escLast) {
 			Jukebox.pause();
 			playField.captureScreen();
-			Game.gsm.push(new PauseMenu(key, playField.pixels));
+			PauseMenu p = new PauseMenu(key, playField);
+			p.init();
+			Game.gsm.push(p);
 		}
 
 		xa = xdir * xspeed;
@@ -87,19 +89,19 @@ public class Player extends Mob {
 
 	public void updateHiScores() {
 		if (rank == -1) {
-			for (int i = 0; i < playField.hiScores.size(); i++) {
-				if (score > playField.hiScores.get(i)) {
+			for (int i = 0; i < Game.hiScores.size(); i++) {
+				if (score > Game.hiScores.get(i)) {
 					rank = i;
-					playField.hiScores.add(i, score);
-					playField.hiScores.remove(playField.hiScores.size() - 1);
+					Game.hiScores.add(i, score);
+					Game.hiScores.remove(Game.hiScores.size() - 1);
 					break;
 				}
 			}
 		} else {
-			playField.hiScores.set(rank, score);
-			Collections.sort(playField.hiScores, Collections.reverseOrder());
-			for (int i = 0; i < playField.hiScores.size(); i++) {
-				if (score == playField.hiScores.get(i)) {
+			Game.hiScores.set(rank, score);
+			Collections.sort(Game.hiScores, Collections.reverseOrder());
+			for (int i = 0; i < Game.hiScores.size(); i++) {
+				if (score == Game.hiScores.get(i)) {
 					rank = i;
 					break;
 				}
@@ -131,5 +133,9 @@ public class Player extends Mob {
 
 	public int getRank() {
 		return rank;
+	}
+	
+	public Keyboard getKey() {
+		return key;
 	}
 }
