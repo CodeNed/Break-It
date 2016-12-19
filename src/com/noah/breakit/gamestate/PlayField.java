@@ -67,12 +67,11 @@ public class PlayField extends GameState {
 
 	public void updateGS() {
 		
-		if(!Jukebox.playing() && !Jukebox.songNameIs("playfieldintro"))
-			Jukebox.play("playfieldintro", false);
-		else if(!Jukebox.playing()){
-			Jukebox.rewind();
-			Jukebox.play("playfieldbody", true);
-		}
+		if(Jukebox.currSongIs("playfieldintro")) {
+			if(Jukebox.done())
+				Jukebox.play("playfieldbody", true);
+		} else Jukebox.play("playfieldintro", false);
+		
 		
 		if (!levelUp) {
 			player.update();
