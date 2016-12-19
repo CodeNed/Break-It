@@ -9,7 +9,6 @@ import com.noah.breakit.entity.mob.Particle;
 import com.noah.breakit.entity.mob.Player;
 import com.noah.breakit.entity.mob.Target;
 import com.noah.breakit.entity.spawner.Spawner;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
@@ -20,7 +19,7 @@ public class PlayField extends GameState {
 
 	private int stage;
 	private char[] stagePattern;
-
+	
 	private Player player;
 	private Ball ball;
 	private List<Target> targets = new ArrayList<Target>();
@@ -37,18 +36,16 @@ public class PlayField extends GameState {
 	private boolean levelUp;
 	private int count;
 
-	public List<Integer> hiScores;
+	public PlayField(int width, int height, Player player, char[] stagePattern, int stage) {
+		this(width, height, player);
 
-	public PlayField(int width, int height, List<Integer> hiScores, Player player, char[] stagePattern, int stage) {
-		this(width, height, hiScores, player);
-
-		this.stage = stage;
 		this.stagePattern = stagePattern;
+		this.stage = stage;
 		generateTargets();
 	}
 
-	public PlayField(int width, int height, List<Integer> hiScores, Player player, int stage) {
-		this(width, height, hiScores, player);
+	public PlayField(int width, int height, Player player, int stage) {
+		this(width, height, player);
 
 		this.stage = stage;
 
@@ -59,14 +56,13 @@ public class PlayField extends GameState {
 		generateTargets();
 	}
 
-	private PlayField(int width, int height, List<Integer> hiScores, Player player) {
+	private PlayField(int width, int height, Player player) {
 		this.width = width;
 		this.height = height;
 		this.player = player;
 		this.player.init(this);
-		ball = new Ball(player.getx() + (player.getWidth() >> 1), player.gety() - player.getHeight(), Game.key);
+		ball = new Ball(player.getx() + (player.getWidth() >> 1), player.gety() - player.getHeight(), player.getKey());
 		ball.init(this);
-		this.hiScores = hiScores;
 	}
 
 	public void updateGS() {
@@ -118,6 +114,9 @@ public class PlayField extends GameState {
 			pixelDrip.pixelDrip(0xff00ff, pixels);
 			finished = Jukebox.fadeToBlack() && pixelDrip.isFinished();
 		}
+		
+		if(finished) loadNextGameState(); 
+		
 	}
 
 	public void renderGS(Screen screen) {
@@ -230,20 +229,22 @@ public class PlayField extends GameState {
 	public void setStagePattern(int index, char value) {
 		stagePattern[index] = value;
 	}
-
-	public GameState getNextGameState() {
+	
+	protected void loadNextGameState(){
+		if(nextGameState != null)
+			return;
+		
 		if (player.getLives() > 0) {
-			if (!player.isAlive()) {
+			if(player.isAlive()) {
+				if(++stage > 29)
+					stage = 0;
+				nextGameState = new PlayField(width, height, player.setCoordinates(width / 2, height - 8), stage);
+			} else {
 				player.setIsAlive(true);
-				return new PlayField(width, height, hiScores, player.setCoordinates(width / 2, height - 8),
+				nextGameState = new PlayField(width, height, player.setCoordinates(width / 2, height - 8),
 						stagePattern, stage);
 			}
-
-			if(++stage > 29)
-				stage = 0;
-			
-			return new PlayField(width, height, hiScores, player.setCoordinates(width / 2, height - 8), stage);
-		}
-		return new GameOver(Game.key, hiScores, player.getRank());
+		} else
+			nextGameState = new GameOver(player.getKey(), player.getRank());
 	}
 }
