@@ -3,11 +3,14 @@ package com.noah.breakit.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.noah.breakit.gamestate.GameState;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.util.ColorFlasher;
 
 public class Panel extends Component {
+	
+	private GameState gs;
 	
 	private Keyboard key;
 
@@ -36,6 +39,11 @@ public class Panel extends Component {
 	
 	public Panel(int x, int y, int w, int h, Keyboard key, Label label, Button...newButtons ) {
 		this(x, y, w, h, 0x000000, key, label, newButtons);
+	}
+	
+	public void init() {
+		for(Button b: buttons)
+			b.setPanel(this);
 	}
 	
 	public void update() {
@@ -85,5 +93,17 @@ public class Panel extends Component {
 		buttons.get(index).setActive(true);
 		
 		return buttons.get(index);
+	}
+	
+	public Keyboard getKey() {
+		return key;
+	}
+	
+	public void setGameState(GameState gs) {
+		this.gs = gs;
+	}
+	
+	public GameState getGameState() {
+		return gs;
 	}
 }
