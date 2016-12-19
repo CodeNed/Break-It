@@ -12,7 +12,11 @@ public class SoundFX {
 	public static final Sound hiping = TinySound.loadSound("hiping.mp3");
 	public static final Sound launch = TinySound.loadSound("launch.mp3");
 	public static final Sound loping = TinySound.loadSound("loping.mp3");
+	public static final Sound menu_1 = TinySound.loadSound("menu_1.mp3");
+	public static final Sound menu_2 = TinySound.loadSound("menu_2.mp3");
+	public static final Sound menu_3 = TinySound.loadSound("menu_3.mp3");
 	public static final Sound oneup = TinySound.loadSound("oneup.mp3");
+	public static final Sound pause = TinySound.loadSound("pause.mp3");
 	public static final Sound select = TinySound.loadSound("select.mp3");
 	public static final Sound voidsound = TinySound.loadSound("voidsound.mp3");
 }
