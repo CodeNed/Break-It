@@ -4,7 +4,6 @@ import com.noah.breakit.graphics.Screen;
 
 public class Button extends Component {
 
-	private Panel panel;
 	private Label label;
 	private Action action;
 
@@ -23,9 +22,6 @@ public class Button extends Component {
 	}
 	
 	public void update() {
-		if(panel.getKey().enter && ! panel.getKey().enterLast) {
-			action.perform();
-		}
 	}
 
 	public void render(Screen screen) {
@@ -44,7 +40,7 @@ public class Button extends Component {
 		return active;
 	}
 	
-	public void setPanel(Panel panel) {
-		this.panel = panel;
+	public Action getAction() {
+		return action;
 	}
 }
