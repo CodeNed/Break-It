@@ -124,16 +124,16 @@ public class Briefing extends GameState {
 	public void updateTX() {
 		pixelDrip.pixelDrip(0x00ffff, pixels);
 		finished = Jukebox.fadeToBlack() && pixelDrip.isFinished();
+		if(finished) loadNextGameState();
 	}
 
 	public void renderTX(Screen screen) {
 		renderScreenCap(screen);
 	}
 	
-	public GameState getNextGameState() {
+	protected void loadNextGameState() {
 		if(toTitle)
-			return new TitleScreen(key, Game.hiScores);
-		
-		return new GameOver(key, Game.hiScores, -1);
+			nextGameState =  new TitleScreen(key);
+		else nextGameState = new GameOver(key, -1);
 	}
 }

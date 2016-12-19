@@ -9,10 +9,13 @@ import com.noah.breakit.graphics.Screen;
 public abstract class GameState {
 
 	protected static Random random = new Random();
+	
+	protected GameState nextGameState = null;
+	
 	public int[] pixels = new int[Game.width * Game.height];
 
-	public boolean transition;
-	public boolean finished;
+	public boolean transition = false;
+	public boolean finished = false;
 
 	public void addPlayer(Player player) {
 	}
@@ -42,6 +45,16 @@ public abstract class GameState {
 		}
 	}
 	
+	public void setNextGameState(GameState gs) {
+		nextGameState = gs;
+	}
+	
+	public final GameState getNextGameState() {
+		return nextGameState;
+	}
+	
+	protected abstract void loadNextGameState();
+	
 	public abstract void updateGS();
 
 	public abstract void renderGS(Screen screen);
@@ -50,5 +63,4 @@ public abstract class GameState {
 
 	public abstract void renderTX(Screen screen);
 	
-	public abstract GameState getNextGameState();
 }

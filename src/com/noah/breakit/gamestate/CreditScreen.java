@@ -1,7 +1,5 @@
 package com.noah.breakit.gamestate;
 
-import java.util.List;
-
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.graphics.Sprite;
@@ -11,7 +9,6 @@ import com.noah.breakit.transition.PixelSpatter;
 public class CreditScreen extends GameState{
 	
 	private Keyboard key;
-	private List<Integer> hiScores;
 	
 	private Sprite bitBurgerSprite = new Sprite(50, 50, 32, 32, "bit_burger.png");
 	private Sprite littleRobotSprite = new Sprite(0, 100, 160, 46, "little_robot.png");
@@ -20,10 +17,8 @@ public class CreditScreen extends GameState{
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 	
-	public CreditScreen(Keyboard key, List<Integer> hiScores){
+	public CreditScreen(Keyboard key){
 		this.key = key;
-		
-		this.hiScores = hiScores;
 	}
 	
 	public void updateGS() {
@@ -71,14 +66,14 @@ public class CreditScreen extends GameState{
 	public void updateTX() {
 		pixelSpatter.pixelSpatter(0x00ffff, pixels);		
 		finished = pixelSpatter.isFinished();
+		if(finished) loadNextGameState();
 	}
 
 	public void renderTX(Screen screen) {
 		renderScreenCap(screen);
 	}
 
-	public GameState getNextGameState() {
-		return new TitleScreen(key, hiScores);
+	protected void loadNextGameState() {
+		nextGameState = new TitleScreen(key);
 	}
-
 }

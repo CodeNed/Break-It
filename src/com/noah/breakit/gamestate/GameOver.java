@@ -1,7 +1,5 @@
 package com.noah.breakit.gamestate;
 
-import java.util.List;
-
 import com.noah.breakit.game.Game;
 import com.noah.breakit.game.Hud;
 import com.noah.breakit.graphics.Screen;
@@ -14,7 +12,6 @@ public class GameOver extends GameState {
 
 	private Keyboard key;
 
-	private List<Integer> hiScores;
 	private String[] hiScoreStr = new String[10];
 	private int rank;
 	
@@ -22,14 +19,13 @@ public class GameOver extends GameState {
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 
-	public GameOver(Keyboard key, List<Integer> hiScores, int rank) {
+	public GameOver(Keyboard key, int rank) {
 		this.key = key;
-		this.hiScores = hiScores;
 		this.rank = rank;
 
 		for (int i = 0; i < 10; i++) {
 			hiScoreStr[i] = "";
-			hiScoreStr[i] = Hud.parseScore(hiScores.get(i));
+			hiScoreStr[i] = Hud.parseScore(Game.hiScores.get(i));
 		}
 	}
 
@@ -43,11 +39,6 @@ public class GameOver extends GameState {
 			captureScreen();
 			transition = true;
 		}
-	}
-
-	public void updateTX() {
-		pixelSpatter.pixelSpatter(0xff00ff, pixels);
-		finished = Jukebox.fadeToBlack() &&  pixelSpatter.isFinished();
 	}
 
 	public void renderGS(Screen screen) {
@@ -80,12 +71,18 @@ public class GameOver extends GameState {
 			ofs += 4;
 		}
 	}
+	
+	public void updateTX() {
+		pixelSpatter.pixelSpatter(0xff00ff, pixels);
+		finished = Jukebox.fadeToBlack() &&  pixelSpatter.isFinished();
+		if(finished) loadNextGameState();
+	}
 
 	public void renderTX(Screen screen) {
 		renderScreenCap(screen);
 	}
-
-	public GameState getNextGameState() {
-		return new TitleScreen(Game.key, hiScores);
+	
+	protected void loadNextGameState() {
+		nextGameState = new TitleScreen(key);
 	}
 }

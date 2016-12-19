@@ -1,7 +1,5 @@
 package com.noah.breakit.gamestate;
 
-import java.util.List;
-
 import com.noah.breakit.entity.mob.Player;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.game.Hud;
@@ -15,8 +13,6 @@ import com.noah.breakit.util.ColorFlasher;
 public class TitleScreen extends GameState {
 
 	private Keyboard key;
-
-	private List<Integer> hiScores;
 
 	private String hiScoreStr = "";
 
@@ -35,10 +31,9 @@ public class TitleScreen extends GameState {
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 
-	public TitleScreen(Keyboard key, List<Integer> hiScores) {
+	public TitleScreen(Keyboard key) {
 		this.key = key;
-		this.hiScores = hiScores;
-		hiScoreStr = Hud.parseScore(hiScores.get(0));
+		hiScoreStr = Hud.parseScore(Game.hiScores.get(0));
 	}
 
 	public void updateGS() {
@@ -48,7 +43,7 @@ public class TitleScreen extends GameState {
 		}
 
 		key.update();
-		if (key.enter) {
+		if (key.enter && !key.enterLast) {
 			captureScreen();
 			startGame = true;
 			transition = true;
@@ -64,6 +59,7 @@ public class TitleScreen extends GameState {
 	public void updateTX() {
 		pixelSpatter.pixelSpatter(0x00ffff, pixels);
 		finished = Jukebox.fadeToBlack() && pixelSpatter.isFinished();
+		if(finished) loadNextGameState();
 	}
 
 	public void renderGS(Screen screen) {
@@ -97,13 +93,12 @@ public class TitleScreen extends GameState {
 	public void renderTX(Screen screen) {
 		renderScreenCap(screen);
 	}
-
-	public GameState getNextGameState() {
+	
+	protected void loadNextGameState() {
 		if (startGame) {
-			Player player = new Player(Game.width / 2, Game.height - 8, Game.key);
-			return new PlayField(Game.width, Game.height, hiScores, player, 0);
-		}
-
-		return new Briefing(key);
+			Player player = new Player(Game.width / 2, Game.height - 8, key);
+			nextGameState = new PlayField(Game.width, Game.height, player, 0);
+		} else
+			nextGameState = new Briefing(key);
 	}
 }
