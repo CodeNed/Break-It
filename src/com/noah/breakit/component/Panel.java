@@ -6,6 +6,7 @@ import java.util.List;
 import com.noah.breakit.gamestate.GameState;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
+import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.util.ColorFlasher;
 
 public class Panel extends Component {
@@ -41,21 +42,22 @@ public class Panel extends Component {
 		this(x, y, w, h, 0x000000, key, label, newButtons);
 	}
 	
-	public void init() {
-		for(Button b: buttons)
-			b.setPanel(this);
-	}
-	
 	public void update() {
 			
 		label.update();
 		
-		if(key.up && !key.upLast)
+		if(key.up && !key.upLast) {
 			activeButton = getPrevButton();
-		else if(key.down && !key.downLast)
+			SoundFX.menu_1.play();
+		} else if(key.down && !key.downLast) {
 			activeButton = getNextButton();
+			SoundFX.menu_1.play();
+		}
 		
-		activeButton.update();
+		if(key.enter && ! key.enterLast) {
+			SoundFX.menu_2.play();
+			activeButton.getAction().perform();
+		}
 	}
 
 	public void render(Screen screen) {
@@ -93,10 +95,6 @@ public class Panel extends Component {
 		buttons.get(index).setActive(true);
 		
 		return buttons.get(index);
-	}
-	
-	public Keyboard getKey() {
-		return key;
 	}
 	
 	public void setGameState(GameState gs) {
