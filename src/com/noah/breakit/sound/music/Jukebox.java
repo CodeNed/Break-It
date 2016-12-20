@@ -54,6 +54,13 @@ public class Jukebox {
 		}
 	}
 	
+	public static void playSongWithIntro(String intro, String body) {
+		if (currSongIs(intro)) {
+			if(done())
+				play(body, true);
+		} else play(intro, false);
+	}
+	
 	public static void pause() {
 		if(currSong == null) {
 			System.err.println("Error: from Jukebox.pause(): No song loaded!");

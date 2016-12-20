@@ -42,10 +42,8 @@ public class MusicMenu extends GameState
 	}
 	
 	public void updateGS() {
-		if(Jukebox.currSongIs("playfieldintro")) {
-			if(Jukebox.done())
-				Jukebox.play("playfieldbody", true);
-		} else Jukebox.play("playfieldintro", false);
+		
+		Jukebox.playSongWithIntro("playfieldsongintro", "playfieldsongbody");
 		
 		key.update();
 		
