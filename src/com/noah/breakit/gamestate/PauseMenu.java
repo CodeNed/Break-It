@@ -55,7 +55,7 @@ public class PauseMenu extends GameState {
 	
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro("playfieldsongintro", "playfieldsongbody");
+		Jukebox.playSongWithIntro("playfieldintro", "playfieldbody");
 		
 		key.update();
 		if(key.esc && !key.escLast) {

@@ -67,7 +67,7 @@ public class PlayField extends GameState {
 
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro("playfieldsongintro", "playfieldsongbody");
+		Jukebox.playSongWithIntro("playfieldintro", "playfieldbody");
 		
 		if (!levelUp) {
 			player.update();
