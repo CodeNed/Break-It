@@ -2,9 +2,9 @@ package com.noah.breakit.graphics;
 
 public class Screen {
 
-	private int width, height;
+	private int width = 0, height = 0;
 
-	public static int[] pixels;
+	public static int[] pixels = null;
 
 	public Screen(int width, int height) {
 		this.width = width;

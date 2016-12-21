@@ -5,15 +5,15 @@ import kuusisto.tinysound.TinySound;
 
  class Song {
 	// music credit to sketchylogic
-	static final Song titlesong = new Song(TinySound.loadMusic("songs/titlesong.wav"));
-	static final Song playfieldintro = new Song(TinySound.loadMusic("songs/playfieldsongintro.wav"));
-	static final Song playfieldbody = new Song(TinySound.loadMusic("songs/playfieldsongbody.wav"));
-	static final Song briefingsong = new Song(TinySound.loadMusic("songs/briefingsong.wav"));
-	static final Song gameoversong = new Song(TinySound.loadMusic("songs/gameoversong.wav"));
-	static final Song voidsong = new Song(TinySound.loadMusic("voidsound.mp3"));
+	static final Song TITLE_SONG = new Song(TinySound.loadMusic("songs/titlesong.wav"));
+	static final Song PLAYFIELD_INTRO = new Song(TinySound.loadMusic("songs/playfieldsongintro.wav"));
+	static final Song PLAYFIELD_BODY = new Song(TinySound.loadMusic("songs/playfieldsongbody.wav"));
+	static final Song BRIEFING_SONG = new Song(TinySound.loadMusic("songs/briefingsong.wav"));
+	static final Song GAME_OVER_SONG = new Song(TinySound.loadMusic("songs/gameoversong.wav"));
+	static final Song VOID_SONG = new Song(TinySound.loadMusic("voidsound.mp3"));
 	
-	private Music song;
-	private double volume;
+	private Music song = null;
+	private double volume = 0;
 	static final double DEFAULT_VOLUME = 1.0;
 		
 	 private Song(Music song) {

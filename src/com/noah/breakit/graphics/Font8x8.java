@@ -2,7 +2,7 @@ package com.noah.breakit.graphics;
 
 public class Font8x8 {
 	
-	private static final int[] space = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+	private static final int[] SPACE = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 								   		 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 								   		 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 								   		 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -12,7 +12,7 @@ public class Font8x8 {
 								   		 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 
 	};
 	
-	private static final int[] colon = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+	private static final int[] COLON = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 	   									 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
 	   									 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
 	   									 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
@@ -22,7 +22,7 @@ public class Font8x8 {
 	   									 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 
 	};
 	
-	private static final int[] dash  = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+	private static final int[] DASH  = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 			 							 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 			 							 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,
 			 							 0 , 0 ,'#','#','#','#', 0 , 0 ,
@@ -32,7 +32,7 @@ public class Font8x8 {
 			 							 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 
 };
 	
-	private static final int[] excla = { 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
+	private static final int[] EXCLA = { 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
 				 						 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
 				 						 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
 				 						 0 , 0 , 0 ,'#','#', 0 , 0 , 0 ,
@@ -42,7 +42,7 @@ public class Font8x8 {
 				 						 0 , 0 , 0 ,'#','#', 0 , 0 , 0 
 	};
 	
-	private static final int[] left = {  0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 ,
+	private static final int[] LEFT = {  0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 ,
 	   		 							 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,
 	   		 							 0 , 0 , 0 ,'#', 0 , 0 , 0 , 0 ,
 	   		 							 0 , 0 ,'#', 0 , 0 , 0 , 0 , 0 ,
@@ -52,7 +52,7 @@ public class Font8x8 {
 	   		 							 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 
 	};
 	
-	private static final int[] right = { 0 , 0 ,'#', 0 , 0 , 0 , 0 , 0 , 
+	private static final int[] RIGHT = { 0 , 0 ,'#', 0 , 0 , 0 , 0 , 0 , 
 			 							 0 , 0 , 0 ,'#', 0 , 0 , 0 , 0 ,
 			 							 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,
 			 							 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 ,
@@ -62,7 +62,7 @@ public class Font8x8 {
 			 							 0 , 0 ,'#', 0 , 0 , 0 , 0 , 0 
 	};
 	
-	private static final int[] heart = { 0 ,'#','#', 0 ,'#','#', 0 , 0 ,
+	private static final int[] HEART = { 0 ,'#','#', 0 ,'#','#', 0 , 0 ,
 										'#', 0 , 0 ,'#', 0 , 0 ,'#', 0 ,
 										'#', 0 , 0 , 0 , 0 , 0 ,'#', 0 ,
 										'#', 0 , 0 , 0 , 0 , 0 ,'#', 0 ,
@@ -510,20 +510,20 @@ public class Font8x8 {
 			case '9':
 				return Font8x8._9;
 			case ' ':
-				return Font8x8.space;
+				return Font8x8.SPACE;
 			case ':':
-				return Font8x8.colon;
+				return Font8x8.COLON;
 			case '-':
-				return Font8x8.dash;
+				return Font8x8.DASH;
 			case '!':
-				return Font8x8.excla;
+				return Font8x8.EXCLA;
 			case '<':
-				return Font8x8.left;
+				return Font8x8.LEFT;
 			case '>':
-				return Font8x8.right;
+				return Font8x8.RIGHT;
 			case '@':
-				return Font8x8.heart;
+				return Font8x8.HEART;
 		}
-		return Font8x8.space;
+		return Font8x8.SPACE;
 	}
 }

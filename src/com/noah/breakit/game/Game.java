@@ -28,25 +28,27 @@ import kuusisto.tinysound.TinySound;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private Thread thread;
+	private Thread thread = null;
 
-	private String title = "Break-It";
+	private final String TITLE = "Break-It";
 
 	private boolean running = false;
 
-	public static final int width = 160;
-	public static final int height = 260;
+	public static final int WIDTH = 160;
+	public static final int HEIGHT = 260;
 	private int scale = 3;
 
-	private JFrame frame;
-	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	private JFrame frame = null;
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-	private Screen screen;
+	private Screen screen = null;
 
-	public static Stack<GameState> gsm;
+	public static final Stack<GameState> GSM = new Stack<GameState>();
 	
-	public static List<Integer> hiScores = new ArrayList<Integer>() {
+	private final Keyboard KEY = new Keyboard();
+	
+	public static final List<Integer> HI_SCORES = new ArrayList<Integer>() {
 		
 		private static final long serialVersionUID = 1L;
 
@@ -64,27 +66,24 @@ public class Game extends Canvas implements Runnable {
 		}
 	};
 
-	public final Keyboard key = new Keyboard();
-
 	Game() {
 		
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
 		
-		Dimension size = new Dimension(width * scale, height * scale);
+		Dimension size = new Dimension(WIDTH * scale, HEIGHT * scale);
 		setPreferredSize(size);
-		screen = new Screen(width, height);
+		screen = new Screen(WIDTH, HEIGHT);
 		frame = new JFrame();
-		addKeyListener(key);
+		addKeyListener(KEY);
 
-		gsm = new Stack<GameState>();
-		gsm.push(new CreditScreen(key));
+		GSM.push(new CreditScreen(KEY));
 		
 		TinySound.init();
-		SoundFX.voidsound.play();
+		SoundFX.VOID_SOUND.play();
 		Jukebox.play("voidsong", false);
 	}
 
-	public synchronized void start() {
+	private synchronized void start() {
 		running = true;
 		thread = new Thread(this, "Game");
 		thread.start();
@@ -104,7 +103,7 @@ public class Game extends Canvas implements Runnable {
 
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
-		final double ns = 1000000000D / 60D;
+		final double NS = 1000000000D / 60D;
 		double delta = 0D;
 		int frames = 0;
 		int updates = 0;
@@ -114,7 +113,7 @@ public class Game extends Canvas implements Runnable {
 		while (running) {
 
 			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
+			delta += (now - lastTime) / NS;
 			lastTime = now;
 
 			while (delta >= 1) {
@@ -128,7 +127,7 @@ public class Game extends Canvas implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				frame.setTitle(title + " | " + updates + " ups" + " | " + frames + " fps");
+				frame.setTitle(TITLE + " | " + updates + " ups" + " | " + frames + " fps");
 				frames = 0;
 				updates = 0;
 			}
@@ -136,24 +135,24 @@ public class Game extends Canvas implements Runnable {
 		stop();
 	}
 
-	public void update() {
+	private void update() {
 		
 		ColorFlasher.update();
 		
-		GameState gs = gsm.peek();
+		GameState gs = GSM.peek();
 		
 		gs.update();
 		
-		if(gs.finished) {
+		if(gs.isFinished()) {
 			gs = gs.getNextGameState();
-			gsm.pop();
+			GSM.pop();
 			
 			if(gs != null)
-				gsm.push(gs);
+				GSM.push(gs);
 		}
 	}
 
-	public void render() {
+	private void render() {
 
 		BufferStrategy bs = getBufferStrategy();
 
@@ -164,7 +163,7 @@ public class Game extends Canvas implements Runnable {
 
 		screen.clear();
 
-		gsm.peek().render(screen);
+		GSM.peek().render(screen);
 
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = Screen.pixels[i];
@@ -172,8 +171,8 @@ public class Game extends Canvas implements Runnable {
 
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(new Color(0xff00ff));
-		g.fillRect(0, 0, width, height);
-		g.drawImage(image, 0, 0, width * scale, height * scale, null);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.drawImage(image, 0, 0, WIDTH * scale, HEIGHT * scale, null);
 		g.dispose();
 		bs.show();
 	}

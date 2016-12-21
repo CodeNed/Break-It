@@ -2,13 +2,13 @@ package com.noah.breakit.gamestate;
 
 import com.noah.breakit.entity.mob.Player;
 import com.noah.breakit.game.Game;
-import com.noah.breakit.game.Hud;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Hud;
 
 public class TitleScreen extends GameState {
 
@@ -16,24 +16,23 @@ public class TitleScreen extends GameState {
 
 	private String hiScoreStr = "";
 
-	private final int[] title = { '#', '#', 0, 0, '#', '#', 0, 0, '#', '#', '#', 0, 0, '#', 0, 0, '#', 0, '#', 0, 0, 0,
-			0, 0, '#', '#', '#', 0, '#', '#', '#', '#', 0, '#', 0, '#', 0, '#', 0, '#', 0, 0, 0, '#', 0, '#', 0, '#', 0,
-			'#', 0, 0, 0, 0, 0, 0, '#', 0, 0, 0, '#', 0, '#', '#', 0, 0, '#', '#', 0, 0, '#', '#', 0, 0, '#', '#', '#',
-			0, '#', '#', 0, 0, '#', '#', '#', 0, 0, '#', 0, 0, 0, '#', 0, '#', 0, '#', 0, '#', 0, '#', 0, '#', 0, 0, 0,
-			'#', 0, '#', 0, '#', 0, '#', 0, 0, 0, 0, 0, 0, '#', 0, 0, 0, '#', 0, '#', '#', 0, 0, '#', 0, '#', 0, '#',
-			'#', '#', 0, '#', 0, '#', 0, '#', 0, '#', 0, 0, 0, 0, 0, '#', '#', '#', 0, 0, '#', 0 };
+	private final int[] TITLE = { '#','#', 0 , 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0, '#', 0 , 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 ,'#','#','#',
+			                      '#', 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,'#', 0 ,
+			                      '#','#', 0 , 0 ,'#','#', 0 , 0, '#','#', 0 , 0 ,'#','#','#', 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
+			                      '#', 0 ,'#', 0 ,'#', 0 ,'#', 0, '#', 0 , 0 , 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
+			                      '#','#', 0 , 0 ,'#', 0, '#', 0, '#','#','#', 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 , 0, '#', 0 };
 
 	private int titleHeight = 5;
 	private int titleWidth = 31;
 
-	private int count;
-	private boolean startGame;
+	private int count = 0;
+	private boolean startGame = false;
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 
 	public TitleScreen(Keyboard key) {
 		this.key = key;
-		hiScoreStr = Hud.parseScore(Game.hiScores.get(0));
+		hiScoreStr = Hud.parseScore(Game.HI_SCORES.get(0));
 	}
 
 	public void updateGS() {
@@ -45,7 +44,7 @@ public class TitleScreen extends GameState {
 			captureScreen();
 			startGame = true;
 			transition = true;
-			SoundFX.select.play();
+			SoundFX.SELECT.play();
 		}
 
 		if (count++ == 60 * 15) {
@@ -67,16 +66,16 @@ public class TitleScreen extends GameState {
 					random.nextInt(0xffffff));
 
 		int start = 0;
-		for (int y = start; y < Game.height; y += 4) {
-			for (int x = start; x < Game.width; x += 4) {
-				if (x == start || x == Game.width - 4 || y == start || y == Game.height - 4)
+		for (int y = start; y < Game.HEIGHT; y += 4) {
+			for (int x = start; x < Game.WIDTH; x += 4) {
+				if (x == start || x == Game.WIDTH - 4 || y == start || y == Game.HEIGHT - 4)
 					screen.fillRect(x, y, 4, 4, ColorFlasher.col);
 			}
 		}
 
 		for (int y = 0; y < titleHeight; y++) {
 			for (int x = 0; x < titleWidth; x++) {
-				if (title[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~ColorFlasher.col);
+				if (TITLE[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~ColorFlasher.col);
 			}
 		}
 
@@ -94,8 +93,8 @@ public class TitleScreen extends GameState {
 	
 	protected void loadNextGameState() {
 		if (startGame) {
-			Player player = new Player(Game.width / 2, Game.height - 8, key);
-			nextGameState = new PlayField(Game.width, Game.height, player, 0);
+			Player player = new Player(Game.WIDTH / 2, Game.HEIGHT - 8, key);
+			nextGameState = new Playfield(player, 0);
 		} else
 			nextGameState = new Briefing(key);
 	}

@@ -75,7 +75,7 @@ public class Font5x5 {
 			
 	};
 	
-	public static final int[] space = { 0 ,  0 ,  0 ,  0 , 0 ,  0 ,
+	public static final int[] SPACE = { 0 ,  0 ,  0 ,  0 , 0 ,  0 ,
 										0 ,  0 ,  0 ,  0 , 0 ,  0 ,
 										0 ,  0 ,  0 ,  0 , 0 ,  0 ,
 										0 ,  0 ,  0 ,  0 , 0 ,  0 ,
@@ -110,6 +110,6 @@ public class Font5x5 {
 			case '9':
 				return Font5x5._9;
 		}
-		return Font5x5.space;
+		return Font5x5.SPACE;
 	}
 }

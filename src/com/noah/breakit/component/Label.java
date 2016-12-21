@@ -5,7 +5,7 @@ import com.noah.breakit.util.ColorFlasher;
 
 public class Label extends Component 
 {	
-	private String name;
+	private String name = null;
 	
 	private Label(int x, int y, int col, int numChars) {
 		super (x, y, col);

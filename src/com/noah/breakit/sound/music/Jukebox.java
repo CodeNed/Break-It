@@ -1,12 +1,14 @@
 package com.noah.breakit.sound.music;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Jukebox {
 	
-	private static HashMap<String, Song> playList = new HashMap<String, Song>();
+	private static Map<String, Song> playList = new HashMap<>();
 	
-	public static Jukebox songList = new Jukebox();
+	@SuppressWarnings("unused")
+	private static final Jukebox JUKEBOX = new Jukebox();
 	
 	private static boolean standby = false;
 	private static Song currSong = null;
@@ -19,12 +21,12 @@ public class Jukebox {
 	public static final double MENU_VOLUME = 0.2;
 	
 	private Jukebox() {
-		playList.put("titlesong", Song.titlesong);
-		playList.put("playfieldintro", Song.playfieldintro);
-		playList.put("playfieldbody", Song.playfieldbody);
-		playList.put("briefingsong", Song.briefingsong);
-		playList.put("gameoversong", Song.gameoversong);
-		playList.put("voidsong", Song.voidsong);
+		playList.put("titlesong", Song.TITLE_SONG);
+		playList.put("playfieldintro", Song.PLAYFIELD_INTRO);
+		playList.put("playfieldbody", Song.PLAYFIELD_BODY);
+		playList.put("briefingsong", Song.BRIEFING_SONG);
+		playList.put("gameoversong", Song.GAME_OVER_SONG);
+		playList.put("voidsong", Song.VOID_SONG);
 	}
 	
 	public static void play(String key, boolean loop) {
@@ -113,11 +115,11 @@ public class Jukebox {
 		return false;
 	}
 	
-	public static boolean getStandby() {
+	public static boolean isOnStandby() {
 		return standby;
 	}
 	
-	public static void setStandby(boolean b) {
+	public static void setStandbyMode(boolean b) {
 		standby = b;
 	}
 	

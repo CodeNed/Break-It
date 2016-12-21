@@ -2,14 +2,14 @@ package com.noah.breakit.entity;
 
 import java.util.Random;
 
-import com.noah.breakit.gamestate.PlayField;
+import com.noah.breakit.gamestate.Playfield;
 
 public abstract class Entity {
 
-	protected int x;
-	protected int y;
+	protected int x = 0;
+	protected int y = 0;
 
-	protected PlayField playField;
+	protected Playfield playField = null;
 
 	private boolean remove = false;
 
@@ -18,15 +18,15 @@ public abstract class Entity {
 	public Entity() {
 	}
 
-	public void init(PlayField level) {
+	public final void init(Playfield level) {
 		this.playField = level;
 	}
 
-	protected void remove() {
+	public final void remove() {
 		remove = true;
 	}
 
-	public boolean isRemoved() {
+	public final boolean isRemoved() {
 		return remove;
 	}
 

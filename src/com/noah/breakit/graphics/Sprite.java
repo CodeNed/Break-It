@@ -8,13 +8,13 @@ import javax.imageio.ImageIO;
 
 public class Sprite {
 
-	private int x;
-	private int y;
+	private int x = 0;
+	private int y = 0;
 
 	public final int WIDTH;
 	public final int HEIGHT;
 
-	public int[] pixels;
+	public int[] pixels = null;
 
 	private Sprite(int x, int y, int width, int height) {
 

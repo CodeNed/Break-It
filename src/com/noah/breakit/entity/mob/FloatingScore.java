@@ -4,7 +4,7 @@ import com.noah.breakit.graphics.Screen;
 
 public class FloatingScore extends Mob {
 
-	private String val;
+	private String val = null;
 	private int count = 0;
 	
 	public FloatingScore(int x, int y, Integer val) {

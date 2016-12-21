@@ -12,8 +12,8 @@ import com.noah.breakit.sound.music.Jukebox;
 
 public class MusicMenu extends GameState
 {
-	private Keyboard key;
-	private Panel panel;
+	private Keyboard key = null;
+	private Panel panel = null;
 	
 	private int w = 50;
 	private int h = 60;
@@ -23,8 +23,8 @@ public class MusicMenu extends GameState
 		this.key = key;
 		this.pixels = parentGameState.pixels;
 		
-		int x = Game.width / 2 - w / 2;
-		int y = Game.height / 2 - h / 2;
+		int x = Game.WIDTH / 2 - w / 2;
+		int y = Game.HEIGHT / 2 - h / 2;
 		
 		int x1 = x + w / 2 - "music".length() * 8 / 2;
 		int y1 = y + 8;
@@ -48,7 +48,7 @@ public class MusicMenu extends GameState
 		key.update();
 		
 		if(key.esc && ! key.escLast) {
-			SoundFX.menu_3.play();
+			SoundFX.MENU_3.play();
 			finished = true;
 		}
 		
@@ -62,14 +62,14 @@ public class MusicMenu extends GameState
 	}
 	
 	private void musicOn() {
-		if(Jukebox.getStandby() == false)
+		if(Jukebox.isOnStandby() == false)
 			return;
-		Jukebox.setStandby(false);
+		Jukebox.setStandbyMode(false);
 		Jukebox.play("playfieldintro", false);
 	}
 	
 	private void musicOff() {
-		Jukebox.setStandby(true);
+		Jukebox.setStandbyMode(true);
 		Jukebox.stop();
 		//Jukebox.rewind();
 	}

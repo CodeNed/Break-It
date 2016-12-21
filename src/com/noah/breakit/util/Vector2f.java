@@ -1,8 +1,8 @@
 package com.noah.breakit.util;
 
 public class Vector2f {
-	private float x;
-	private float y;
+	private float x = 0;
+	private float y = 0;
 	
 	public Vector2f() {
 		set(0, 0);

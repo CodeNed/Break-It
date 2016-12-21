@@ -6,17 +6,19 @@ import kuusisto.tinysound.TinySound;
 public class SoundFX {
 	
 	// sfx credits to little robot sound factory
-	public static final Sound death = TinySound.loadSound("death.mp3");
-	public static final Sound explode = TinySound.loadSound("explode.mp3");
-	public static final Sound gameover = TinySound.loadSound("gameover.mp3");
-	public static final Sound hiping = TinySound.loadSound("hiping.mp3");
-	public static final Sound launch = TinySound.loadSound("launch.mp3");
-	public static final Sound loping = TinySound.loadSound("loping.mp3");
-	public static final Sound menu_1 = TinySound.loadSound("menu_1.mp3");
-	public static final Sound menu_2 = TinySound.loadSound("menu_2.mp3");
-	public static final Sound menu_3 = TinySound.loadSound("menu_3.mp3");
-	public static final Sound oneup = TinySound.loadSound("oneup.mp3");
-	public static final Sound pause = TinySound.loadSound("pause.mp3");
-	public static final Sound select = TinySound.loadSound("select.mp3");
-	public static final Sound voidsound = TinySound.loadSound("voidsound.mp3");
+	public static final Sound DEATH = TinySound.loadSound("death.mp3");
+	public static final Sound EXPLODE = TinySound.loadSound("explode.mp3");
+	public static final Sound GAME_OVER = TinySound.loadSound("gameover.mp3");
+	public static final Sound HI_PING = TinySound.loadSound("hiping.mp3");
+	public static final Sound LAUNCH = TinySound.loadSound("launch.mp3");
+	public static final Sound LO_PING = TinySound.loadSound("loping.mp3");
+	public static final Sound MENU_1 = TinySound.loadSound("menu_1.mp3");
+	public static final Sound MENU_2 = TinySound.loadSound("menu_2.mp3");
+	public static final Sound MENU_3 = TinySound.loadSound("menu_3.mp3");
+	public static final Sound ONE_UP = TinySound.loadSound("oneup.mp3");
+	public static final Sound PAUSE = TinySound.loadSound("pause.mp3");
+	public static final Sound POWER_DOWN = TinySound.loadSound("powerdown.mp3");
+	public static final Sound POWER_UP = TinySound.loadSound("powerup.mp3");
+	public static final Sound SELECT = TinySound.loadSound("select.mp3");
+	public static final Sound VOID_SOUND = TinySound.loadSound("voidsound.mp3");
 }

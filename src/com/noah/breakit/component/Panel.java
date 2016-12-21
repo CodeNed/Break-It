@@ -11,14 +11,14 @@ import com.noah.breakit.util.ColorFlasher;
 
 public class Panel extends Component {
 	
-	private GameState gs;
+	private GameState gs = null;
 	
-	private Keyboard key;
+	private Keyboard key = null;
 
-	private Label label;
+	private Label label = null;
 	
 	private List<Button> buttons = new ArrayList<>();
-	private Button activeButton;
+	private Button activeButton = null;
 	private int index = 0;
 
 	private Panel(int x, int y, int w, int h, int col, Keyboard key, Label label) {
@@ -48,14 +48,14 @@ public class Panel extends Component {
 		
 		if(key.up && !key.upLast) {
 			activeButton = getPrevButton();
-			SoundFX.menu_1.play();
+			SoundFX.MENU_1.play();
 		} else if(key.down && !key.downLast) {
 			activeButton = getNextButton();
-			SoundFX.menu_1.play();
+			SoundFX.MENU_1.play();
 		}
 		
 		if(key.enter && ! key.enterLast) {
-			SoundFX.menu_2.play();
+			SoundFX.MENU_2.play();
 			activeButton.getAction().perform();
 		}
 	}

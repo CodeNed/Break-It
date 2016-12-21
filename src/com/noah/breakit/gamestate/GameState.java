@@ -12,10 +12,10 @@ public abstract class GameState {
 	
 	protected GameState nextGameState = null;
 	
-	public int[] pixels = new int[Game.width * Game.height];
+	protected int[] pixels = new int[Game.WIDTH * Game.HEIGHT];
 
-	public boolean transition = false;
-	public boolean finished = false;
+	protected boolean transition = false;
+	protected boolean finished = false;
 
 	public void addPlayer(Player player) {
 	}
@@ -45,12 +45,24 @@ public abstract class GameState {
 		}
 	}
 	
-	public void setNextGameState(GameState gs) {
+	public final void setNextGameState(GameState gs) {
 		nextGameState = gs;
 	}
 	
 	public final GameState getNextGameState() {
 		return nextGameState;
+	}
+	
+	public boolean isFinished() {
+		return finished;
+	}
+	
+	public boolean isTransitioning() {
+		return transition;
+	}
+	
+	public void setTransitioning(boolean b) {
+		transition = b;
 	}
 	
 	protected abstract void loadNextGameState();

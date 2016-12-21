@@ -4,8 +4,8 @@ import com.noah.breakit.graphics.Screen;
 
 public class Particle extends Mob {
 
-	private int life;
-	private int count;
+	private int life = 0;
+	private int count = 0;
 
 	public Particle(int x, int y, int width, int height) {
 		super(x, y);

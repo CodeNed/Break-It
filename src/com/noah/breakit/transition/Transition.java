@@ -3,13 +3,12 @@ package com.noah.breakit.transition;
 import java.util.Random;
 
 import com.noah.breakit.util.Util;
-
-public abstract class Transition {
+abstract class Transition {
 	
-	protected static Random random = new Random();
-	protected boolean finished;
+	static Random random = new Random();
+	boolean finished = false;
 	
-	public void fadeToBlack(int rate, int[] pixels) {
+	void fadeToBlack(int rate, int[] pixels) {
 		for (int i = 0; i < pixels.length; i++) {
 			int r = (pixels[i] & 0xff0000) >> 16;
 			int g = (pixels[i] & 0xff00) >> 8;
@@ -33,7 +32,7 @@ public abstract class Transition {
 		finished = true;
 	}
 	
-	public void fadeToWhite(int rate, int[] pixels) {
+	void fadeToWhite(int rate, int[] pixels) {
 		for (int i = 0; i < pixels.length; i++) {
 			int r = (pixels[i] & 0xff0000) >> 16;
 			int g = (pixels[i] & 0xff00) >> 8;
@@ -56,5 +55,5 @@ public abstract class Transition {
 		finished = true;
 	}
 	
-	public abstract boolean isFinished();
+	abstract boolean isFinished();
 }

@@ -8,44 +8,48 @@ import com.noah.breakit.entity.mob.FloatingScore;
 import com.noah.breakit.entity.mob.Particle;
 import com.noah.breakit.entity.mob.Player;
 import com.noah.breakit.entity.mob.Target;
-import com.noah.breakit.entity.spawner.Spawner;
+import com.noah.breakit.entity.mob.powerup.Powerup;
+import com.noah.breakit.entity.spawner.ParticleSpawner;
+import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
 import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.transition.PixelSpatter;
 
-public class PlayField extends GameState {
+public class Playfield extends GameState {
 
-	private int stage;
-	private char[] stagePattern;
+	private int stage = 0;
+	private char[] stagePattern = null;
 	
-	private Player player;
-	private Ball ball;
-	private List<Target> targets = new ArrayList<Target>();
-	private List<Particle> particles = new ArrayList<Particle>();
-	private List<Spawner> spawners = new ArrayList<Spawner>();
-	private List<FloatingScore> floatingScores = new ArrayList<FloatingScore>();
+	private Player player = null;
+
+	private List<Ball> balls = new ArrayList<>();
+	private List<Target> targets = new ArrayList<>();
+	private List<Particle> particles = new ArrayList<>();
+	private List<ParticleSpawner> spawners = new ArrayList<>();
+	private List<FloatingScore> floatingScores = new ArrayList<>();
+	private List<Powerup> powerups = new ArrayList<>();
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 	private PixelDrip pixelDrip = new PixelDrip();
 
-	private int height;
-	private int width;
+	private int width = Game.WIDTH;
+	private int height = Game.HEIGHT;
 
-	private boolean levelUp;
-	private int count;
+	private boolean levelUp = false;
+	private int count = 0;
 
-	public PlayField(int width, int height, Player player, char[] stagePattern, int stage) {
-		this(width, height, player);
+	public Playfield(Player player, char[] stagePattern, int stage) {
+		this(player);
 
 		this.stagePattern = stagePattern;
 		this.stage = stage;
 		generateTargets();
 	}
 
-	public PlayField(int width, int height, Player player, int stage) {
-		this(width, height, player);
+	public Playfield(Player player, int stage) {
+		this(player);
 
 		this.stage = stage;
 
@@ -56,13 +60,10 @@ public class PlayField extends GameState {
 		generateTargets();
 	}
 
-	private PlayField(int width, int height, Player player) {
-		this.width = width;
-		this.height = height;
+	private Playfield(Player player) {
 		this.player = player;
 		this.player.init(this);
-		ball = new Ball(player.getx() + (player.getWidth() >> 1), player.gety() - player.getHeight(), player.getKey());
-		ball.init(this);
+		addBall(new Ball(player.getx() + (player.getWidth() >> 1), player.gety() - player.getHeight()));
 	}
 
 	public void updateGS() {
@@ -71,28 +72,41 @@ public class PlayField extends GameState {
 		
 		if (!levelUp) {
 			player.update();
-			ball.update();
+			for(int i = 0; i < balls.size(); i++)
+				balls.get(i).update();
 		} else
 			if (count++ == 60 * 3) transition = true;
 
-		for (Target t : targets)
-			t.update();
+		for (int i = 0; i < targets.size(); i++)
+			targets.get(i).update();
 
-		for (Particle p : particles)
-			p.update();
+		for (int i = 0; i < particles.size(); i++)
+			particles.get(i).update();
 
-		for (Spawner s : spawners)
-			s.update();
+		for (int i = 0; i < spawners.size(); i++)
+			spawners.get(i).update();
 		
-		for(FloatingScore f : floatingScores)
-			f.update();
+		for(int i = 0; i < floatingScores.size(); i++)
+			floatingScores.get(i).update();
+		
+		for(int i = 0; i < powerups.size(); i++)
+			powerups.get(i).update();
 
 		checkMobCollision();
 		removeTargets();
 		removeParticles();
 		removeSpawners();
 		removeFloatingScores();
+		removeBalls();
+		removePowerups();
 
+		if (balls.size() == 0) {
+			if(player.isAlive())
+				addSpawner(new ParticleSpawner(player.getx() + player.getWidth() / 2,
+						player.gety() + player.getHeight() / 2, 100));
+			player.setIsAlive(false);
+		}
+		
 		if (targets.size() == 0) {
 			captureScreen();
 			levelUp = true;
@@ -130,8 +144,12 @@ public class PlayField extends GameState {
 		for (Particle p : particles)
 			p.render(screen);
 		
+		for (Ball b : balls)
+			b.render(screen);
+		
+		for (Powerup p: powerups)
+			p.render(screen);
 
-		ball.render(screen);
 		player.render(screen);
 	}
 
@@ -144,7 +162,7 @@ public class PlayField extends GameState {
 		p.init(this);
 	}
 
-	public void addSpawner(Spawner s) {
+	public void addSpawner(ParticleSpawner s) {
 		spawners.add(s);
 		s.init(this);
 	}
@@ -158,6 +176,16 @@ public class PlayField extends GameState {
 		floatingScores.add(f);
 		f.init(this);
 	}
+	
+	public void addBall(Ball b) {
+		balls.add(b);
+		b.init(this);
+	}
+	
+	public void addPowerup(Powerup p) {
+		powerups.add(p);
+		p.init(this);
+	}
 
 	private void generateTargets() {
 
@@ -168,14 +196,19 @@ public class PlayField extends GameState {
 	}
 
 	private void checkMobCollision() {
-		if(!player.isAlive() || !ball.isAlive())
-			return;
 		
-		if (ball.collidesWith(player)) ball.processCollision(player);
-		for (int i = 0; i < targets.size(); i++) {
-			if (ball.collidesWith(targets.get(i))) {
-				targets.get(i).processCollision();
-				ball.processCollision(targets.get(i));
+		for(Powerup p : powerups) {
+			if (p.collidesWith(player))
+				p.processCollision();
+		}
+		
+		for(Ball b : balls) {
+		if (b.collidesWith(player)) b.processCollision(player);
+			for (int i = 0; i < targets.size(); i++) {
+				if (b.collidesWith(targets.get(i))) {
+					targets.get(i).processCollision(b);
+					b.processCollision(targets.get(i));
+				}
 			}
 		}
 	}
@@ -200,29 +233,32 @@ public class PlayField extends GameState {
 		for(int i = 0; i < floatingScores.size(); i++)
 			if(floatingScores.get(i).isRemoved()) floatingScores.remove(i);
 	}
+	
+	private void removeBalls() {
+		for(int i = 0; i < balls.size(); i++)
+			if(balls.get(i).isRemoved()) balls.remove(i);
+		
+	}
+	
+	private void removePowerups() {
+		for(int i = 0; i < powerups.size(); i++)
+			if(powerups.get(i).isRemoved()) powerups.remove(i);
+	}
 
-	public Ball getBall() {
-		return ball;
+	public List<Ball> getBalls() {
+		return balls;
 	}
 
 	public Player getPlayer() {
 		return player;
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
 	public int getStage() {
 		return stage;
 	}
-
-	public void setStagePattern(int index, char value) {
-		stagePattern[index] = value;
+	
+	public void setStagePattern(int index, char val) {
+		stagePattern[index] = val;
 	}
 	
 	protected void loadNextGameState(){
@@ -233,10 +269,10 @@ public class PlayField extends GameState {
 			if(player.isAlive()) {
 				if(++stage > 29)
 					stage = 0;
-				nextGameState = new PlayField(width, height, player.setCoordinates(width / 2, height - 8), stage);
+				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8), stage);
 			} else {
 				player.setIsAlive(true);
-				nextGameState = new PlayField(width, height, player.setCoordinates(width / 2, height - 8),
+				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8),
 						stagePattern, stage);
 			}
 		} else

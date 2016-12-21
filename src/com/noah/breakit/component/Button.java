@@ -4,8 +4,8 @@ import com.noah.breakit.graphics.Screen;
 
 public class Button extends Component {
 
-	private Label label;
-	private Action action;
+	private Label label = null;
+	private Action action = null;
 
 	private boolean active = false;
 

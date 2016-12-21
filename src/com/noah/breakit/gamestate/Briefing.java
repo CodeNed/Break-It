@@ -9,13 +9,13 @@ import com.noah.breakit.util.ColorFlasher;
 
 public class Briefing extends GameState {
 
-	private Keyboard key;
+	private Keyboard key = null;
 	
-	private int count;
+	private int count = 0;
 	
-	private boolean toTitle;
+	private boolean toTitle = false;
 
-	PixelDrip pixelDrip = new PixelDrip();
+	private PixelDrip pixelDrip = new PixelDrip();
 
 	public Briefing(Keyboard key) {
 		this.key = key;
@@ -47,9 +47,9 @@ public class Briefing extends GameState {
 					random.nextInt(0xffffff));
 
 		int start = 0;
-		for (int y = start; y < Game.height; y += 4) {
-			for (int x = start; x < Game.width; x += 4) {
-				if (x == start || x == Game.width - 4 || y == start || y == Game.height - 4)
+		for (int y = start; y < Game.HEIGHT; y += 4) {
+			for (int x = start; x < Game.WIDTH; x += 4) {
+				if (x == start || x == Game.WIDTH - 4 || y == start || y == Game.HEIGHT - 4)
 					screen.fillRect(x, y, 4, 4, ColorFlasher.col);
 			}
 		}

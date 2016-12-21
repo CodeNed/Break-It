@@ -1,21 +1,21 @@
 package com.noah.breakit.gamestate;
 
 import com.noah.breakit.game.Game;
-import com.noah.breakit.game.Hud;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Hud;
 
 public class GameOver extends GameState {
 
-	private Keyboard key;
+	private Keyboard key = null;
 
 	private String[] hiScoreStr = new String[10];
-	private int rank;
+	private int rank = 0;
 	
-	private int count;
+	private int count = 0;
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 
@@ -25,7 +25,7 @@ public class GameOver extends GameState {
 
 		for (int i = 0; i < 10; i++) {
 			hiScoreStr[i] = "";
-			hiScoreStr[i] = Hud.parseScore(Game.hiScores.get(i));
+			hiScoreStr[i] = Hud.parseScore(Game.HI_SCORES.get(i));
 		}
 	}
 

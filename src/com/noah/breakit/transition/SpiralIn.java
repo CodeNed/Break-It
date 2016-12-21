@@ -5,12 +5,12 @@ import com.noah.breakit.util.Util;
 
 public class SpiralIn extends Transition {
 
-	int x, y;
-	int xstep, ystep;
+	int x = 0, y = 0;
+	int xstep = 0, ystep = 0;
 	int squarew = 4, squareh = 4;
-	int leg;
+	int leg = 0;
 	int xdir = 1, ydir = 1;
-	int legDistX = Game.width - squarew, legDistY = Game.height - squareh;
+	int legDistX = Game.WIDTH - squarew, legDistY = Game.HEIGHT - squareh;
 
 	public void spiralIn(int col, int pixels[]) {
 
@@ -18,7 +18,7 @@ public class SpiralIn extends Transition {
 			if (legDistX != 0 && legDistY != 0) {
 				for (int yy = y; yy < y + squareh; yy++) {
 					for (int xx = x; xx < x + squarew; xx++) {
-						if (xx < Game.width && yy < Game.height) pixels[xx + yy * Game.width] = col;
+						if (xx < Game.WIDTH && yy < Game.HEIGHT) pixels[xx + yy * Game.WIDTH] = col;
 					}
 				}
 			}

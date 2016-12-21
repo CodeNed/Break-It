@@ -1,6 +1,7 @@
 package com.noah.breakit.entity.mob;
 
-import com.noah.breakit.entity.spawner.Spawner;
+import com.noah.breakit.entity.mob.powerup.PowerupSpawner;
+import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
 
@@ -19,16 +20,18 @@ public class Target extends Mob {
 	public void update() {
 	}
 
-	public void processCollision() {
+	public void processCollision(Ball b) {
 		if (--life == 0) {
-			int points = 100 * playField.getBall().multiplier;
+			int points = 100 * b.multiplier;
 			remove();
 			playField.setStagePattern(((x - 1) >> 4) + ((y >> 3) - 2) * 10, '0');
-			playField.addSpawner(new Spawner(x + (width >> 1), y + (width >> 1), 50));
+			playField.addSpawner(new ParticleSpawner(x + (width >> 1), y + (width >> 1), 50));
 			playField.addFloatingScore(new FloatingScore(x, y + 1, points));
 			playField.getPlayer().addToScore(points);
-			playField.getBall().multiplier++; 
-			SoundFX.explode.play();
+			b.multiplier++;
+			if(random.nextInt(10) == 0)
+				playField.addPowerup(PowerupSpawner.spawnPowerup(random.nextInt(3), x, y));
+			SoundFX.EXPLODE.play();
 		}
 	}
 

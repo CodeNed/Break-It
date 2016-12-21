@@ -5,23 +5,20 @@ import com.noah.breakit.util.Util;
 
 public abstract class Mob extends Entity {
 
-	protected int xa;
-	protected int ya;
+	protected int xa = 0;
+	protected int ya = 0;
 
-	protected int xdir;
-	protected int ydir;
+	protected int xdir = 0;
+	protected int ydir = 0;
 
-	protected int xspeed;
-	protected int yspeed;
+	protected int xspeed = 0;
+	protected int yspeed = 0;
 	
-	protected int width;
-	protected int height;
+	protected int width = 0;
+	protected int height = 0;
 
-	protected int col;
+	protected int col = 0x000000;
 	
-	protected boolean isAlive = true;
-	
-
 	public Mob(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -41,6 +38,22 @@ public abstract class Mob extends Entity {
 
 	public int getya() {
 		return ya;
+	}
+	
+	public int getxdir() {
+		return xdir;
+	}
+	
+	public int getydir() {
+		return ydir;
+	}
+	
+	public int getxspeed() {
+		return xspeed;
+	}
+	
+	public int getyspeed() {
+		return yspeed;
 	}
 
 	public  int getWidth() {
@@ -82,14 +95,6 @@ public abstract class Mob extends Entity {
 		return false;
 	}
 	
-	public boolean isAlive() {
-		return isAlive;
-	}
-	
-	public void setIsAlive(boolean alive) {
-		isAlive = alive;
-	}
-
 	public void processCollision() {
 	}
 

@@ -3,11 +3,11 @@ package com.noah.breakit.entity.spawner;
 import com.noah.breakit.entity.Entity;
 import com.noah.breakit.entity.mob.Particle;
 
-public class Spawner extends Entity {
+public class ParticleSpawner extends Entity {
 
-	private int num;
+	private int num = 0;
 
-	public Spawner(int x, int y, int num) {
+	public ParticleSpawner(int x, int y, int num) {
 		this.x = x;
 		this.y = y;
 		this.num = num;

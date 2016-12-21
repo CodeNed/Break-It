@@ -10,7 +10,7 @@ public class PixelSpatter extends Transition {
 	private List<Integer> n = new ArrayList<Integer>();
 
 	public PixelSpatter() {
-		for (int i = 0; i < Game.width * Game.height; i++)
+		for (int i = 0; i < Game.WIDTH * Game.HEIGHT; i++)
 			n.add(i, i);
 	}
 

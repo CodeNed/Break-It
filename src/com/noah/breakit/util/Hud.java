@@ -1,5 +1,6 @@
-package com.noah.breakit.game;
+package com.noah.breakit.util;
 
+import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 
 public class Hud {
@@ -38,6 +39,6 @@ public class Hud {
 	}
 
 	public static void renderLives(Screen screen, int lives) {
-		screen.renderString8x8(Game.width - (8 << 3), 4, 0xffffff, "rest: " + (lives - 1));
+		screen.renderString8x8(Game.WIDTH - (8 << 3), 4, 0xffffff, "rest: " + (lives - 1));
 	}
 }

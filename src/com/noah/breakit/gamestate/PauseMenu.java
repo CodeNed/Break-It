@@ -12,11 +12,11 @@ import com.noah.breakit.sound.music.Jukebox;
 
 public class PauseMenu extends GameState {
 	
-	private GameState parentGameState;
+	private GameState parentGameState = null;
 	
-	private Keyboard key;
+	private Keyboard key = null;
 	
-	private Panel panel;
+	private Panel panel = null;
 	
 	private int w = 120;
 	private int h = 90;
@@ -26,8 +26,8 @@ public class PauseMenu extends GameState {
 		this.pixels = parentGameState.pixels;
 		this.parentGameState = parentGameState;
 		
-		int x = Game.width / 2 - w / 2;
-		int y = Game.height / 2 - h / 2;
+		int x = Game.WIDTH / 2 - w / 2;
+		int y = Game.HEIGHT / 2 - h / 2;
 		
 		int x1 = x + w / 2 - ("pause".length() *8) / 2;
 		int y1 = y + 8;
@@ -59,7 +59,7 @@ public class PauseMenu extends GameState {
 		
 		key.update();
 		if(key.esc && !key.escLast) {
-			SoundFX.menu_3.play();
+			SoundFX.MENU_3.play();
 			finished = true;
 			Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
 		}
@@ -83,7 +83,7 @@ public class PauseMenu extends GameState {
 	
 	private void musicMenu() {
 		captureScreen();
-		Game.gsm.push(new MusicMenu(key, this));
+		Game.GSM.push(new MusicMenu(key, this));
 	}
 	
 	private void quitToTitle() {

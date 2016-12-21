@@ -13,7 +13,7 @@ public class ColorFlasher {
 		int b = col & 0xff;
 
 		if (r >= 0 && r <= 255) r += 5 * fade;
-		b += 5 * fade * -1;
+		b += 5 * -fade;
 
 		col = (r << 16) | (g << 8) | b;
 
