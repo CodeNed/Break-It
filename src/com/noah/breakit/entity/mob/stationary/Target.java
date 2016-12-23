@@ -45,8 +45,7 @@ public class Target extends Mob {
 		playField.addFloatingScore(new FloatingText(x, y + 1, points));
 		playField.getPlayer().addToScore(points);
 		if(random.nextInt(10) == 0)
-			playField.addPowerup(PowerupSpawner.spawnPowerup(1, x, y));
-//			playField.addPowerup(PowerupSpawner.spawnPowerup(random.nextInt(5), x, y));
+			playField.addPowerup(PowerupSpawner.spawnPowerup(random.nextInt(5), x, y));
 		SoundFX.EXPLODE_1.play();
 	}
 
