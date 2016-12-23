@@ -1,7 +1,7 @@
 package com.noah.breakit.entity.spawner;
 
 import com.noah.breakit.entity.Entity;
-import com.noah.breakit.entity.mob.Particle;
+import com.noah.breakit.entity.mob.decoration.Particle;
 
 public class ParticleSpawner extends Entity {
 

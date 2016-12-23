@@ -3,12 +3,14 @@ package com.noah.breakit.gamestate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.noah.breakit.entity.mob.Ball;
-import com.noah.breakit.entity.mob.FloatingScore;
-import com.noah.breakit.entity.mob.Particle;
-import com.noah.breakit.entity.mob.Player;
-import com.noah.breakit.entity.mob.Target;
+import com.noah.breakit.entity.mob.ball.Ball;
+import com.noah.breakit.entity.mob.decoration.FloatingText;
+import com.noah.breakit.entity.mob.decoration.Particle;
+import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.entity.mob.powerup.Powerup;
+import com.noah.breakit.entity.mob.projectile.Projectile;
+import com.noah.breakit.entity.mob.stationary.ForceField;
+import com.noah.breakit.entity.mob.stationary.Target;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
@@ -23,13 +25,15 @@ public class Playfield extends GameState {
 	private char[] stagePattern = null;
 	
 	private Player player = null;
-
+	private ForceField forceField = null;
+	
 	private List<Ball> balls = new ArrayList<>();
 	private List<Target> targets = new ArrayList<>();
 	private List<Particle> particles = new ArrayList<>();
 	private List<ParticleSpawner> spawners = new ArrayList<>();
-	private List<FloatingScore> floatingScores = new ArrayList<>();
+	private List<FloatingText> floatingScores = new ArrayList<>();
 	private List<Powerup> powerups = new ArrayList<>();
+	private List<Projectile> projectiles = new ArrayList<>();
 	
 	private PixelSpatter pixelSpatter = new PixelSpatter();
 	private PixelDrip pixelDrip = new PixelDrip();
@@ -72,6 +76,10 @@ public class Playfield extends GameState {
 		
 		if (!levelUp) {
 			player.update();
+			
+			if(forceField != null)
+				forceField.update();
+			
 			for(int i = 0; i < balls.size(); i++)
 				balls.get(i).update();
 		} else
@@ -91,6 +99,9 @@ public class Playfield extends GameState {
 		
 		for(int i = 0; i < powerups.size(); i++)
 			powerups.get(i).update();
+		
+		for(int i = 0; i < projectiles.size(); i++)
+			projectiles.get(i).update();
 
 		checkMobCollision();
 		removeTargets();
@@ -99,6 +110,8 @@ public class Playfield extends GameState {
 		removeFloatingScores();
 		removeBalls();
 		removePowerups();
+		removeProjectiles();
+		removeForceField();
 
 		if (balls.size() == 0) {
 			if(player.isAlive())
@@ -138,7 +151,7 @@ public class Playfield extends GameState {
 		for (Target t : targets)
 			t.render(screen);
 
-		for (FloatingScore f : floatingScores)
+		for (FloatingText f : floatingScores)
 			f.render(screen);
 		
 		for (Particle p : particles)
@@ -147,10 +160,16 @@ public class Playfield extends GameState {
 		for (Ball b : balls)
 			b.render(screen);
 		
+		for(Projectile p: projectiles)
+			p.render(screen);
+		
 		for (Powerup p: powerups)
 			p.render(screen);
 
 		player.render(screen);
+		
+		if(forceField != null)
+			forceField.render(screen);
 	}
 
 	public void renderTX(Screen screen) {
@@ -172,7 +191,7 @@ public class Playfield extends GameState {
 		t.init(this);
 	}
 	
-	public void addFloatingScore(FloatingScore f) {
+	public void addFloatingScore(FloatingText f) {
 		floatingScores.add(f);
 		f.init(this);
 	}
@@ -185,6 +204,16 @@ public class Playfield extends GameState {
 	public void addPowerup(Powerup p) {
 		powerups.add(p);
 		p.init(this);
+	}
+	
+	public void addProjectile(Projectile p) {
+		projectiles.add(p);
+		p.init(this);
+	}
+	
+	public void addForceField(ForceField f) {
+		forceField = f;
+		forceField.init(this);
 	}
 
 	private void generateTargets() {
@@ -203,13 +232,30 @@ public class Playfield extends GameState {
 		}
 		
 		for(Ball b : balls) {
-		if (b.collidesWith(player)) b.processCollision(player);
+			
+			if (b.collidesWith(player)) b.processCollision(player);
+			
 			for (int i = 0; i < targets.size(); i++) {
 				if (b.collidesWith(targets.get(i))) {
 					targets.get(i).processCollision(b);
 					b.processCollision(targets.get(i));
 				}
 			}
+			
+			if(forceField != null)
+				if(b.collidesWith(forceField)) {
+					forceField.processCollision(b);
+					b.processCollision(forceField);
+				}
+		}
+		
+		for(Projectile p : projectiles) {
+			for(int i = 0; i < targets.size(); i++) {
+				if(p.collidesWith(targets.get(i))) {
+					targets.get(i).processCollision(p);
+					p.processCollision();
+				}
+			}	
 		}
 	}
 
@@ -243,6 +289,17 @@ public class Playfield extends GameState {
 	private void removePowerups() {
 		for(int i = 0; i < powerups.size(); i++)
 			if(powerups.get(i).isRemoved()) powerups.remove(i);
+	}
+	
+	private void removeProjectiles() {
+		for(int i = 0; i < projectiles.size(); i++)
+			if(projectiles.get(i).isRemoved()) projectiles.remove(i);
+	}
+	
+	private void removeForceField() {
+		if(forceField != null)
+			if(forceField.isRemoved())
+				forceField = null;
 	}
 
 	public List<Ball> getBalls() {

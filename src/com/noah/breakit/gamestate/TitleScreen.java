@@ -1,6 +1,6 @@
 package com.noah.breakit.gamestate;
 
-import com.noah.breakit.entity.mob.Player;
+import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
@@ -93,7 +93,7 @@ public class TitleScreen extends GameState {
 	
 	protected void loadNextGameState() {
 		if (startGame) {
-			Player player = new Player(Game.WIDTH / 2, Game.HEIGHT - 8, key);
+			Player player = new Player(Game.WIDTH / 2, Game.HEIGHT - 12 , key);
 			nextGameState = new Playfield(player, 0);
 		} else
 			nextGameState = new Briefing(key);

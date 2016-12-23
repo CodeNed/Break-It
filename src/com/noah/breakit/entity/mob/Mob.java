@@ -63,6 +63,46 @@ public abstract class Mob extends Entity {
 	public int getHeight() {
 		return height;
 	}
+	
+	public void setx(int x) {
+		this.x = x;
+	}
+
+	public void sety(int y) {
+		this.y = y;
+	}
+
+	public void setxa(int xa) {
+		this.xa =xa;
+	}
+
+	public void setya(int ya) {
+		this.ya = ya;
+	}
+	
+	public void setxdir(int xdir) {
+		this.xdir = xdir;
+	}
+	
+	public void setydir(int ydir) {
+		this.ydir = ydir;
+	}
+	
+	public void setxspeed(int xspeed) {
+		this.xspeed = xspeed;
+	}
+	
+	public void setyspeed(int yspeed) {
+		this.yspeed = yspeed;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
 	public boolean collidesWith(Mob m) {
 
@@ -93,9 +133,6 @@ public abstract class Mob extends Entity {
 			}
 		}
 		return false;
-	}
-	
-	public void processCollision() {
 	}
 
 	public abstract void update();

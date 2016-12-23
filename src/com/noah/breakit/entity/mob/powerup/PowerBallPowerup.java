@@ -2,11 +2,9 @@ package com.noah.breakit.entity.mob.powerup;
 
 import java.util.List;
 
-import com.noah.breakit.entity.mob.Ball;
-import com.noah.breakit.entity.mob.PowerBall;
-import com.noah.breakit.graphics.Font8x8;
+import com.noah.breakit.entity.mob.ball.Ball;
+import com.noah.breakit.entity.mob.ball.PowerBall;
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.util.ColorFlasher;
 
 public class PowerBallPowerup extends Powerup {
 
@@ -31,7 +29,6 @@ public class PowerBallPowerup extends Powerup {
 	
 	public void render(Screen screen) {
 		super.render(screen);
-		screen.renderChar8x8(x + (width >> 1) - 4, y + (height >> 1) - 4, ~ColorFlasher.col, Font8x8.getChar('p'));
+		renderChar(screen, 'p');
 	}
-
 }

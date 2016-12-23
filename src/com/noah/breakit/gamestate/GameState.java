@@ -2,7 +2,7 @@ package com.noah.breakit.gamestate;
 
 import java.util.Random;
 
-import com.noah.breakit.entity.mob.Player;
+import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 
