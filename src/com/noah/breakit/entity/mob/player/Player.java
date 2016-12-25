@@ -11,6 +11,7 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
+import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.util.Hud;
 
 public class Player extends Mob {
@@ -21,10 +22,8 @@ public class Player extends Mob {
 	private int rank = -1;
 	private String scoreStr = "";
 	
-	private final int TO_1ST_1UP = 20000;
-	private final int TO_NEXT_1UP = 30000;
-	private int to1up = TO_1ST_1UP;
-
+	private Integer toNext1UP = 20000;
+	
 	private int lives = 3;
 
 	private int count = 0;
@@ -91,9 +90,9 @@ public class Player extends Mob {
 		x += xa;
 
 		scoreStr = Hud.parseScore(score);
-		if (score >= to1up) {
+		if (score >= toNext1UP) {
 			lives++;
-			to1up += TO_NEXT_1UP;
+			toNext1UP *= 2;
 			SoundFX.ONE_UP.play();
 		}
 
@@ -169,7 +168,7 @@ public class Player extends Mob {
 	
 	public void setWidth(int w) {
 		if(w < 1) {
-			System.err.println("Error in Player.setWidth(int): width must be at least 1 pixel!");
+			System.err.println("Error in Player::setWidth(int): width must be at least 1 pixel!");
 			return;
 		}
 		this.width = w;
@@ -230,7 +229,7 @@ public class Player extends Mob {
 			count = 0;
 			playField.getPlayer().addToLives(-1);
 			playField.captureScreen();
-			playField.setTransitioning(true);
+			playField.setTransitioning(true, new PixelDrip(0xff00ff));
 			if(wide)
 				setWide(false);
 			if(shooting)
