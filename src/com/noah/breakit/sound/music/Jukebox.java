@@ -1,11 +1,16 @@
 package com.noah.breakit.sound.music;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.noah.breakit.util.Pair;
 
 public class Jukebox {
 	
-	private static Map<String, Song> playList = new HashMap<>();
+	public static List<Pair<String>> playfieldlist = new ArrayList<>();
+	private static Map<String, Song> album = new HashMap<>();
 	
 	@SuppressWarnings("unused")
 	private static final Jukebox JUKEBOX = new Jukebox();
@@ -20,13 +25,24 @@ public class Jukebox {
 	public static final double DEFAULT_VOLUME = Song.DEFAULT_VOLUME;
 	public static final double MENU_VOLUME = 0.2;
 	
+	private static int playfieldlistIndex = 0;
+	
 	private Jukebox() {
-		playList.put("titlesong", Song.TITLE_SONG);
-		playList.put("playfieldintro", Song.PLAYFIELD_INTRO);
-		playList.put("playfieldbody", Song.PLAYFIELD_BODY);
-		playList.put("briefingsong", Song.BRIEFING_SONG);
-		playList.put("gameoversong", Song.GAME_OVER_SONG);
-		playList.put("voidsong", Song.VOID_SONG);
+		album.put("briefingsong", Song.BRIEFING_SONG);
+		album.put("franticbody", Song.FRANTIC_BODY);
+		album.put("franticintro", Song.FRANTIC_INTRO);
+		album.put("gameoversong", Song.GAME_OVER_SONG);
+		album.put("happysong", Song.HAPPY_SONG);
+		album.put("metalbody", Song.METAL_BODY);
+		album.put("metalintro", Song.METAL_INTRO);
+		album.put("swingingsong", Song.SWINGING_SONG);
+		album.put("titlesong", Song.TITLE_SONG);
+		album.put("voidsong", Song.VOID_SONG);
+		
+		playfieldlist.add(new Pair<String>("franticintro", "franticbody"));
+		playfieldlist.add(new Pair<String>("metalintro", "metalbody"));
+		playfieldlist.add(new Pair<String>("voidsong", "swingingsong"));
+		playfieldlist.add(new Pair<String>("voidsong", "happysong"));
 	}
 	
 	public static void play(String key, boolean loop) {
@@ -125,6 +141,13 @@ public class Jukebox {
 	
 	private static void setCurrSong(String key) {
 		currSongName = key;
-		currSong = playList.get(key);
+		currSong = album.get(key);
+	}
+	
+	public static int getNextPlayfieldSong() {
+		if(++playfieldlistIndex > playfieldlist.size() - 1)
+			playfieldlistIndex = 0;
+		System.out.println("index at " + playfieldlistIndex);
+		return playfieldlistIndex;
 	}
 }
