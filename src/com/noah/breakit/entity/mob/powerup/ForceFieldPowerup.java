@@ -1,6 +1,6 @@
 package com.noah.breakit.entity.mob.powerup;
 
-import com.noah.breakit.entity.mob.stationary.ForceField;
+import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 
