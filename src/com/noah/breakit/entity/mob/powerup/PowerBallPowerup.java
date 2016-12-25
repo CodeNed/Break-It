@@ -20,9 +20,12 @@ public class PowerBallPowerup extends Powerup {
 		List<Ball> balls = playField.getBalls();
 		
 		for (int i = 0; i < balls.size(); i++)
-			if (!(balls.get(i) instanceof PowerBall)){
+			if(balls.get(i) instanceof PowerBall) {
+				PowerBall p = (PowerBall) balls.get(i);
+				p.resetCount();
+			} else {
 				Ball b = balls.get(i);
-				playField.addBall(new PowerBall(b.getx(), b.gety(), b.getxdir(), b.getydir(), b.getxspeed(), b.getyspeed()));
+				playField.addBall(new PowerBall(b));
 				b.remove();
 			}
 	}

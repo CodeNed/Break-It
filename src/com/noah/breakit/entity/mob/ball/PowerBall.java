@@ -1,81 +1,31 @@
 package com.noah.breakit.entity.mob.ball;
 
-import com.noah.breakit.entity.spawner.ParticleSpawner;
-import com.noah.breakit.game.Game;
+import com.noah.breakit.entity.mob.Mob;
+import com.noah.breakit.entity.mob.brick.DestructibleBrick;
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.sound.SoundFX;
-import com.noah.breakit.util.Util;
 
 public class PowerBall extends Ball {
 	
-	private final int NUM_TRAILS = 6;
+	private final int NUM_TAILS = 6;
 	private final int TIME_TO_LIVE = 7 * 60;
 	
-	private int[] xlast = new int[NUM_TRAILS];
-	private int[] ylast = new int[NUM_TRAILS];
+	private int[] xlast = new int[NUM_TAILS];
+	private int[] ylast = new int[NUM_TAILS];
 	
 	private int count = 0;
 	
-	public PowerBall(int x, int y, int xdir, int ydir, int xspeed, int yspeed) {
-		super(x, y);
-		
-		released = true;
-		
-		width = 4;
-		height = 4;
-		col = 0xff0000;
-				
-		this.xdir = xdir;
-		this.ydir = ydir;
-		this.xspeed = xspeed;
-		this.yspeed = yspeed;
-		
-		xa = xspeed * xdir;
-		ya = yspeed * ydir;
+	public PowerBall(Ball b) {
+		super(b);
 	}
 	
 	public void update() {
 
-		int xstep = 0;
-		if (xa != 0) xstep = Util.clamp(xa, -1, 1);
-
-		for (int xi = 0; xi != xa + xstep; xi += xstep) {
-			int l = x + xi;
-			int r = x + xi + width;
-
-			if (l < 1 || r > Game.WIDTH) {
-				xdir *= -1;
-				xa *= -1;
-				SoundFX.LO_PING.play();
-				break;
-			}
-		}
-
-		int ystep = 0;
-		if (ya != 0) ystep = Util.clamp(ya, -1, 1);
-
-		for (int yi = 0; yi != ya + ystep; yi += ystep) {
-			int t = y + yi;
-			int b = y + yi + height;
-
-			if (t < 1) {
-				ya *= -1;
-				ydir *= -1;
-				SoundFX.LO_PING.play();
-				break;
-			}
-			if (b > Game.HEIGHT) {
-				remove();
-				playField.addSpawner(new ParticleSpawner(x + width / 2, y + height / 2, 100));
-				SoundFX.EXPLODE_2.play();
-				break;
-			}
-		}
+		processWallCollision();
 
 		xa = xspeed * xdir;
 		ya = yspeed * ydir;
 
-		for(int i = NUM_TRAILS - 1; i >= 1; i--) {
+		for(int i = NUM_TAILS - 1; i >= 1; i--) {
 			xlast[i] = xlast[i - 1];
 			ylast[i] = ylast[i - 1];
 		}
@@ -97,14 +47,30 @@ public class PowerBall extends Ball {
 		screen.drawRect(x, y, width, height, col);
 		
 		int c = ~col;
-		for(int i = 0; i < NUM_TRAILS; i++) {
+		for(int i = 0; i < NUM_TAILS; i++) {
 			screen.drawRect(xlast[i], ylast[i], width, height, c);
 			c = ~c;
 		}
 	}
 	
+	public void resetCount() {
+		count = 0;
+	}
+	
+	protected void processXCollision(Mob m) {
+		if(m instanceof DestructibleBrick)
+			return;
+		super.processXCollision(m);
+	}
+	
+	protected void processYCollision(Mob m) {
+		if(m instanceof DestructibleBrick)
+			return;
+		super.processYCollision(m);
+	}
+	
 	private void removeAndReplace() {
 		remove();
-		playField.addBall(new Ball(x, y, xdir, ydir, xspeed, yspeed));
+		playField.addBall(new Ball(this));
 	}
 }

@@ -1,9 +1,11 @@
 package com.noah.breakit.entity.mob.ball;
 
 import com.noah.breakit.entity.mob.Mob;
+import com.noah.breakit.entity.mob.brick.Brick;
+import com.noah.breakit.entity.mob.brick.PortalBrick;
+import com.noah.breakit.entity.mob.brick.SolidBrick;
+import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
-import com.noah.breakit.entity.mob.stationary.ForceField;
-import com.noah.breakit.entity.mob.stationary.Target;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
@@ -14,6 +16,9 @@ public class Ball extends Mob {
 
 	protected boolean released = false;
 	public int multiplier = 1;
+	
+	private static final int PORTAL_SICKNESS_TIME = 1 * 30;
+	private int portalSicknessTimer = PORTAL_SICKNESS_TIME;
 
 	public Ball(int x, int y) {
 		super(x, y);
@@ -38,20 +43,23 @@ public class Ball extends Mob {
 		released = true;
 	}
 	
-	public Ball(int x, int y, int xdir, int ydir, int xspeed, int yspeed) {
-		super(x, y);
+	public Ball(Ball b) {
+		super(b.getx(), b.gety());
 		
-		width = 4;
-		height = 4;
-		col = 0xff00ff;
+		width = b.getWidth();
+		height = b.getHeight();
 		
-		this.xdir = xdir;
-		this.ydir = ydir;
-		this.xspeed = xspeed;
-		this.yspeed = yspeed;
+		xdir = b.getxdir();
+		ydir = b.getydir();
+		
+		xspeed = b.getxspeed();
+		yspeed = b.getyspeed();
+		
 		xa = xspeed * xdir;
 		ya = yspeed * ydir;
+		
 		released = true;
+		col = 0xff00ff;
 	}
 
 	public void update() {
@@ -65,6 +73,8 @@ public class Ball extends Mob {
 
 		x += xa;
 		y += ya;
+		
+		portalSicknessTimer = Util.max(++portalSicknessTimer, PORTAL_SICKNESS_TIME);
 	}
 
 	public void render(Screen screen) {
@@ -87,12 +97,61 @@ public class Ball extends Mob {
 	public void processCollision(Mob m) {
 
 		if (!released) return;
-
+		
+		if (m instanceof PortalBrick) {
+			PortalBrick p = (PortalBrick) m;
+			if(portalSicknessTimer == PORTAL_SICKNESS_TIME) {
+				int xd = Math.abs(x + width / 2 - p.getx() - p.getWidth() / 2);
+				int yd = Math.abs(y + height / 2 - p.gety() - p.getHeight() / 2);
+				if (xd <= 8 && yd <= 4) {
+					portalSicknessTimer = 0;
+					x = p.getMate().getx() + p.getMate().getWidth() / 2;
+					y = p.getMate().gety() + p.getMate().getHeight() / 2;
+					ydir *= -1; 
+					SoundFX.PORTAL.play();
+				}
+			}
+			return;
+		}
+		
 		processXCollision(m);
 		processYCollision(m);
+		
+		if (m instanceof Player || m instanceof ForceField) {
+			multiplier = 1;
+			SoundFX.HI_BOUNCE.play();
+		}
 	}
 	
-	private void processWallCollision() {
+	protected void processXCollision(Mob m) {
+		
+		int xDist = (x + (width >> 1)) - (m.getx() + m.getWidth() / 2);
+		xspeed = Math.abs(xDist >> 2);
+		
+		if (m instanceof Player || m instanceof ForceField) {
+			xdir = Util.clamp(xDist, -1, 1);
+			if(m instanceof ForceField)
+				xspeed = Util.clamp(xspeed, -3, 3);
+		}
+		
+		else if (m instanceof SolidBrick) {
+			if (xspeed == 0) xspeed = random.nextInt(2) > 0 ? -1 : 1;
+			if (xdir == 0) xdir = random.nextInt(2) > 0 ? -1 : 1;
+		}
+	}
+	
+	protected void processYCollision(Mob m) {
+		if(m instanceof Brick) {
+			int yDist = (y + (height >> 1)) - (m.gety() + (m.getHeight() >> 1));
+			yspeed = Util.min(Math.abs(yDist >> 1), 2);
+			if (yspeed == 0) yspeed = 1;
+			ydir = Util.clamp(yDist, -1, 1);
+			if (ydir == 0) ydir = -1;
+		} else
+			ydir = -1;
+	}
+	
+	protected void processWallCollision() {
 		int xstep = 0;
 		if (xa != 0) xstep = Util.clamp(xa, -1, 1);
 
@@ -103,7 +162,7 @@ public class Ball extends Mob {
 			if (l < 1 || r > Game.WIDTH) {
 				xdir *= -1;
 				xa *= -1;
-				SoundFX.LO_PING.play();
+				SoundFX.LO_BOUNCE.play();
 				break;
 			}
 		}
@@ -118,7 +177,7 @@ public class Ball extends Mob {
 			if (t < 1) {
 				ya *= -1;
 				ydir *= -1;
-				SoundFX.LO_PING.play();
+				SoundFX.LO_BOUNCE.play();
 				break;
 			}
 			if (b > Game.HEIGHT) {
@@ -127,33 +186,6 @@ public class Ball extends Mob {
 				SoundFX.EXPLODE_2.play();
 				break;
 			}
-		}
-	}
-	
-	private void processXCollision(Mob m) {
-		int xDist = (x + (width >> 1)) - (m.getx() + (m.getWidth() >> 1));
-		xspeed = Math.abs(xDist >> 2);
-		xdir = Util.clamp(xDist, -1, 1);
-	}
-	
-	private void processYCollision(Mob m) {
-		if(m instanceof Target) {
-			if(this instanceof PowerBall)
-				return;
-			int yDist = (y + (height >> 1)) - (m.gety() + (m.getHeight() >> 1));
-			yspeed = Util.min(Math.abs(yDist >> 1), 2);
-			if (yspeed == 0) yspeed = 1;
-			ydir = Util.clamp(yDist, -1, 1);
-			if (ydir == 0) ydir = -1;
-		}
-		
-		if (m instanceof Player || m instanceof ForceField) {
-			multiplier = 1;
-			ydir = -1;
-			SoundFX.HI_PING.play();
-			
-			if (m instanceof ForceField)
-				xspeed = Util.clamp(xspeed, -3, 3);
 		}
 	}
 	
