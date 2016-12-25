@@ -7,12 +7,13 @@ public class PixelDrip extends Transition {
 	private int[] ylast = new int[Game.WIDTH];
 	private int[] yrate = new int[Game.WIDTH];
 
-	public PixelDrip(){
+	public PixelDrip(int col){
+		super(col);
 		for (int i = 0; i < Game.WIDTH; i++)
 			yrate[i] = random.nextInt(10) + 4;
 	}
 	
-	public void pixelDrip(int col, int[] pixels) {
+	public void update(int[] pixels) {
 		for (int x = 0; x < Game.WIDTH; x++) {
 			int max = Util.clamp(ylast[x] + yrate[x], 0, Game.HEIGHT);
 			for (int y = ylast[x]; y < max; y++) {
@@ -21,13 +22,6 @@ public class PixelDrip extends Transition {
 			ylast[x] = Util.clamp(ylast[x] + yrate[x], 0, Game.HEIGHT);
 		}
 		fadeToBlack(4, pixels);
-	}
-	
-	public void pixelDripZX(int[] pixels) {
-
-		int[] colors = { 0xff0000, 0xff00ff, 0x0000ff, 0x00ffff, 0x00ff00, 0xffff00 };
-
-		pixelDrip(colors[random.nextInt(colors.length)], pixels);
 	}
 	
 	public boolean isFinished(){

@@ -5,14 +5,18 @@ import com.noah.breakit.util.Util;
 
 public class SpiralIn extends Transition {
 
-	int x = 0, y = 0;
-	int xstep = 0, ystep = 0;
-	int squarew = 4, squareh = 4;
-	int leg = 0;
-	int xdir = 1, ydir = 1;
-	int legDistX = Game.WIDTH - squarew, legDistY = Game.HEIGHT - squareh;
+	private int x = 0, y = 0;
+	private int xstep = 0, ystep = 0;
+	private int squarew = 4, squareh = 4;
+	private int leg = 0;
+	private int xdir = 1, ydir = 1;
+	private int legDistX = Game.WIDTH - squarew, legDistY = Game.HEIGHT - squareh;
 
-	public void spiralIn(int col, int pixels[]) {
+	public SpiralIn(int col) {
+		super(col);
+	}
+	
+	public void update(int pixels[]) {
 
 		for (int i = 0; i < 32; i++) {
 			if (legDistX != 0 && legDistY != 0) {
@@ -45,12 +49,7 @@ public class SpiralIn extends Transition {
 		}
 		fadeToBlack(4, pixels);
 	}
-	
-	public void spiralInZX(int[] pixels){
-		int[] colors = { 0xff0000, 0xff00ff, 0x0000ff, 0x00ffff, 0x00ff00, 0xffff00 };
-		spiralIn(colors[random.nextInt(colors.length)], pixels);
-	}
-	
+
 	public boolean isFinished(){
 		return finished;
 	}

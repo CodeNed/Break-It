@@ -9,12 +9,13 @@ public class PixelSpatter extends Transition {
 
 	private List<Integer> n = new ArrayList<Integer>();
 
-	public PixelSpatter() {
+	public PixelSpatter(int col) {
+		super(col);
 		for (int i = 0; i < Game.WIDTH * Game.HEIGHT; i++)
 			n.add(i, i);
 	}
 
-	public void pixelSpatter(int col, int[] pixels) {
+	public void update(int[] pixels) {
 
 		for (int i = 0; i < 512; i++) {
 			if (n.size() > 0) {
@@ -24,13 +25,6 @@ public class PixelSpatter extends Transition {
 		}
 
 		fadeToBlack(4, pixels);
-	}
-
-	public void pixelSpatterZX(int[] pixels) {
-
-		int[] colors = { 0xff0000, 0xff00ff, 0x0000ff, 0x00ffff, 0x00ff00, 0xffff00 };
-
-		pixelSpatter(colors[random.nextInt(6)], pixels);
 	}
 
 	public boolean isFinished() {
