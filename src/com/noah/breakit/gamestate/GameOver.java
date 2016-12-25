@@ -16,8 +16,6 @@ public class GameOver extends GameState {
 	private int rank = 0;
 	
 	private int count = 0;
-	
-	private PixelSpatter pixelSpatter = new PixelSpatter();
 
 	public GameOver(Keyboard key, int rank) {
 		this.key = key;
@@ -36,7 +34,7 @@ public class GameOver extends GameState {
 		key.update();
 		if (key.enter || count++ == 60 * 15){
 			captureScreen();
-			transition = true;
+			setTransitioning(true, new PixelSpatter(0xff00ff));
 		}
 	}
 
@@ -72,8 +70,8 @@ public class GameOver extends GameState {
 	}
 	
 	public void updateTX() {
-		pixelSpatter.pixelSpatter(0xff00ff, pixels);
-		finished = Jukebox.fadeToBlack() &&  pixelSpatter.isFinished();
+		transition.update(pixels);
+		finished = Jukebox.fadeToBlack() &&  transition.isFinished();
 		if(finished) loadNextGameState();
 	}
 

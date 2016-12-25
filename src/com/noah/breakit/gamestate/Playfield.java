@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.noah.breakit.entity.mob.ball.Ball;
-import com.noah.breakit.entity.mob.decoration.FloatingText;
-import com.noah.breakit.entity.mob.decoration.Particle;
+import com.noah.breakit.entity.mob.brick.Brick;
+import com.noah.breakit.entity.mob.brick.DestructibleBrick;
+import com.noah.breakit.entity.mob.brick.PortalBrick;
+import com.noah.breakit.entity.mob.brick.SolidBrick;
+import com.noah.breakit.entity.mob.decoration.Decoration;
+import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.entity.mob.powerup.Powerup;
 import com.noah.breakit.entity.mob.projectile.Projectile;
-import com.noah.breakit.entity.mob.stationary.ForceField;
-import com.noah.breakit.entity.mob.stationary.Target;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
-import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.transition.PixelSpatter;
+import com.noah.breakit.util.Pair;
 
 public class Playfield extends GameState {
 
@@ -28,15 +30,11 @@ public class Playfield extends GameState {
 	private ForceField forceField = null;
 	
 	private List<Ball> balls = new ArrayList<>();
-	private List<Target> targets = new ArrayList<>();
-	private List<Particle> particles = new ArrayList<>();
+	private List<Brick> bricks = new ArrayList<>();
+	private List<Decoration> decorations = new ArrayList<>();
 	private List<ParticleSpawner> spawners = new ArrayList<>();
-	private List<FloatingText> floatingScores = new ArrayList<>();
 	private List<Powerup> powerups = new ArrayList<>();
 	private List<Projectile> projectiles = new ArrayList<>();
-	
-	private PixelSpatter pixelSpatter = new PixelSpatter();
-	private PixelDrip pixelDrip = new PixelDrip();
 
 	private int width = Game.WIDTH;
 	private int height = Game.HEIGHT;
@@ -44,58 +42,61 @@ public class Playfield extends GameState {
 	private boolean levelUp = false;
 	private int count = 0;
 
-	public Playfield(Player player, char[] stagePattern, int stage) {
-		this(player);
-
+	public Playfield(Player player, char[] stagePattern, int stage, Pair<String> currSong) {
+		this(player, stage, currSong);
 		this.stagePattern = stagePattern;
-		this.stage = stage;
-		generateTargets();
+		generateBricks();
 	}
 
-	public Playfield(Player player, int stage) {
-		this(player);
-
-		this.stage = stage;
-
+	public Playfield(Player player, int stage, ForceField forceField, Pair<String> currSong) {
+		this(player, stage, currSong);
+		this.forceField = forceField;
 		stagePattern = new char[StagePattern.getStagePattern(stage).length];
 		for (int i = 0; i < StagePattern.getStagePattern(stage).length; i++)
 			stagePattern[i] = StagePattern.getStagePattern(stage)[i];
-
-		generateTargets();
+		generateBricks();
 	}
 
-	private Playfield(Player player) {
+	private Playfield(Player player, int stage, Pair<String> currSong) {
 		this.player = player;
 		this.player.init(this);
+		this.stage = stage;
+		this.currSong = currSong;
 		addBall(new Ball(player.getx() + (player.getWidth() >> 1), player.gety() - player.getHeight()));
 	}
 
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro("playfieldintro", "playfieldbody");
+		Jukebox.playSongWithIntro(currSong.k1, currSong.k2);
 		
-		if (!levelUp) {
-			player.update();
-			
-			if(forceField != null)
-				forceField.update();
-			
-			for(int i = 0; i < balls.size(); i++)
-				balls.get(i).update();
-		} else
-			if (count++ == 60 * 3) transition = true;
+		for (int i = 0; i < decorations.size(); i++)
+			decorations.get(i).update();
+		removeDecorations();
+		
+		if (levelUp) {
+			captureScreen();
+			if (count++ == 60 * 3) setTransitioning(true, new PixelSpatter(0xff00ff));
+			return;
+		}
+		
+		player.update();
+		
+		if(forceField != null)
+			forceField.update();
+		
+		for(int i = 0; i < balls.size(); i++)
+			balls.get(i).update();
 
-		for (int i = 0; i < targets.size(); i++)
-			targets.get(i).update();
-
-		for (int i = 0; i < particles.size(); i++)
-			particles.get(i).update();
+		int numBricks = 0;
+		for (int i = 0; i < bricks.size(); i++) {
+			bricks.get(i).update();
+			if(bricks.get(i) instanceof DestructibleBrick)
+				numBricks++;
+		}
+		if(numBricks == 0) levelUp = true;
 
 		for (int i = 0; i < spawners.size(); i++)
 			spawners.get(i).update();
-		
-		for(int i = 0; i < floatingScores.size(); i++)
-			floatingScores.get(i).update();
 		
 		for(int i = 0; i < powerups.size(); i++)
 			powerups.get(i).update();
@@ -105,9 +106,7 @@ public class Playfield extends GameState {
 
 		checkMobCollision();
 		removeTargets();
-		removeParticles();
 		removeSpawners();
-		removeFloatingScores();
 		removeBalls();
 		removePowerups();
 		removeProjectiles();
@@ -119,26 +118,12 @@ public class Playfield extends GameState {
 						player.gety() + player.getHeight() / 2, 100));
 			player.setIsAlive(false);
 		}
-		
-		if (targets.size() == 0) {
-			captureScreen();
-			levelUp = true;
-		}
 	}
 
 	public void updateTX() {
-		
-		if (levelUp){
-			pixelSpatter.pixelSpatter(0x00ffff, pixels);
-			finished = Jukebox.fadeToBlack() && pixelSpatter.isFinished();
-			
-		} else {
-			pixelDrip.pixelDrip(0xff00ff, pixels);
-			finished = Jukebox.fadeToBlack() && pixelDrip.isFinished();
-		}
-		
+		transition.update(pixels);
+		finished = Jukebox.fadeToBlack() && transition.isFinished();
 		if(finished) loadNextGameState(); 
-		
 	}
 
 	public void renderGS(Screen screen) {
@@ -148,14 +133,11 @@ public class Playfield extends GameState {
 					random.nextInt(0xffffff));
 		}
 
-		for (Target t : targets)
-			t.render(screen);
-
-		for (FloatingText f : floatingScores)
-			f.render(screen);
+		for (Brick b : bricks)
+			b.render(screen);
 		
-		for (Particle p : particles)
-			p.render(screen);
+		for (Decoration d: decorations)
+			d.render(screen);
 		
 		for (Ball b : balls)
 			b.render(screen);
@@ -176,9 +158,9 @@ public class Playfield extends GameState {
 		renderScreenCap(screen);
 	}
 
-	public void addParticle(Particle p) {
-		particles.add(p);
-		p.init(this);
+	public void addDecoration(Decoration d) {
+		decorations.add(d);
+		d.init(this);
 	}
 
 	public void addSpawner(ParticleSpawner s) {
@@ -186,14 +168,9 @@ public class Playfield extends GameState {
 		s.init(this);
 	}
 
-	public void addTarget(Target t) {
-		targets.add(t);
-		t.init(this);
-	}
-	
-	public void addFloatingScore(FloatingText f) {
-		floatingScores.add(f);
-		f.init(this);
+	public void addBrick(Brick b) {
+		bricks.add(b);
+		b.init(this);
 	}
 	
 	public void addBall(Ball b) {
@@ -216,11 +193,32 @@ public class Playfield extends GameState {
 		forceField.init(this);
 	}
 
-	private void generateTargets() {
-
+	private void generateBricks() {
+		int pbid = 0;
+		
 		for (int y = 0; y < stagePattern.length / 10; y++) {
-			for (int x = 0; x < 10; x++)
-				if (stagePattern[x + y * 10] == '#') addTarget(new Target(16 * x + 1, 8 * (y + 2)));
+			for (int x = 0; x < 10; x++) {
+				if (stagePattern[x + y * 10] == '#') addBrick(new DestructibleBrick(16 * x + 1, 8 * (y + 2)));
+				else if (stagePattern[x + y * 10] == '@') addBrick(new SolidBrick(16 * x + 1, 8 * (y + 2)));
+				else if (stagePattern[x + y * 10] ==  '*') {
+					 addBrick(new PortalBrick(16 * x + 1, 8 * (y + 2), pbid++));
+				}
+			}
+		}
+		
+		for (int i = 0; i < bricks.size(); i++) {
+			if (bricks.get(i) instanceof PortalBrick) {
+				PortalBrick p = (PortalBrick) bricks.get(i);
+				if(p.getMate() == null) {
+					for (int k = i + 1; k < bricks.size(); k++) {
+						if(bricks.get(k) instanceof PortalBrick) {
+							PortalBrick pp = (PortalBrick) bricks.get(k);
+							p.setMate(pp);
+							pp.setMate(p);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -232,52 +230,44 @@ public class Playfield extends GameState {
 		}
 		
 		for(Ball b : balls) {
-			
 			if (b.collidesWith(player)) b.processCollision(player);
-			
-			for (int i = 0; i < targets.size(); i++) {
-				if (b.collidesWith(targets.get(i))) {
-					targets.get(i).processCollision(b);
-					b.processCollision(targets.get(i));
-				}
-			}
-			
 			if(forceField != null)
 				if(b.collidesWith(forceField)) {
 					forceField.processCollision(b);
 					b.processCollision(forceField);
 				}
+			for(Brick r : bricks) {
+				if(b.collidesWith(r)) {
+					r.processCollision(b);
+					b.processCollision(r);
+				}
+			}
 		}
 		
-		for(Projectile p : projectiles) {
-			for(int i = 0; i < targets.size(); i++) {
-				if(p.collidesWith(targets.get(i))) {
-					targets.get(i).processCollision(p);
+		for(Brick b : bricks) {
+			for(Projectile p : projectiles) {
+				if(b.collidesWith(p)) {
+					b.processCollision(p);
 					p.processCollision();
 				}
-			}	
+			}
 		}
 	}
 
 	private void removeTargets() {
-		for (int i = 0; i < targets.size(); i++) {
-			if (targets.get(i).isRemoved()) targets.remove(i);
+		for (int i = 0; i < bricks.size(); i++) {
+			if (bricks.get(i).isRemoved()) bricks.remove(i);
 		}
 	}
-
-	private void removeParticles() {
-		for (int i = 0; i < particles.size(); i++)
-			if (particles.get(i).isRemoved()) particles.remove(i);
+	
+	private void removeDecorations() {
+		for (int i = 0; i < decorations.size(); i++)
+			if(decorations.get(i).isRemoved()) decorations.remove(i);
 	}
 
 	private void removeSpawners() {
 		for (int i = 0; i < spawners.size(); i++)
 			if (spawners.get(i).isRemoved()) spawners.remove(i);
-	}
-	
-	private void removeFloatingScores() {
-		for(int i = 0; i < floatingScores.size(); i++)
-			if(floatingScores.get(i).isRemoved()) floatingScores.remove(i);
 	}
 	
 	private void removeBalls() {
@@ -326,11 +316,12 @@ public class Playfield extends GameState {
 			if(player.isAlive()) {
 				if(++stage > 29)
 					stage = 0;
-				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8), stage);
+				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8), stage, forceField, 
+						Jukebox.playfieldlist.get(Jukebox.getNextPlayfieldSong()));
 			} else {
 				player.setIsAlive(true);
 				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8),
-						stagePattern, stage);
+						stagePattern, stage, currSong);
 			}
 		} else
 			nextGameState = new GameOver(player.getKey(), player.getRank());

@@ -15,8 +15,6 @@ public class Briefing extends GameState {
 	
 	private boolean toTitle = false;
 
-	private PixelDrip pixelDrip = new PixelDrip();
-
 	public Briefing(Keyboard key) {
 		this.key = key;
 	}
@@ -30,13 +28,13 @@ public class Briefing extends GameState {
 		if (key.enter) {
 			captureScreen();
 			toTitle = true;
-			transition = true;
+			setTransitioning(true, new PixelDrip(0xff00ff));
 			return;
 		}
 		
 		if (count++ == 60 * 15) {
 			captureScreen();
-			transition = true;
+			setTransitioning(true, new PixelDrip(0x00ffff));
 			return;
 		}
 	}
@@ -121,8 +119,8 @@ public class Briefing extends GameState {
 	}
 
 	public void updateTX() {
-		pixelDrip.pixelDrip(0x00ffff, pixels);
-		finished = Jukebox.fadeToBlack() && pixelDrip.isFinished();
+		transition.update(pixels);
+		finished = Jukebox.fadeToBlack() && transition.isFinished();
 		if(finished) loadNextGameState();
 	}
 

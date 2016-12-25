@@ -21,7 +21,10 @@ public class MusicMenu extends GameState
 	
 	public MusicMenu(Keyboard key, GameState parentGameState) {
 		this.key = key;
-		this.pixels = parentGameState.pixels;
+		
+		this.pgs = parentGameState;
+		
+		pixels = pgs.pixels;
 		
 		int x = Game.WIDTH / 2 - w / 2;
 		int y = Game.HEIGHT / 2 - h / 2;
@@ -43,7 +46,7 @@ public class MusicMenu extends GameState
 	
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro("playfieldintro", "playfieldbody");
+		Jukebox.playSongWithIntro(pgs.pgs.currSong.k1, pgs.pgs.currSong.k2);
 		
 		key.update();
 		

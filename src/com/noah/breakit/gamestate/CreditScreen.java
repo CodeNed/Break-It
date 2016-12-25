@@ -15,8 +15,6 @@ public class CreditScreen extends GameState{
 	
 	private int count = 0;
 	
-	private PixelSpatter pixelSpatter = new PixelSpatter();
-	
 	public CreditScreen(Keyboard key){
 		this.key = key;
 	}
@@ -31,7 +29,7 @@ public class CreditScreen extends GameState{
 		littleRobotSprite.setY(100);
 		
 		if(count++ == 60 * 15 || key.enter){
-			transition = true;
+			setTransitioning(true, new PixelSpatter(0x00ffff));
 			captureScreen();
 		}
 	}
@@ -64,8 +62,8 @@ public class CreditScreen extends GameState{
 	}
 
 	public void updateTX() {
-		pixelSpatter.pixelSpatter(0x00ffff, pixels);		
-		finished = pixelSpatter.isFinished();
+		transition.update(pixels);		
+		finished = transition.isFinished();
 		if(finished) loadNextGameState();
 	}
 

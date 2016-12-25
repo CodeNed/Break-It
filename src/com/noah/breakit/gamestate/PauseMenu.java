@@ -9,10 +9,9 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
+import com.noah.breakit.transition.PixelDrip;
 
 public class PauseMenu extends GameState {
-	
-	private GameState parentGameState = null;
 	
 	private Keyboard key = null;
 	
@@ -24,7 +23,7 @@ public class PauseMenu extends GameState {
 	public PauseMenu(Keyboard key, GameState parentGameState) {
 		this.key = key;
 		this.pixels = parentGameState.pixels;
-		this.parentGameState = parentGameState;
+		this.pgs = parentGameState;
 		
 		int x = Game.WIDTH / 2 - w / 2;
 		int y = Game.HEIGHT / 2 - h / 2;
@@ -55,7 +54,7 @@ public class PauseMenu extends GameState {
 	
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro("playfieldintro", "playfieldbody");
+		Jukebox.playSongWithIntro(pgs.currSong.k1, pgs.currSong.k2);
 		
 		key.update();
 		if(key.esc && !key.escLast) {
@@ -88,8 +87,8 @@ public class PauseMenu extends GameState {
 	
 	private void quitToTitle() {
 		Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
-		parentGameState.setNextGameState(new TitleScreen(key));
-		parentGameState.transition = true;
+		pgs.setNextGameState(new TitleScreen(key));
+		pgs.setTransitioning(true, new PixelDrip(0xff00ff));
 		finished = true;
 	}
 	

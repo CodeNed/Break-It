@@ -5,17 +5,24 @@ import java.util.Random;
 import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
+import com.noah.breakit.transition.Transition;
+import com.noah.breakit.util.Pair;
 
 public abstract class GameState {
 
 	protected static Random random = new Random();
 	
+	protected GameState pgs = null; //parent game state for gamestate stacking
+	
+	protected Transition transition = null;
 	protected GameState nextGameState = null;
 	
 	protected int[] pixels = new int[Game.WIDTH * Game.HEIGHT];
 
-	protected boolean transition = false;
+	protected boolean transitioning = false;
 	protected boolean finished = false;
+	
+	protected Pair<String> currSong = null;
 
 	public void addPlayer(Player player) {
 	}
@@ -26,14 +33,14 @@ public abstract class GameState {
 	}
 
 	public final void update() {
-		if (!transition)
+		if (!transitioning)
 			updateGS();
 		else
 			updateTX();
 	}
 
 	public final void render(Screen screen) {
-		if (!transition)
+		if (!transitioning)
 			renderGS(screen);
 		else
 			renderTX(screen);
@@ -58,11 +65,12 @@ public abstract class GameState {
 	}
 	
 	public boolean isTransitioning() {
-		return transition;
+		return transitioning;
 	}
 	
-	public void setTransitioning(boolean b) {
-		transition = b;
+	public void setTransitioning(boolean b, Transition t) {
+		transitioning = b;
+		transition = t;
 	}
 	
 	protected abstract void loadNextGameState();

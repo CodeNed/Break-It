@@ -27,8 +27,6 @@ public class TitleScreen extends GameState {
 
 	private int count = 0;
 	private boolean startGame = false;
-	
-	private PixelSpatter pixelSpatter = new PixelSpatter();
 
 	public TitleScreen(Keyboard key) {
 		this.key = key;
@@ -43,19 +41,19 @@ public class TitleScreen extends GameState {
 		if (key.enter && !key.enterLast) {
 			captureScreen();
 			startGame = true;
-			transition = true;
+			setTransitioning(true, new PixelSpatter(0xff00ff));
 			SoundFX.SELECT.play();
 		}
 
 		if (count++ == 60 * 15) {
 			captureScreen();
-			transition = true;
+			setTransitioning(true, new PixelSpatter(0x00ffff));
 		}
 	}
 
 	public void updateTX() {
-		pixelSpatter.pixelSpatter(0x00ffff, pixels);
-		finished = Jukebox.fadeToBlack() && pixelSpatter.isFinished();
+		transition.update(pixels);
+		finished = Jukebox.fadeToBlack() && transition.isFinished();
 		if(finished) loadNextGameState();
 	}
 
@@ -94,7 +92,7 @@ public class TitleScreen extends GameState {
 	protected void loadNextGameState() {
 		if (startGame) {
 			Player player = new Player(Game.WIDTH / 2, Game.HEIGHT - 12 , key);
-			nextGameState = new Playfield(player, 0);
+			nextGameState = new Playfield(player, 0, null, Jukebox.playfieldlist.get(0));
 		} else
 			nextGameState = new Briefing(key);
 	}
