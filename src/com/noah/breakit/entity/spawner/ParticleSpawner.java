@@ -14,10 +14,8 @@ public class ParticleSpawner extends Entity {
 	}
 
 	public void update() {
-
 		for (int i = 0; i < num; i++)
-			playField.addParticle(new Particle(x, y, random.nextInt(3) + 1, random.nextInt(3) + 1));
-
+			playField.addDecoration(new Particle(x, y, random.nextInt(3) + 1, random.nextInt(3) + 1));
 		remove();
 	}
 }
