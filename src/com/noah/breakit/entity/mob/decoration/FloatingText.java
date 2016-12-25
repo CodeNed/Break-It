@@ -1,9 +1,8 @@
 package com.noah.breakit.entity.mob.decoration;
 
-import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.graphics.Screen;
 
-public class FloatingText extends Mob {
+public class FloatingText extends Decoration {
 
 	private String val = null;
 	private int count = 0;

@@ -1,9 +1,8 @@
 package com.noah.breakit.entity.mob.decoration;
 
-import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.graphics.Screen;
 
-public class Particle extends Mob {
+public class Particle extends Decoration {
 
 	private int life = 0;
 	private int count = 0;
