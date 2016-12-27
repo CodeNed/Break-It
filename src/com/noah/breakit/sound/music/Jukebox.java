@@ -147,7 +147,6 @@ public class Jukebox {
 	public static int getNextPlayfieldSong() {
 		if(++playfieldlistIndex > playfieldlist.size() - 1)
 			playfieldlistIndex = 0;
-		System.out.println("index at " + playfieldlistIndex);
 		return playfieldlistIndex;
 	}
 }
