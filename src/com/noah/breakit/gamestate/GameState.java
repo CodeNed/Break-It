@@ -12,10 +12,10 @@ public abstract class GameState {
 
 	protected static Random random = new Random();
 	
-	protected GameState pgs = null; //parent game state for gamestate stacking
+	protected GameState pgs = null; // parent game state for "reaching back" into stack after a vertical gamestate transition
+	protected GameState ngs = null; // reference next game state for horizontal gamestate transition
 	
 	protected Transition transition = null;
-	protected GameState nextGameState = null;
 	
 	protected int[] pixels = new int[Game.WIDTH * Game.HEIGHT];
 
@@ -53,11 +53,11 @@ public abstract class GameState {
 	}
 	
 	public final void setNextGameState(GameState gs) {
-		nextGameState = gs;
+		ngs = gs;
 	}
 	
 	public final GameState getNextGameState() {
-		return nextGameState;
+		return ngs;
 	}
 	
 	public boolean isFinished() {

@@ -1,10 +1,14 @@
 package com.noah.breakit.entity.mob;
 
 import com.noah.breakit.entity.Entity;
+import com.noah.breakit.entity.state.State;
+import com.noah.breakit.gamestate.Playfield;
 import com.noah.breakit.util.Util;
 
 public abstract class Mob extends Entity {
-
+	
+	protected State state = null;
+	
 	protected int xa = 0;
 	protected int ya = 0;
 
@@ -19,92 +23,99 @@ public abstract class Mob extends Entity {
 
 	protected int col = 0x000000;
 	
-	public Mob(int x, int y) {
+	public Mob(int x, int y, State state) {
+		this.state = state;
 		this.x = x;
 		this.y = y;
 	}
-
-	public int getx() {
-		return x;
+	
+	public final void init(Playfield playfield) {
+		super.init(playfield);
+		if(state != null)
+			state.init(this);
 	}
-
-	public int gety() {
-		return y;
+	
+	public final State getState() {
+		return state;
 	}
-
-	public int getxa() {
+	
+	public final int getxa() {
 		return xa;
 	}
 
-	public int getya() {
+	public final int getya() {
 		return ya;
 	}
 	
-	public int getxdir() {
+	public final int getxdir() {
 		return xdir;
 	}
 	
-	public int getydir() {
+	public final int getydir() {
 		return ydir;
 	}
 	
-	public int getxspeed() {
+	public final int getxspeed() {
 		return xspeed;
 	}
 	
-	public int getyspeed() {
+	public final int getyspeed() {
 		return yspeed;
 	}
 
-	public  int getWidth() {
+	public final int getWidth() {
 		return width;
 	}
 
-	public int getHeight() {
+	public final int getHeight() {
 		return height;
 	}
 	
-	public void setx(int x) {
-		this.x = x;
+	public final int getCol() {
+		return col;
 	}
+	
+	public final void setState(State s) {
+		state = s;
+	} 
 
-	public void sety(int y) {
-		this.y = y;
-	}
-
-	public void setxa(int xa) {
+	public final void setxa(int xa) {
 		this.xa =xa;
 	}
 
-	public void setya(int ya) {
+	public final void setya(int ya) {
 		this.ya = ya;
 	}
 	
-	public void setxdir(int xdir) {
+	public final void setxdir(int xdir) {
 		this.xdir = xdir;
 	}
 	
-	public void setydir(int ydir) {
+	public final void setydir(int ydir) {
 		this.ydir = ydir;
 	}
 	
-	public void setxspeed(int xspeed) {
+	public final void setxspeed(int xspeed) {
 		this.xspeed = xspeed;
 	}
 	
-	public void setyspeed(int yspeed) {
+	public final void setyspeed(int yspeed) {
 		this.yspeed = yspeed;
 	}
 
-	public void setWidth(int width) {
+	public final void setWidth(int width) {
 		this.width = width;
 	}
 
-	public void setHeight(int height) {
+	public final void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public final void setCol(int col) {
+		this.col = col;
+	}
 
-	public boolean collidesWith(Mob m) {
+	public final boolean collidesWith(Mob m) {
 
 		int ml = m.getx();
 		int mr = m.getx() + m.getWidth();

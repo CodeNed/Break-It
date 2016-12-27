@@ -130,7 +130,7 @@ public class Briefing extends GameState {
 	
 	protected void loadNextGameState() {
 		if(toTitle)
-			nextGameState =  new TitleScreen(key);
-		else nextGameState = new GameOver(key, -1);
+			ngs =  new TitleScreen(key);
+		else ngs = new GameOver(key, -1);
 	}
 }

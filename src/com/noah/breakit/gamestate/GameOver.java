@@ -80,6 +80,6 @@ public class GameOver extends GameState {
 	}
 	
 	protected void loadNextGameState() {
-		nextGameState = new TitleScreen(key);
+		ngs = new TitleScreen(key);
 	}
 }

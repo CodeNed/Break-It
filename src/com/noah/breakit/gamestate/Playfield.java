@@ -5,12 +5,14 @@ import java.util.List;
 
 import com.noah.breakit.entity.mob.ball.Ball;
 import com.noah.breakit.entity.mob.brick.Brick;
-import com.noah.breakit.entity.mob.brick.DestructibleBrick;
-import com.noah.breakit.entity.mob.brick.PortalBrick;
-import com.noah.breakit.entity.mob.brick.SolidBrick;
+import com.noah.breakit.entity.mob.brick.BrickDestructibleState;
+import com.noah.breakit.entity.mob.brick.BrickPortalState;
+import com.noah.breakit.entity.mob.brick.BrickSolidState;
 import com.noah.breakit.entity.mob.decoration.Decoration;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
+import com.noah.breakit.entity.mob.player.PlayerDeadState;
+import com.noah.breakit.entity.mob.player.PlayerNormalState;
 import com.noah.breakit.entity.mob.powerup.Powerup;
 import com.noah.breakit.entity.mob.projectile.Projectile;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
@@ -20,6 +22,7 @@ import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.Pair;
+import com.noah.breakit.util.Util;
 
 public class Playfield extends GameState {
 
@@ -28,6 +31,8 @@ public class Playfield extends GameState {
 	
 	private Player player = null;
 	private ForceField forceField = null;
+	
+	private Powerup powerupSpawner = new Powerup(0, 0, null);
 	
 	private List<Ball> balls = new ArrayList<>();
 	private List<Brick> bricks = new ArrayList<>();
@@ -64,6 +69,10 @@ public class Playfield extends GameState {
 		this.currSong = currSong;
 		addBall(new Ball(player.getx() + (player.getWidth() >> 1), player.gety() - player.getHeight()));
 	}
+	
+	public void init() {
+		powerupSpawner.init(this);
+	}
 
 	public void updateGS() {
 		
@@ -81,6 +90,9 @@ public class Playfield extends GameState {
 		
 		player.update();
 		
+		if(player.getState() instanceof PlayerDeadState)
+			return;
+		
 		if(forceField != null)
 			forceField.update();
 		
@@ -90,7 +102,7 @@ public class Playfield extends GameState {
 		int numBricks = 0;
 		for (int i = 0; i < bricks.size(); i++) {
 			bricks.get(i).update();
-			if(bricks.get(i) instanceof DestructibleBrick)
+			if(bricks.get(i).getState() instanceof BrickDestructibleState)
 				numBricks++;
 		}
 		if(numBricks == 0) levelUp = true;
@@ -113,10 +125,12 @@ public class Playfield extends GameState {
 		removeForceField();
 
 		if (balls.size() == 0) {
-			if(player.isAlive())
+			if(!(player.getState() instanceof PlayerDeadState)) {
+				player.setState(new PlayerDeadState());
+				player.getState().init(player);
 				addSpawner(new ParticleSpawner(player.getx() + player.getWidth() / 2,
 						player.gety() + player.getHeight() / 2, 100));
-			player.setIsAlive(false);
+			}
 		}
 	}
 
@@ -178,7 +192,8 @@ public class Playfield extends GameState {
 		b.init(this);
 	}
 	
-	public void addPowerup(Powerup p) {
+	public void addPowerup(int x, int y) {
+		Powerup p = powerupSpawner.spawn(x, y, Util.random.nextInt(5));
 		powerups.add(p);
 		p.init(this);
 	}
@@ -194,32 +209,29 @@ public class Playfield extends GameState {
 	}
 
 	private void generateBricks() {
-		int pbid = 0;
 		
-		for (int y = 0; y < stagePattern.length / 10; y++) {
-			for (int x = 0; x < 10; x++) {
-				if (stagePattern[x + y * 10] == '#') addBrick(new DestructibleBrick(16 * x + 1, 8 * (y + 2)));
-				else if (stagePattern[x + y * 10] == '@') addBrick(new SolidBrick(16 * x + 1, 8 * (y + 2)));
-				else if (stagePattern[x + y * 10] ==  '*') {
-					 addBrick(new PortalBrick(16 * x + 1, 8 * (y + 2), pbid++));
-				}
+		for(int y = 0; y < stagePattern.length / 10; y++) {
+			for(int x = 0; x < 10; x++) {
+				if (stagePattern[x + y * 10] == '#') addBrick(new Brick(16 * x + 1, 8 * (y + 2), new BrickDestructibleState()));
+				else if (stagePattern[x + y * 10] == '@') addBrick(new Brick(16 * x + 1, 8 * (y + 2), new BrickSolidState()));
+				else if (stagePattern[x + y * 10] ==  '*') addBrick(new Brick(16 * x + 1, 8 * (y + 2), new BrickPortalState()));
 			}
-		}
-		
-		for (int i = 0; i < bricks.size(); i++) {
-			if (bricks.get(i) instanceof PortalBrick) {
-				PortalBrick p = (PortalBrick) bricks.get(i);
-				if(p.getMate() == null) {
-					for (int k = i + 1; k < bricks.size(); k++) {
-						if(bricks.get(k) instanceof PortalBrick) {
-							PortalBrick pp = (PortalBrick) bricks.get(k);
-							p.setMate(pp);
-							pp.setMate(p);
+			
+			for (int i = 0; i < bricks.size(); i++) {
+				if (bricks.get(i).getState() instanceof BrickPortalState) {
+					BrickPortalState p = (BrickPortalState) bricks.get(i).getState();
+					if(p.getMate() == null) {
+						for (int k = i + 1; k < bricks.size(); k++) {
+							if(bricks.get(k).getState() instanceof BrickPortalState) {
+								BrickPortalState pp = (BrickPortalState) bricks.get(k).getState();
+								p.setMate(pp);
+								pp.setMate(p);
+							}
 						}
 					}
 				}
 			}
-		}
+		}		
 	}
 
 	private void checkMobCollision() {
@@ -309,21 +321,27 @@ public class Playfield extends GameState {
 	}
 	
 	protected void loadNextGameState(){
-		if(nextGameState != null)
+		if(ngs != null)
 			return;
 		
 		if (player.getLives() > 0) {
-			if(player.isAlive()) {
+			if(!(player.getState() instanceof PlayerDeadState)) {
 				if(++stage > 29)
 					stage = 0;
-				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8), stage, forceField, 
+				
+				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 8), stage, forceField, 
 						Jukebox.playfieldlist.get(Jukebox.getNextPlayfieldSong()));
+				p.init();
+				ngs = p;
 			} else {
-				player.setIsAlive(true);
-				nextGameState = new Playfield(player.setCoordinates(width / 2, height - 8),
+				player.setState(new PlayerNormalState());
+				player.getState().init(player);
+				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 8),
 						stagePattern, stage, currSong);
+				p.init();
+				ngs = p;
 			}
 		} else
-			nextGameState = new GameOver(player.getKey(), player.getRank());
+			ngs = new GameOver(player.getKey(), player.getRank());
 	}
 }

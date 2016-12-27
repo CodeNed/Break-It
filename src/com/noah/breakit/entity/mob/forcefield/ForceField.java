@@ -12,7 +12,7 @@ public class ForceField extends Mob {
 	private int life = 3;
 	
 	public ForceField(int x, int y) {
-		super(x, y);
+		super(x, y, null);
 		width = Game.WIDTH;
 		height = life;
 	}

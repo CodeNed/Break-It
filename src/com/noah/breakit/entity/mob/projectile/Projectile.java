@@ -6,7 +6,7 @@ import com.noah.breakit.graphics.Screen;
 public class Projectile extends Mob {
 
 	public Projectile(int x, int y) {
-		super(x, y);
+		super(x, y, null);
 		
 		col = 0xffffff;
 		width = 1;

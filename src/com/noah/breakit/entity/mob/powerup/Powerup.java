@@ -1,24 +1,24 @@
 package com.noah.breakit.entity.mob.powerup;
 
+import java.util.List;
+
 import com.noah.breakit.entity.mob.Mob;
-import com.noah.breakit.entity.spawner.ParticleSpawner;
+import com.noah.breakit.entity.mob.ball.Ball;
+import com.noah.breakit.entity.mob.ball.BallPowerState;
+import com.noah.breakit.entity.mob.forcefield.ForceField;
+import com.noah.breakit.entity.mob.player.PlayerShootingState;
+import com.noah.breakit.entity.mob.player.PlayerWideState;
+import com.noah.breakit.entity.state.State;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Font8x8;
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.util.ColorFlasher;
-import com.noah.breakit.util.Util;
 
-public abstract class Powerup extends Mob {
-
-	static final Powerup FORCE_FIELD_POWERUP = new ForceFieldPowerup(0, 0);
-	static final Powerup MULTI_BALL_POWERUP = new MultiBallPowerup(0, 0);
-	static final Powerup POWER_BALL_POWERUP = new PowerBallPowerup(0, 0);
-	static final Powerup SHOOTING_POWERUP = new ShootingPowerup(0,0);
-	static final Powerup WIDTH_POWERUP = new WidthPowerup(0, 0);
-
-	Powerup(int x, int y) {
-		super(x, y);
+public class Powerup extends Mob {
+	
+	
+	public Powerup(int x, int y, State state) {
+		super(x, y, state);
 
 		width = 16;
 		height = 16;
@@ -31,32 +31,11 @@ public abstract class Powerup extends Mob {
 	}
 
 	public final void update() {
-
-		if (!playField.getPlayer().isAlive()) return;
-
-		int ystep = 0;
-		ystep = Util.clamp(ya, -1, 1);
-
-		for (int yi = 0; yi != ya + ystep; yi += ystep) {
-
-			int b = y + yi + height;
-
-			if (b > Game.HEIGHT) {
-				remove();
-				playField.addSpawner(new ParticleSpawner(x + width / 2, y + height / 2, 100));
-				SoundFX.EXPLODE_2.play();
-				break;
-			}
-		}
-
-		ya = yspeed * ydir;
-
-		y += ya;
+		state.update();
 	}
 
 	public void render(Screen screen) {
-		screen.fillRect(x, y, width, height, 0x000000);
-		screen.drawRect(x, y, width, height, ColorFlasher.col);
+		state.render(screen);
 	}
 	
 	protected final void renderChar(Screen screen, char c) {
@@ -64,12 +43,68 @@ public abstract class Powerup extends Mob {
 	}
 
 	public void processCollision() {
-		SoundFX.POWER_UP.play();
-		trigger();
-		remove();
+		state.processCollision(null);
 	}
 
-	abstract Powerup spawnPowerup(int x, int y);
+	Powerup spawnPowerup(int x, int y) {
+		return null;
+	}
+	
+	private void forceField() {
+		playfield.addForceField(new ForceField(0, Game.HEIGHT - 4));
+	}
+	
+	private void multiBall() {
+		playfield.addBall(new Ball(x + width / 2, y + width / 2, -1, -1));
+		playfield.addBall(new Ball(x + width / 2, y + width / 2,  1, -1));
+	}
+	
+	private void powerBall() {
+		List<Ball> balls = playfield.getBalls();
+		for (Ball b : balls) {
+			b.setState(new BallPowerState());
+			b.getState().init(b);
+		}
+	}
+	
+	private void shooting() {
+		playfield.getPlayer().setState(new PlayerShootingState());
+		playfield.getPlayer().getState().init(playfield.getPlayer());	
+	}
+	
+	private void width() {
+		playfield.getPlayer().setState(new PlayerWideState());
+		playfield.getPlayer().getState().init(playfield.getPlayer());
+	}
+	
+	public Powerup spawn(int x, int y, int n) {
+		
+		Trigger t = null;
+		char c = '?';
+		
+		switch(n) {
+		case (0):
+			t = () -> forceField();
+			c = 'f';
+			break;
+		case (1):
+			t = () -> multiBall();
+			c = 'm';
+			break;
+		case (2):
+			t = () -> powerBall();
+			c = 'p';
+			break;
+		case (3): 
+			t = () -> shooting();
+			c = 's';
+			break;
+		case (4):
+			t = () -> width();
+			c = 'w';
+			break;
+		}
 
-	abstract void trigger();
+		return new Powerup(x, y, new PowerupState(t, c));
+	}
 }

@@ -2,6 +2,7 @@ package com.noah.breakit.entity.spawner;
 
 import com.noah.breakit.entity.Entity;
 import com.noah.breakit.entity.mob.decoration.Particle;
+import com.noah.breakit.util.Util;
 
 public class ParticleSpawner extends Entity {
 
@@ -15,7 +16,7 @@ public class ParticleSpawner extends Entity {
 
 	public void update() {
 		for (int i = 0; i < num; i++)
-			playField.addDecoration(new Particle(x, y, random.nextInt(3) + 1, random.nextInt(3) + 1));
+			playfield.addDecoration(new Particle(x, y, Util.random.nextInt(3) + 1, Util.random.nextInt(3) + 1));
 		remove();
 	}
 }
