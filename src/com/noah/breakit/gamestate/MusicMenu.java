@@ -46,7 +46,7 @@ public class MusicMenu extends GameState
 	
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro(pgs.pgs.currSong.k1, pgs.pgs.currSong.k2);
+		Jukebox.play(pgs.pgs.currSong, true);
 		
 		key.update();
 		
@@ -68,24 +68,19 @@ public class MusicMenu extends GameState
 		if(Jukebox.isOnStandby() == false)
 			return;
 		Jukebox.setStandbyMode(false);
-		Jukebox.play("playfieldintro", false);
 	}
 	
 	private void musicOff() {
 		Jukebox.setStandbyMode(true);
 		Jukebox.stop();
-		//Jukebox.rewind();
 	}
 
 	public void updateTX() {
-		//unused
 	}
 
 	public void renderTX(Screen screen) {
-		//unused
 	}
 	
 	protected void loadNextGameState() {
-		//unused
 	}
 }

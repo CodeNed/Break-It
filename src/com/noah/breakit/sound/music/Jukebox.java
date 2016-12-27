@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.noah.breakit.util.Pair;
-
 public class Jukebox {
 	
-	public static List<Pair<String>> playfieldlist = new ArrayList<>();
+	public static List<String> playfieldlist = new ArrayList<>();
 	private static Map<String, Song> album = new HashMap<>();
 	
 	@SuppressWarnings("unused")
@@ -29,20 +27,18 @@ public class Jukebox {
 	
 	private Jukebox() {
 		album.put("briefingsong", Song.BRIEFING_SONG);
-		album.put("franticbody", Song.FRANTIC_BODY);
-		album.put("franticintro", Song.FRANTIC_INTRO);
+		album.put("franticsong", Song.FRANTIC_SONG);
 		album.put("gameoversong", Song.GAME_OVER_SONG);
 		album.put("happysong", Song.HAPPY_SONG);
-		album.put("metalbody", Song.METAL_BODY);
-		album.put("metalintro", Song.METAL_INTRO);
+		album.put("metalsong", Song.METAL_SONG);
 		album.put("swingingsong", Song.SWINGING_SONG);
 		album.put("titlesong", Song.TITLE_SONG);
 		album.put("voidsong", Song.VOID_SONG);
 		
-		playfieldlist.add(new Pair<String>("franticintro", "franticbody"));
-		playfieldlist.add(new Pair<String>("metalintro", "metalbody"));
-		playfieldlist.add(new Pair<String>("voidsong", "swingingsong"));
-		playfieldlist.add(new Pair<String>("voidsong", "happysong"));
+		playfieldlist.add("franticsong");
+		playfieldlist.add("metalsong");
+		playfieldlist.add("swingingsong");
+		playfieldlist.add("happysong");
 	}
 	
 	public static void play(String key, boolean loop) {
@@ -70,13 +66,6 @@ public class Jukebox {
 			currSong.play(looping);
 			playing = true;
 		}
-	}
-	
-	public static void playSongWithIntro(String intro, String body) {
-		if (currSongIs(intro)) {
-			if(done())
-				play(body, true);
-		} else play(intro, false);
 	}
 	
 	public static void pause() {

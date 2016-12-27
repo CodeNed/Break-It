@@ -6,7 +6,6 @@ import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.transition.Transition;
-import com.noah.breakit.util.Pair;
 
 public abstract class GameState {
 
@@ -22,7 +21,7 @@ public abstract class GameState {
 	protected boolean transitioning = false;
 	protected boolean finished = false;
 	
-	protected Pair<String> currSong = null;
+	protected String currSong = null;
 
 	public void addPlayer(Player player) {
 	}

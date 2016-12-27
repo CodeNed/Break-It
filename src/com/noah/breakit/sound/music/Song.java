@@ -6,12 +6,10 @@ import kuusisto.tinysound.TinySound;
  class Song {
 	// music credit to sketchylogic
 	 static final Song BRIEFING_SONG = new Song(TinySound.loadMusic("songs/briefingsong.wav"));
-	 static final Song FRANTIC_BODY = new Song(TinySound.loadMusic("songs/franticbody.wav"));
-	static final Song FRANTIC_INTRO = new Song(TinySound.loadMusic("songs/franticintro.wav"));
+	static final Song FRANTIC_SONG = new Song(TinySound.loadMusic("songs/franticsong.wav"), 1.615);
 	static final Song GAME_OVER_SONG = new Song(TinySound.loadMusic("songs/gameoversong.wav"));
 	static final Song HAPPY_SONG = new Song(TinySound.loadMusic("songs/happysong.wav"));
-	static final Song METAL_BODY = new Song(TinySound.loadMusic("songs/metalbody.wav"));
-	static final Song METAL_INTRO = new Song(TinySound.loadMusic("songs/metalintro.wav"));
+	static final Song METAL_SONG = new Song(TinySound.loadMusic("songs/metalsong.wav"), 8.05);
 	static final Song SWINGING_SONG = new Song(TinySound.loadMusic("songs/swingingsong.wav"));
 	static final Song TITLE_SONG = new Song(TinySound.loadMusic("songs/titlesong.wav"));
 	static final Song VOID_SONG = new Song(TinySound.loadMusic("voidsound.mp3"));
@@ -23,6 +21,11 @@ import kuusisto.tinysound.TinySound;
 	 private Song(Music song) {
 		this.song = song;
 		volume  = DEFAULT_VOLUME;
+	}
+	 
+	private Song(Music song, double loopPos) {
+		this(song);
+		song.setLoopPositionBySeconds(loopPos);
 	}
 		
 	void play(boolean loop) {

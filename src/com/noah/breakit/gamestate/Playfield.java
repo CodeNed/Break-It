@@ -21,7 +21,6 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
 import com.noah.breakit.transition.PixelSpatter;
-import com.noah.breakit.util.Pair;
 import com.noah.breakit.util.Util;
 
 public class Playfield extends GameState {
@@ -47,13 +46,13 @@ public class Playfield extends GameState {
 	private boolean levelUp = false;
 	private int count = 0;
 
-	public Playfield(Player player, char[] stagePattern, int stage, Pair<String> currSong) {
+	public Playfield(Player player, char[] stagePattern, int stage, String currSong) {
 		this(player, stage, currSong);
 		this.stagePattern = stagePattern;
 		generateBricks();
 	}
 
-	public Playfield(Player player, int stage, ForceField forceField, Pair<String> currSong) {
+	public Playfield(Player player, int stage, ForceField forceField, String currSong) {
 		this(player, stage, currSong);
 		this.forceField = forceField;
 		stagePattern = new char[StagePattern.getStagePattern(stage).length];
@@ -62,7 +61,7 @@ public class Playfield extends GameState {
 		generateBricks();
 	}
 
-	private Playfield(Player player, int stage, Pair<String> currSong) {
+	private Playfield(Player player, int stage, String currSong) {
 		this.player = player;
 		this.player.init(this);
 		this.stage = stage;
@@ -76,7 +75,7 @@ public class Playfield extends GameState {
 
 	public void updateGS() {
 		
-		Jukebox.playSongWithIntro(currSong.k1, currSong.k2);
+		Jukebox.play(currSong, true);
 		
 		for (int i = 0; i < decorations.size(); i++)
 			decorations.get(i).update();
