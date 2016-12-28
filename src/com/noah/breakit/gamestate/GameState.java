@@ -1,15 +1,11 @@
 package com.noah.breakit.gamestate;
 
-import java.util.Random;
-
 import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.transition.Transition;
 
 public abstract class GameState {
-
-	protected static Random random = new Random();
 	
 	protected GameState pgs = null; // parent game state for "reaching back" into stack after a vertical gamestate transition
 	protected GameState ngs = null; // reference next game state for horizontal gamestate transition

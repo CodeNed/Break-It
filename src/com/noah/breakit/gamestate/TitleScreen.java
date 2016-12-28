@@ -10,6 +10,7 @@ import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
 import com.noah.breakit.util.Hud;
+import com.noah.breakit.util.Util;
 
 public class TitleScreen extends GameState {
 
@@ -61,8 +62,8 @@ public class TitleScreen extends GameState {
 	public void renderGS(Screen screen) {
 
 		for (int i = 0; i < 128; i++)
-			screen.fillRect(random.nextInt(screen.getWidth()), random.nextInt(screen.getHeight()), 1, 1,
-					random.nextInt(0xffffff));
+			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
+					Util.random.nextInt(0xffffff));
 
 		int start = 0;
 		for (int y = start; y < Game.HEIGHT; y += 4) {

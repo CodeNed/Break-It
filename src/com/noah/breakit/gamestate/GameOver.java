@@ -7,6 +7,7 @@ import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
 import com.noah.breakit.util.Hud;
+import com.noah.breakit.util.Util;
 
 public class GameOver extends GameState {
 
@@ -41,8 +42,8 @@ public class GameOver extends GameState {
 	public void renderGS(Screen screen) {
 
 		for (int i = 0; i < 128; i++)
-			screen.fillRect(random.nextInt(screen.getWidth()), random.nextInt(screen.getHeight()), 1, 1,
-					random.nextInt(0xffffff));
+			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
+					Util.random.nextInt(0xffffff));
 
 		String string = "game over";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), (screen.getHeight() >> 3) + 4,

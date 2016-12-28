@@ -142,8 +142,8 @@ public class Playfield extends GameState {
 	public void renderGS(Screen screen) {
 
 		for (int i = 0; i < 32; i++) {
-			screen.fillRect(random.nextInt(screen.getWidth()), random.nextInt(screen.getHeight()), 1, 1,
-					random.nextInt(0xffffff));
+			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
+					Util.random.nextInt(0xffffff));
 		}
 
 		for (Brick b : bricks)
