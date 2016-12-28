@@ -1,6 +1,8 @@
 package com.noah.breakit.entity.mob.player;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.state.State;
@@ -10,13 +12,15 @@ import com.noah.breakit.input.Keyboard;
 
 public class Player extends Mob {
 
+	List<State> secondaryStates = new ArrayList<>();
+	
 	Keyboard key = null;
 
 	int score = 0;
 	int rank = -1;
 	String scoreStr = "";
 	
-	Integer toNext1UP = 20000;
+	int toNext1UP = 20000;
 	
 	int lives = 3;
 
@@ -33,10 +37,16 @@ public class Player extends Mob {
 
 	public void update() {
 		state.update();
+
+		for(int i = 0; i < secondaryStates.size(); i++)
+			secondaryStates.get(i).update();
 	}
 
 	public void render(Screen screen) {
 		state.render(screen);
+		
+		for(int i = 0; i < secondaryStates.size(); i++)
+			secondaryStates.get(i).render(screen);
 	}
 
 	void updateHiScores() {
@@ -89,5 +99,39 @@ public class Player extends Mob {
 	
 	public Keyboard getKey() {
 		return key;
+	}
+	
+	public void addStateSecondaryPlayerShooting() {
+		for(int i = 0; i < secondaryStates.size(); i++) {
+			if(secondaryStates.get(i) instanceof StateSecondaryPlayerShooting) {
+				secondaryStates.set(i, new StateSecondaryPlayerShooting());
+				secondaryStates.get(i).init(this);
+				return;
+			}
+		}
+		StateSecondaryPlayerShooting s = new StateSecondaryPlayerShooting();
+		secondaryStates.add(s);
+		s.init(this);
+	}
+	
+	public void addStateSecondaryPlayerWide() {
+		for(int i = 0; i < secondaryStates.size(); i++) {
+			if(secondaryStates.get(i) instanceof StateSecondaryPlayerWide) {
+				secondaryStates.set(i, new StateSecondaryPlayerWide());
+				secondaryStates.get(i).init(this);
+				return;
+			}
+		}
+		StateSecondaryPlayerWide s = new StateSecondaryPlayerWide();
+		secondaryStates.add(s);
+		s.init(this);		
+	}
+	
+	public void removeSecondaryState(State s) {
+		secondaryStates.remove(s);
+	}
+	
+	public void clearSecondaryStates() {
+		secondaryStates.clear();
 	}
 }

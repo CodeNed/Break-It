@@ -2,21 +2,23 @@ package com.noah.breakit.entity.mob.player;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.projectile.Projectile;
+import com.noah.breakit.entity.state.State;
+import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
 
-public class PlayerShootingState extends PlayerNormalState {
+public class StateSecondaryPlayerShooting implements State {
+	
+	private Player p = null;
 	
 	private final int ttl = 15 * 60;
 	private int count = ttl;
 	private boolean toggle = false;
 	
 	public void init(Mob m) {
-		p = (Player) m;
+		p = (Player) m; 
 	}
-
-	public void update() {
-		super.update();
-		
+	
+	public void update() {		
 		if((count-- % (1 * 45)) == 0) {
 			if(toggle)
 				p.getPlayfield().addProjectile(new Projectile(p.getx(), p.gety()));
@@ -28,9 +30,20 @@ public class PlayerShootingState extends PlayerNormalState {
 		}
 		
 		if(count == 0) {
-			p.setState(new PlayerNormalState());
-			p.getState().init(p);
+			p.removeSecondaryState(this);
+//			p.setState(new PlayerPrimaryState());
+//			p.getState().init(p);
 			SoundFX.POWER_DOWN.play();
 		}
+	}
+
+	public void render(Screen s) {
+	}
+
+	public void processCollision(Mob m) {		
+	}
+
+	public Mob getMob() {
+		return p;
 	}
 }

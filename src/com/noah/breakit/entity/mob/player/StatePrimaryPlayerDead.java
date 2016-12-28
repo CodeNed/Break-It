@@ -6,7 +6,7 @@ import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.util.Hud;
 
-public class PlayerDeadState implements State {
+public class StatePrimaryPlayerDead implements State {
 	
 	private Player p = null;
 	private final int ttl = 60 * 2;
@@ -14,12 +14,13 @@ public class PlayerDeadState implements State {
 	
 	public void init(Mob m) {
 		p = (Player) m;
+		p.clearSecondaryStates();
 	}
 
 	public void update() {
 		if (count-- == 0) {
 			p.addToLives(-1);
-			p.setState(new PlayerNormalState());
+			p.setState(new StatePrimaryPlayerAlive());
 			p.getState().init(p);
 			p.getPlayfield().captureScreen();
 			p.getPlayfield().setTransitioning(true, new PixelDrip(0xff00ff));     

@@ -10,17 +10,15 @@ import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.util.Hud;
 
-public class PlayerNormalState implements State {
+public class StatePrimaryPlayerAlive implements State {
 	
 	protected Player p = null;
 	
-	public PlayerNormalState() {
+	public StatePrimaryPlayerAlive() {
 	}
 	
 	public void init(Mob m) {
 		p = (Player) m;
-		p.setCol(0x00ffff);
-		p.setWidth(32);
 	}
 
 	public void update() {

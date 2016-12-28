@@ -11,8 +11,8 @@ import com.noah.breakit.entity.mob.brick.BrickSolidState;
 import com.noah.breakit.entity.mob.decoration.Decoration;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
-import com.noah.breakit.entity.mob.player.PlayerDeadState;
-import com.noah.breakit.entity.mob.player.PlayerNormalState;
+import com.noah.breakit.entity.mob.player.StatePrimaryPlayerDead;
+import com.noah.breakit.entity.mob.player.StatePrimaryPlayerAlive;
 import com.noah.breakit.entity.mob.powerup.Powerup;
 import com.noah.breakit.entity.mob.projectile.Projectile;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
@@ -89,7 +89,7 @@ public class Playfield extends GameState {
 		
 		player.update();
 		
-		if(player.getState() instanceof PlayerDeadState)
+		if(player.getState() instanceof StatePrimaryPlayerDead)
 			return;
 		
 		if(forceField != null)
@@ -124,8 +124,8 @@ public class Playfield extends GameState {
 		removeForceField();
 
 		if (balls.size() == 0) {
-			if(!(player.getState() instanceof PlayerDeadState)) {
-				player.setState(new PlayerDeadState());
+			if(!(player.getState() instanceof StatePrimaryPlayerDead)) {
+				player.setState(new StatePrimaryPlayerDead());
 				player.getState().init(player);
 				addSpawner(new ParticleSpawner(player.getx() + player.getWidth() / 2,
 						player.gety() + player.getHeight() / 2, 100));
@@ -192,7 +192,7 @@ public class Playfield extends GameState {
 	}
 	
 	public void addPowerup(int x, int y) {
-		Powerup p = powerupSpawner.spawn(x, y, Util.random.nextInt(5));
+		Powerup p = powerupSpawner.spawn(x, y, Util.random.nextInt(6));
 		powerups.add(p);
 		p.init(this);
 	}
@@ -324,7 +324,7 @@ public class Playfield extends GameState {
 			return;
 		
 		if (player.getLives() > 0) {
-			if(!(player.getState() instanceof PlayerDeadState)) {
+			if(!(player.getState() instanceof StatePrimaryPlayerDead)) {
 				if(++stage > 29)
 					stage = 0;
 				
@@ -333,7 +333,7 @@ public class Playfield extends GameState {
 				p.init();
 				ngs = p;
 			} else {
-				player.setState(new PlayerNormalState());
+				player.setState(new StatePrimaryPlayerAlive());
 				player.getState().init(player);
 				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 8),
 						stagePattern, stage, currSong);
