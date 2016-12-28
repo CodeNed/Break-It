@@ -22,7 +22,7 @@ II. POWERUP LIST
 	
 	B: Grants two additional balls.
 	F: Grants a force field that protects the bottom of the screen. It has 3 charges.
-	G: Temporarily trasforms all balls in play into giant balls. Giant balls are 3 times larger.
+	G: Temporarily transforms all balls in play into giant balls. Giant balls are 3 times larger.
 	P: Temporarily transforms all balls in play into power balls. Power balls crush through bricks!
 	S: Grants the ability to shoot for a limited amount of time.
 	W: Grants additional paddle width for a limited amount of time.  
