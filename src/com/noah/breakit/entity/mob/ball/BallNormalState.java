@@ -31,13 +31,13 @@ public class BallNormalState implements State {
 		
 		b.processWallCollision();
 		
-		b.setxa(b.getxspeed() * b.getxdir());
-		b.setya(b.getyspeed() * b.getydir());
+		b.updateXa();
+		b.updateYa();
 
 		if (!b.released) b.setxa(b.getPlayfield().getPlayer().getxa());
 
-		b.setx(b.getx() + b.getxa());
-		b.sety(b.gety() + b.getya());
+		b.moveX();
+		b.moveY();
 		
 		b.portalSicknessTimer = Util.max(++b.portalSicknessTimer, Ball.PORTAL_SICKNESS_TIME);
 	}

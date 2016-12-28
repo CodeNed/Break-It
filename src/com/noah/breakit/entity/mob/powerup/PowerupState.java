@@ -39,8 +39,8 @@ public class PowerupState implements State {
 				break;
 			}
 		}
-		p.setya(p.getyspeed() * p.getydir());
-		p.sety(p.gety() + p.getya());	
+		p.updateYa();
+		p.moveY();	
 	}
 
 	public void render(Screen s) {

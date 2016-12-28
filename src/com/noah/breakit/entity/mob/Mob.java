@@ -35,6 +35,22 @@ public abstract class Mob extends Entity {
 			state.init(this);
 	}
 	
+	public final void moveX() {
+		x += xa;
+	}
+	
+	public final void moveY() {
+		y += ya;
+	}
+	
+	public final void updateXa() {
+		xa = xspeed * xdir;
+	}
+	
+	public final void updateYa() {
+		ya = yspeed * ydir;
+	}
+	
 	public final State getState() {
 		return state;
 	}

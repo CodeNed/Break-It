@@ -55,8 +55,13 @@ public class Powerup extends Mob {
 	}
 	
 	private void multiBall() {
-		playfield.addBall(new Ball(x + width / 2, y + width / 2, -1, -1));
-		playfield.addBall(new Ball(x + width / 2, y + width / 2,  1, -1));
+		int x = playfield.getPlayer().getx();
+		int y = playfield.getPlayer().gety();
+		int w = playfield.getPlayer().getWidth();
+		int h = playfield.getPlayer().getHeight();
+		
+		playfield.addBall(new Ball(x + w / 2, y - (h + 1), -1, -1));
+		playfield.addBall(new Ball(x + w / 2, y - (h + 1),  1, -1));
 	}
 	
 	private void powerBall() {

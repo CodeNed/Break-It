@@ -24,8 +24,8 @@ public class BallPowerState extends BallNormalState {
 		
 		b.processWallCollision();
 
-		b.setxa(b.getxspeed() * b.getxdir());
-		b.setya(b.getyspeed() * b.getydir());
+		b.updateXa();
+		b.updateYa();
 
 		for(int i = NUM_TAILS - 1; i >= 1; i--) {
 			xlast[i] = xlast[i - 1];
@@ -35,8 +35,8 @@ public class BallPowerState extends BallNormalState {
 		xlast[0] = b.getx();
 		ylast[0] = b.gety();
 		
-		b.setx(b.getx() + b.getxa());
-		b.sety(b.gety() + b.getya());
+		b.moveX();
+		b.moveY();
 		
 		if(count++ % 2 == 0) {
 			int temp = cols[cols.length - 1];

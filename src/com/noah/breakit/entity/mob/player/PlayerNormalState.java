@@ -51,8 +51,8 @@ public class PlayerNormalState implements State {
 			SoundFX.LAUNCH.play();
 		}
 
-		p.setxa(p.getxdir()* p.getxspeed());
-		p.setx(p.getx() + p.getxa());
+		p.updateXa();
+		p.moveX();
 
 		p.scoreStr = Hud.parseScore(p.score);
 		if (p.score >= p.toNext1UP) {
