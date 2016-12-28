@@ -1,6 +1,5 @@
 package com.noah.breakit.gamestate;
 
-import com.noah.breakit.component.Action;
 import com.noah.breakit.component.Button;
 import com.noah.breakit.component.Label;
 import com.noah.breakit.component.Panel;
@@ -28,7 +27,7 @@ public class PauseMenu extends GameState {
 		int x = Game.WIDTH / 2 - w / 2;
 		int y = Game.HEIGHT / 2 - h / 2;
 		
-		int x1 = x + w / 2 - ("pause".length() *8) / 2;
+		int x1 = x + w / 2 - ("pause".length() * 8) / 2;
 		int y1 = y + 8;
 		
 		int x2 = x + w / 2 - ("music".length() * 8) / 2;
@@ -42,9 +41,9 @@ public class PauseMenu extends GameState {
 		
 		panel = new Panel(x, y, w, h, key, 
 						  new Label(x1, y1, "pause"),
-						  new Button(x2, y2, new Label(x2, y2, "music"), (Action)() -> musicMenu()),
-						  new Button(x3, y3, new Label(x3, y3, "quit to title"), (Action)() -> quitToTitle()),
-						  new Button(x4, y4, new Label(x4, y4, "exit program"), (Action)() -> exit())
+						  new Button(x2, y2, new Label(x2, y2, "music"), () -> musicMenu()),
+						  new Button(x3, y3, new Label(x3, y3, "quit to title"), () -> quitToTitle()),
+						  new Button(x4, y4, new Label(x4, y4, "exit program"), () -> exit())
 						  );
 	}
 	
