@@ -1,6 +1,7 @@
 package com.noah.breakit.entity.mob.powerup;
 
 import com.noah.breakit.entity.mob.Mob;
+import com.noah.breakit.entity.mob.decoration.FloatingText;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.entity.state.State;
 import com.noah.breakit.game.Game;
@@ -55,6 +56,9 @@ public class PowerupState implements State {
 
 	public void processCollision(Mob m) {
 		SoundFX.POWER_UP.play();
+		int points = 500;
+		p.getPlayfield().getPlayer().addToScore(points);
+		p.getPlayfield().addDecoration(new FloatingText(p.getx(), p.gety() + 1, points));
 		t.trigger();
 		p.remove();		
 	}
