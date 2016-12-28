@@ -3,23 +3,19 @@ package com.noah.breakit.entity.mob.ball;
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.brick.BrickDestructibleState;
 import com.noah.breakit.graphics.Screen;
+import com.noah.breakit.util.Util;
 
 public class BallPowerState extends BallNormalState {
 	
-	private final int NUM_TAILS = 6;
-	private final int TIME_TO_LIVE = 7 * 60;
+	private static final int NUM_TAILS = 6;
+	private static final int TTL = 7 * 60;
 	
 	private int[] xlast = new int[NUM_TAILS];
 	private int[] ylast = new int[NUM_TAILS];
 	private int[] cols = { 0xff0000, 0xff7700, 0xffdd00, 0x00ff00, 0x0000ff, 0x8a2be2, 0xc77df3 };
 	
 	private int count = 0;
-	
-	public void init(Mob m) {
-		super.init(m);
-		
-	}
-	
+
 	public void update() {
 		
 		b.processWallCollision();
@@ -38,6 +34,8 @@ public class BallPowerState extends BallNormalState {
 		b.moveX();
 		b.moveY();
 		
+		b.portalSicknessTimer = Util.max(++b.portalSicknessTimer, Ball.PORTAL_SICKNESS_TIME);
+		
 		if(count++ % 2 == 0) {
 			int temp = cols[cols.length - 1];
 			for(int i = cols.length - 1; i > 0; i--)
@@ -47,8 +45,9 @@ public class BallPowerState extends BallNormalState {
 			
 		}
 		
-		if(count == TIME_TO_LIVE) {
-			b.setState(new BallNormalState(b));
+		if(count == TTL) {
+			b.setState(new BallNormalState());
+			b.setCol(0xff00ff);
 			b.getState().init(b);
 		}
 	}

@@ -16,13 +16,6 @@ public class BallNormalState implements State {
 	
 	protected Ball b = null;
 	
-	public BallNormalState() {
-	}
-	
-	public BallNormalState(Ball b) {
-		b.setCol(0xff00ff);
-	}
-	
 	public void init(Mob m) {
 		b = (Ball) m;
 	}

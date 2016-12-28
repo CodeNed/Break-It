@@ -4,10 +4,9 @@ import java.util.List;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.ball.Ball;
+import com.noah.breakit.entity.mob.ball.BallGiantState;
 import com.noah.breakit.entity.mob.ball.BallPowerState;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
-import com.noah.breakit.entity.mob.player.PlayerShootingState;
-import com.noah.breakit.entity.mob.player.PlayerWideState;
 import com.noah.breakit.entity.state.State;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Font8x8;
@@ -45,13 +44,17 @@ public class Powerup extends Mob {
 	public void processCollision() {
 		state.processCollision(null);
 	}
-
-	Powerup spawnPowerup(int x, int y) {
-		return null;
-	}
 	
 	private void forceField() {
 		playfield.addForceField(new ForceField(0, Game.HEIGHT - 4));
+	}
+	
+	private void giantBall() {
+		List<Ball> balls = playfield.getBalls();
+		for (Ball b : balls) {
+			b.setState(new BallGiantState());
+			b.getState().init(b);
+		}
 	}
 	
 	private void multiBall() {
@@ -73,13 +76,11 @@ public class Powerup extends Mob {
 	}
 	
 	private void shooting() {
-		playfield.getPlayer().setState(new PlayerShootingState());
-		playfield.getPlayer().getState().init(playfield.getPlayer());	
+		playfield.getPlayer().addStateSecondaryPlayerShooting();		
 	}
 	
-	private void width() {
-		playfield.getPlayer().setState(new PlayerWideState());
-		playfield.getPlayer().getState().init(playfield.getPlayer());
+	private void wide() {
+		playfield.getPlayer().addStateSecondaryPlayerWide();                                		
 	}
 	
 	public Powerup spawn(int x, int y, int n) {
@@ -93,19 +94,23 @@ public class Powerup extends Mob {
 			c = 'f';
 			break;
 		case (1):
+			t = () -> giantBall();
+			c = 'g';
+			break;
+		case (2):
 			t = () -> multiBall();
 			c = 'm';
 			break;
-		case (2):
+		case (3):
 			t = () -> powerBall();
 			c = 'p';
 			break;
-		case (3): 
+		case (4): 
 			t = () -> shooting();
 			c = 's';
 			break;
-		case (4):
-			t = () -> width();
+		case (5):
+			t = () -> wide();
 			c = 'w';
 			break;
 		}
