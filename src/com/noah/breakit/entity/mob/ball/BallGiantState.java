@@ -10,8 +10,7 @@ public class BallGiantState extends BallNormalState {
 	
 	public void init(Mob m) {
 		super.init(m);
-		b.setWidth(12);
-		b.setHeight(12);
+		adjustSize(12);
 	}
 	
 	public void update() {
@@ -20,8 +19,16 @@ public class BallGiantState extends BallNormalState {
 		if(count++ == TTL) {
 			b.setState(new BallNormalState());
 			b.getState().init(b);
-			b.setWidth(4);
-			b.setHeight(4);
+			adjustSize(4);
 		}
+	}
+		
+	private void adjustSize(int size) {
+		int wOld = b.getWidth();
+		int hOld = b.getHeight();
+		b.setWidth(size);
+		b.setHeight(size);
+		b.setx(b.getx() - (b.getWidth() / 2) + (wOld / 2));
+		b.sety(b.gety() - (b.getHeight() / 2) + (hOld / 2));
 	}
 }
