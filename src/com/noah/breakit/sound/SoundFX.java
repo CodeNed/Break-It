@@ -11,6 +11,7 @@ public class SoundFX {
 	public static final Sound EXPLODE_3 = TinySound.loadSound("explode_3.mp3");
 	public static final Sound GAME_OVER = TinySound.loadSound("gameover.mp3");
 	public static final Sound HI_BOUNCE = TinySound.loadSound("hibounce.mp3");
+	public static final Sound HI_SCORE = TinySound.loadSound("hi_score.mp3");
 	public static final Sound LAUNCH = TinySound.loadSound("launch.mp3");
 	public static final Sound LO_BOUNCE = TinySound.loadSound("lobounce.mp3");
 	public static final Sound MENU_1 = TinySound.loadSound("menu_1.mp3");
