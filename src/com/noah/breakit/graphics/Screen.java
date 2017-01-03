@@ -41,7 +41,7 @@ public class Screen {
 		}
 	}
 
-	public void renderChar8x8(int x, int y, int col, int[] character) {
+	public void renderChar8x8(int x, int y, int col, char[] character) {
 
 		for (int yy = 0; yy < 8; yy++) {
 			for (int xx = 0; xx < 8; xx++) {
