@@ -82,11 +82,11 @@ public class Screen {
 	}
 
 	public void renderSprite(Sprite sprite) {
-		for (int y = 0; y < sprite.HEIGHT; y++) {
-			for (int x = 0; x < sprite.WIDTH; x++) {
+		for (int y = 0; y < sprite.height; y++) {
+			for (int x = 0; x < sprite.width; x++) {
 				if (x + sprite.getX() < this.width && y + sprite.getY() < this.height)
-					if (sprite.pixels[x + y * sprite.WIDTH] != 0xffff00ff)
-						Screen.pixels[x + sprite.getX() + (y + sprite.getY()) * width] = sprite.pixels[x + y * sprite.WIDTH];
+					if (sprite.pixels[x + y * sprite.width] != 0xffff00ff)
+						Screen.pixels[x + sprite.getX() + (y + sprite.getY()) * width] = sprite.pixels[x + y * sprite.width];
 			}
 		}
 	}

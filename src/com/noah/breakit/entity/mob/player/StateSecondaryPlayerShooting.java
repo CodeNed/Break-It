@@ -10,8 +10,8 @@ public class StateSecondaryPlayerShooting implements State {
 	
 	private Player p = null;
 	
-	private final int ttl = 15 * 60;
-	private int count = ttl;
+	private static final int TTL = 15 * 60;
+	private int count = TTL;
 	private boolean toggle = false;
 	
 	public void init(Mob m) {

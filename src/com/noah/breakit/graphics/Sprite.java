@@ -11,8 +11,8 @@ public class Sprite {
 	private int x = 0;
 	private int y = 0;
 
-	public final int WIDTH;
-	public final int HEIGHT;
+	public final int width;
+	public final int height;
 
 	public int[] pixels = null;
 
@@ -21,10 +21,10 @@ public class Sprite {
 		this.x = x;
 		this.y = y;
 
-		WIDTH = width;
-		HEIGHT = height;
+		this.width = width;
+		this.height = height;
 
-		pixels = new int[WIDTH * HEIGHT];
+		pixels = new int[width * height];
 	}
 
 	public Sprite(int x, int y, int width, int height, int[] pixels) {
@@ -45,14 +45,14 @@ public class Sprite {
 			e.printStackTrace();
 		}
 
-		for (int yy = 0; yy < HEIGHT; yy++) {
-			for (int xx = 0; xx < WIDTH; xx++)
-				pixels[xx + yy * WIDTH] = image.getRGB(xx, yy);
+		for (int yy = 0; yy < height; yy++) {
+			for (int xx = 0; xx < width; xx++)
+				pixels[xx + yy * width] = image.getRGB(xx, yy);
 		}
 	}
 
 	public void render(Screen screen) {
-		screen.renderSprite(x, y, WIDTH, HEIGHT, pixels);
+		screen.renderSprite(x, y, width, height, pixels);
 	}
 
 	public int getX() {

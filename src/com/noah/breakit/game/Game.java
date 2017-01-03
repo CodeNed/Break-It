@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private Thread thread = null;
 
-	private final String TITLE = "Break-It";
+	private final String title = "Break-It";
 
 	private boolean running = false;
 
@@ -47,7 +47,7 @@ public class Game extends Canvas implements Runnable {
 
 	public static final Stack<GameState> GSM = new Stack<GameState>();
 	
-	private final Keyboard KEY = new Keyboard();
+	private final Keyboard key = new Keyboard();
 	
 	public static final List<HiScore> HI_SCORES = new ArrayList<HiScore>() {
 		
@@ -75,9 +75,9 @@ public class Game extends Canvas implements Runnable {
 		setPreferredSize(size);
 		screen = new Screen(WIDTH, HEIGHT);
 		frame = new JFrame();
-		addKeyListener(KEY);
+		addKeyListener(key);
 
-		GSM.push(new CreditScreen(KEY));
+		GSM.push(new CreditScreen(key));
 		
 		TinySound.init();
 		SoundFX.VOID_SOUND.play();
@@ -104,7 +104,7 @@ public class Game extends Canvas implements Runnable {
 
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
-		final double NS = 1000000000D / 60D;
+		final double ns = 1000000000D / 60D;
 		double delta = 0D;
 		int frames = 0;
 		int updates = 0;
@@ -114,7 +114,7 @@ public class Game extends Canvas implements Runnable {
 		while (running) {
 
 			long now = System.nanoTime();
-			delta += (now - lastTime) / NS;
+			delta += (now - lastTime) / ns;
 			lastTime = now;
 
 			while (delta >= 1) {
@@ -128,7 +128,7 @@ public class Game extends Canvas implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				frame.setTitle(TITLE + " | " + updates + " ups" + " | " + frames + " fps");
+				frame.setTitle(title + " | " + updates + " ups" + " | " + frames + " fps");
 				frames = 0;
 				updates = 0;
 			}

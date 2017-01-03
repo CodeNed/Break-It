@@ -9,8 +9,8 @@ public class StateSecondaryPlayerWide implements State {
 	
 	private Player p = null;
 	
-	private final int ttl = 15 * 60;
-	private int count = ttl;
+	private static final int TTL = 15 * 60;
+	private int count = TTL;
 	
 	public void init(Mob m) {
 		p = (Player) m;

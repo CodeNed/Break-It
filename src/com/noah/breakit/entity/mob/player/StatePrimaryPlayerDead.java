@@ -9,8 +9,8 @@ import com.noah.breakit.util.Hud;
 public class StatePrimaryPlayerDead implements State {
 	
 	private Player p = null;
-	private final int ttl = 60 * 2;
-	private int count = ttl;
+	private static final int TTL = 60 * 2;
+	private int count = TTL;
 	
 	public void init(Mob m) {
 		p = (Player) m;

@@ -18,7 +18,7 @@ public class TitleScreen extends GameState {
 
 	private String hiScoreStr = "";
 
-	private final int[] TITLE = { '#','#', 0 , 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0, '#', 0 , 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 ,'#','#','#',
+	private final int[] title = { '#','#', 0 , 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0, '#', 0 , 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 ,'#','#','#',
 			                      '#', 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,'#', 0 ,
 			                      '#','#', 0 , 0 ,'#','#', 0 , 0, '#','#', 0 , 0 ,'#','#','#', 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
 			                      '#', 0 ,'#', 0 ,'#', 0 ,'#', 0, '#', 0 , 0 , 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
@@ -73,7 +73,7 @@ public class TitleScreen extends GameState {
 
 		for (int y = 0; y < titleHeight; y++) {
 			for (int x = 0; x < titleWidth; x++) {
-				if (TITLE[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~ColorFlasher.col);
+				if (title[x + y * titleWidth] == '#') screen.drawRect((x << 2) + 16, (y << 2) + 80, 4, 4, ~ColorFlasher.col);
 			}
 		}
 
