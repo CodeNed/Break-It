@@ -29,6 +29,14 @@ public class Keyboard implements KeyListener {
 		esc   = keys[KeyEvent.VK_ESCAPE];
 	}
 
+	public boolean keyisPressed(boolean key) {
+		return key;
+	}
+	
+	public boolean keyIsHeld(boolean key) {
+		return key;
+	}
+	
 	public void keyTyped(KeyEvent e) {
 	}
 
