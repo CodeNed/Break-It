@@ -15,6 +15,7 @@ import com.noah.breakit.util.ColorFlasher;
 
 public class Powerup extends Mob {
 	
+	public static final int NUM_TYPES = 6;
 	
 	public Powerup(int x, int y, State state) {
 		super(x, y, state);
@@ -114,7 +115,6 @@ public class Powerup extends Mob {
 			c = 'w';
 			break;
 		}
-
 		return new Powerup(x, y, new PowerupState(t, c));
 	}
 }

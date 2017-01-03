@@ -1,6 +1,7 @@
 package com.noah.breakit.gamestate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.noah.breakit.entity.mob.ball.Ball;
@@ -11,16 +12,18 @@ import com.noah.breakit.entity.mob.brick.BrickSolidState;
 import com.noah.breakit.entity.mob.decoration.Decoration;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
-import com.noah.breakit.entity.mob.player.StatePrimaryPlayerDead;
 import com.noah.breakit.entity.mob.player.StatePrimaryPlayerAlive;
+import com.noah.breakit.entity.mob.player.StatePrimaryPlayerDead;
 import com.noah.breakit.entity.mob.powerup.Powerup;
 import com.noah.breakit.entity.mob.projectile.Projectile;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
+import com.noah.breakit.hiscore.HiScore;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.stagepatterns.StagePattern;
 import com.noah.breakit.transition.PixelSpatter;
+import com.noah.breakit.util.FuzzRenderer;
 import com.noah.breakit.util.Util;
 
 public class Playfield extends GameState {
@@ -141,10 +144,7 @@ public class Playfield extends GameState {
 
 	public void renderGS(Screen screen) {
 
-		for (int i = 0; i < 32; i++) {
-			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
-					Util.random.nextInt(0xffffff));
-		}
+		FuzzRenderer.render(screen, 32);
 
 		for (Brick b : bricks)
 			b.render(screen);
@@ -192,7 +192,7 @@ public class Playfield extends GameState {
 	}
 	
 	public void addPowerup(int x, int y) {
-		Powerup p = powerupSpawner.spawn(x, y, Util.random.nextInt(6));
+		Powerup p = powerupSpawner.spawn(x, y, Util.random.nextInt(Powerup.NUM_TYPES));
 		powerups.add(p);
 		p.init(this);
 	}
@@ -319,7 +319,7 @@ public class Playfield extends GameState {
 		stagePattern[index] = val;
 	}
 	
-	protected void loadNextGameState(){
+	protected void loadNextGameState() {
 		if(ngs != null)
 			return;
 		
@@ -328,19 +328,45 @@ public class Playfield extends GameState {
 				if(++stage > 29)
 					stage = 0;
 				
-				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 8), stage, forceField, 
+				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 16), stage, forceField, 
 						Jukebox.playfieldlist.get(Jukebox.getNextPlayfieldSong()));
 				p.init();
 				ngs = p;
 			} else {
 				player.setState(new StatePrimaryPlayerAlive());
 				player.getState().init(player);
-				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 8),
+				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 16),
 						stagePattern, stage, currSong);
 				p.init();
 				ngs = p;
 			}
-		} else
-			ngs = new GameOver(player.getKey(), player.getRank());
+		} else {
+			System.out.println(player.getScore() + ", " + Game.HI_SCORES.get(Game.HI_SCORES.size() - 1).getScore());
+			if(player.getScore() > Game.HI_SCORES.get(Game.HI_SCORES.size() - 1).getScore()) {
+				updateHiScores();
+				InitialsMenu im = new InitialsMenu(player.getKey(), getPlayerRank());
+				im.init();
+				Game.GSM.push(im);
+				return;
+			}
+				
+			ngs = new GameOver(player.getKey(), getPlayerRank());
+		}
+	}
+	
+	private void updateHiScores() {
+		Game.HI_SCORES.add(new HiScore("", player.getScore()));
+		Collections.sort(Game.HI_SCORES, Collections.reverseOrder());
+			Game.HI_SCORES.remove(Game.HI_SCORES.size() - 1);
+	}
+	
+	private int getPlayerRank() {
+		int rank = -1;
+		int count = 0;
+		for (int i =0; i < Game.HI_SCORES.size(); i++) {
+			if(player.getScore() >= Game.HI_SCORES.get(i).getScore())
+				rank = Game.HI_SCORES.size() - ++count ;
+		}
+		return rank;
 	}
 }

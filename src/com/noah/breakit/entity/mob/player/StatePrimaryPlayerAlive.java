@@ -58,8 +58,6 @@ public class StatePrimaryPlayerAlive implements State {
 			p.toNext1UP *= 2;
 			SoundFX.ONE_UP.play();
 		}
-
-		p.updateHiScores();
 	}
 
 	public void render(Screen s) {

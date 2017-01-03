@@ -18,6 +18,7 @@ public class Panel extends Component {
 	private Label label = null;
 	
 	private List<Button> buttons = new ArrayList<>();
+	private List<RotaryButton> rotaryButtons = new ArrayList<>(); // NOTE: rotary buttons are members of both buttons and rotaryButtons!
 	private Button activeButton = null;
 	private int index = 0;
 
@@ -32,6 +33,8 @@ public class Panel extends Component {
 		
 		for(Button b : newButtons) {
 			buttons.add(b);
+			if(b instanceof RotaryButton)
+				rotaryButtons.add((RotaryButton) b);
 		}
 		
 		activeButton = buttons.get(0);
@@ -47,16 +50,41 @@ public class Panel extends Component {
 		label.update();
 		
 		if(key.up && !key.upLast) {
-			activeButton = getPrevButton();
-			SoundFX.MENU_1.play();
-		} else if(key.down && !key.downLast) {
-			activeButton = getNextButton();
+			if(activeButton instanceof PushButton)
+				activeButton = getPrevButton();
+			else if(activeButton instanceof RotaryButton) {
+				RotaryButton r = (RotaryButton) activeButton;
+				r.setNextChar();
+			}
 			SoundFX.MENU_1.play();
 		}
 		
-		if(key.enter && ! key.enterLast) {
-			SoundFX.MENU_2.play();
-			activeButton.getAction().perform();
+		if(key.down && !key.downLast) {
+			if(activeButton instanceof PushButton)
+				activeButton = getNextButton();
+			else if(activeButton instanceof RotaryButton) {				
+				RotaryButton r = (RotaryButton) activeButton;
+				r.setPrevChar();
+			}
+			SoundFX.MENU_1.play();
+		}
+		
+		if(key.left && !key.leftLast)
+				activeButton = getPrevButton();
+		
+		if(key.right && !key.rightLast)
+				activeButton = getNextButton();
+		
+		if(key.enter && !key.enterLast) {
+			if(activeButton instanceof PushButton) {
+				PushButton p = (PushButton) activeButton;
+				p.getAction().perform();
+				SoundFX.MENU_2.play();
+			}
+			else if(activeButton instanceof RotaryButton) {
+				activeButton = getNextButton();
+				SoundFX.MENU_2.play();
+			}
 		}
 	}
 
@@ -97,11 +125,19 @@ public class Panel extends Component {
 		return buttons.get(index);
 	}
 	
-	public void setGameState(GameState gs) {
-		this.gs = gs;
+	public List<RotaryButton> getRotaryButtons() {
+		return rotaryButtons;
+	}
+	
+	public String getRotaryButtonValue(int index) {
+		return rotaryButtons.get(index).getChar().toString();
 	}
 	
 	public GameState getGameState() {
 		return gs;
+	}
+	
+	public void setGameState(GameState gs) {
+		this.gs = gs;
 	}
 }

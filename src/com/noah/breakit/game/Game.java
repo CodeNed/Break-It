@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import com.noah.breakit.gamestate.CreditScreen;
 import com.noah.breakit.gamestate.GameState;
 import com.noah.breakit.graphics.Screen;
+import com.noah.breakit.hiscore.HiScore;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
@@ -48,21 +49,21 @@ public class Game extends Canvas implements Runnable {
 	
 	private final Keyboard KEY = new Keyboard();
 	
-	public static final List<Integer> HI_SCORES = new ArrayList<Integer>() {
+	public static final List<HiScore> HI_SCORES = new ArrayList<HiScore>() {
 		
 		private static final long serialVersionUID = 1L;
 
 		{
-			add(50000);
-			add(30000);
-			add(20000);
-			add(15000);
-			add(12000);
-			add(10000);
-			add(9000);
-			add(8000);
-			add(7000);
-			add(6000);
+			add(new HiScore("aaa", 5000));
+			add(new HiScore("aaa", 3000));
+			add(new HiScore("aaa", 2000));
+			add(new HiScore("aaa", 1500));
+			add(new HiScore("aaa", 1200));
+			add(new HiScore("aaa", 1000));
+			add(new HiScore("aaa", 900));
+			add(new HiScore("aaa", 800));
+			add(new HiScore("aaa", 700));
+			add(new HiScore("aaa", 600));
 		}
 	};
 
@@ -139,12 +140,10 @@ public class Game extends Canvas implements Runnable {
 		
 		ColorFlasher.update();
 		
-		GameState gs = GSM.peek();
+		GSM.peek().update();
 		
-		gs.update();
-		
-		if(gs.isFinished()) {
-			gs = gs.getNextGameState();
+		if(GSM.peek().isFinished()) {
+			GameState gs = GSM.peek().getNextGameState();
 			GSM.pop();
 			
 			if(gs != null)

@@ -6,25 +6,26 @@ import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.FuzzRenderer;
 import com.noah.breakit.util.Hud;
-import com.noah.breakit.util.Util;
 
 public class GameOver extends GameState {
 
 	private Keyboard key = null;
 
-	private String[] hiScoreStr = new String[10];
-	private int rank = 0;
+	private static final int NUM_HI_SCORES = 10;
+	private String[] hiScoreStr = new String[NUM_HI_SCORES];
+	private int rank = -1;
 	
 	private int count = 0;
 
 	public GameOver(Keyboard key, int rank) {
 		this.key = key;
 		this.rank = rank;
-
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_HI_SCORES; i++) {
 			hiScoreStr[i] = "";
-			hiScoreStr[i] = Hud.parseScore(Game.HI_SCORES.get(i));
+			hiScoreStr[i] = Game.HI_SCORES.get(i).getInitials() 
+					+ "-" + Hud.parseScore(Game.HI_SCORES.get(i).getScore());
 		}
 	}
 
@@ -41,9 +42,7 @@ public class GameOver extends GameState {
 
 	public void renderGS(Screen screen) {
 
-		for (int i = 0; i < 128; i++)
-			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
-					Util.random.nextInt(0xffffff));
+		FuzzRenderer.render(screen, 128);
 
 		String string = "game over";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), (screen.getHeight() >> 3) + 4,
@@ -62,10 +61,10 @@ public class GameOver extends GameState {
 			int col = 0xffffff;
 			if (i == rank){
 				col = ColorFlasher.col;
-				screen.renderString8x8(hudx - 8, hudy +(i<<3) + ofs, ~col, "@");
-				screen.renderString8x8(hudx + (hiScoreStr[i].length() << 3) + 1, hudy +(i<<3) + ofs, ~col, "@");
+				screen.renderString8x8(hudx - 8, hudy +(i << 3) + ofs, ~col, "@");
+				screen.renderString8x8(hudx + (hiScoreStr[i].length() << 3) + 1, hudy +(i << 3) + ofs, ~col, "@");
 			}
-			Hud.renderScore(screen, hudx, hudy + (i << 3) + ofs, col, hiScoreStr[i]);
+			screen.renderString8x8(hudx, hudy + (i << 3) + ofs, col, hiScoreStr[i]);
 			ofs += 4;
 		}
 	}

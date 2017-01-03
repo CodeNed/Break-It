@@ -42,4 +42,8 @@ public class Label extends Component
 		else
 			render(screen);
 	}
+	
+	void setName(String s) {
+		name = s;
+	}
 }

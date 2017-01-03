@@ -1,12 +1,10 @@
 package com.noah.breakit.entity.mob.player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.state.State;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 
@@ -49,27 +47,7 @@ public class Player extends Mob {
 			secondaryStates.get(i).render(screen);
 	}
 
-	void updateHiScores() {
-		if (rank == -1) {
-			for (int i = 0; i < Game.HI_SCORES.size(); i++) {
-				if (score > Game.HI_SCORES.get(i)) {
-					rank = i;
-					Game.HI_SCORES.add(i, score);
-					Game.HI_SCORES.remove(Game.HI_SCORES.size() - 1);
-					break;
-				}
-			}
-		} else {
-			Game.HI_SCORES.set(rank, score);
-			Collections.sort(Game.HI_SCORES, Collections.reverseOrder());
-			for (int i = 0; i < Game.HI_SCORES.size(); i++) {
-				if (score == Game.HI_SCORES.get(i)) {
-					rank = i;
-					break;
-				}
-			}
-		}
-	}
+
 
 	public Player setCoordinates(int x, int y) {
 		this.x = x;

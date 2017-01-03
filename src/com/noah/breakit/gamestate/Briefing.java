@@ -6,7 +6,7 @@ import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.util.ColorFlasher;
-import com.noah.breakit.util.Util;
+import com.noah.breakit.util.FuzzRenderer;
 
 public class Briefing extends GameState {
 
@@ -41,9 +41,8 @@ public class Briefing extends GameState {
 	}
 
 	public void renderGS(Screen screen) {
-		for (int i = 0; i < 128; i++)
-			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
-					Util.random.nextInt(0xffffff));
+		
+		FuzzRenderer.render(screen, 128);
 
 		int start = 0;
 		for (int y = start; y < Game.HEIGHT; y += 4) {

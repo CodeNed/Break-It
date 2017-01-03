@@ -9,8 +9,8 @@ import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.FuzzRenderer;
 import com.noah.breakit.util.Hud;
-import com.noah.breakit.util.Util;
 
 public class TitleScreen extends GameState {
 
@@ -32,7 +32,7 @@ public class TitleScreen extends GameState {
 
 	public TitleScreen(Keyboard key) {
 		this.key = key;
-		hiScoreStr = Hud.parseScore(Game.HI_SCORES.get(0));
+		hiScoreStr = Hud.parseScore(Game.HI_SCORES.get(0).getScore());
 	}
 
 	public void updateGS() {
@@ -61,9 +61,7 @@ public class TitleScreen extends GameState {
 
 	public void renderGS(Screen screen) {
 
-		for (int i = 0; i < 128; i++)
-			screen.fillRect(Util.random.nextInt(screen.getWidth()), Util.random.nextInt(screen.getHeight()), 1, 1,
-					Util.random.nextInt(0xffffff));
+		FuzzRenderer.render(screen, 128);
 
 		int start = 0;
 		for (int y = start; y < Game.HEIGHT; y += 4) {
@@ -93,7 +91,7 @@ public class TitleScreen extends GameState {
 	
 	protected void loadNextGameState() {
 		if (startGame) {
-			Player p = new Player(Game.WIDTH / 2, Game.HEIGHT - 12 , key, new StatePrimaryPlayerAlive());
+			Player p = new Player(Game.WIDTH / 2, Game.HEIGHT - 16 , key, new StatePrimaryPlayerAlive());
 			Playfield pf = new Playfield(p, 0, null, Jukebox.playfieldlist.get(0)); 
 			pf.init();
 			ngs = pf;

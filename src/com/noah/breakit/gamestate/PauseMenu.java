@@ -1,8 +1,8 @@
 package com.noah.breakit.gamestate;
 
-import com.noah.breakit.component.Button;
 import com.noah.breakit.component.Label;
 import com.noah.breakit.component.Panel;
+import com.noah.breakit.component.PushButton;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
@@ -41,9 +41,9 @@ public class PauseMenu extends GameState {
 		
 		panel = new Panel(x, y, w, h, key, 
 						  new Label(x1, y1, "pause"),
-						  new Button(x2, y2, new Label(x2, y2, "music"), () -> musicMenu()),
-						  new Button(x3, y3, new Label(x3, y3, "quit to title"), () -> quitToTitle()),
-						  new Button(x4, y4, new Label(x4, y4, "exit program"), () -> exit())
+						  new PushButton(x2, y2, new Label(x2, y2, "music"), () -> musicMenu()),
+						  new PushButton(x3, y3, new Label(x3, y3, "quit to title"), () -> quitToTitle()),
+						  new PushButton(x4, y4, new Label(x4, y4, "exit program"), () -> exit())
 						  );
 	}
 	
@@ -61,13 +61,11 @@ public class PauseMenu extends GameState {
 			finished = true;
 			Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
 		}
-		
 		panel.update();
 	}
 
 	public void renderGS(Screen screen) {
 		renderScreenCap(screen);
-		
 		panel.render(screen);
 	}
 

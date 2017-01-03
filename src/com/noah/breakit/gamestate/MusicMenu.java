@@ -1,8 +1,8 @@
 package com.noah.breakit.gamestate;
 
-import com.noah.breakit.component.Button;
 import com.noah.breakit.component.Label;
 import com.noah.breakit.component.Panel;
+import com.noah.breakit.component.PushButton;
 import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
@@ -38,8 +38,8 @@ public class MusicMenu extends GameState
 		int y3 = y2 + 16;
 		
 		panel = new Panel(x, y, w, h, key, new Label(x1, y1, "music"),
-								new Button(x2, y2, new Label(x2, y2, "on"), () -> musicOn()),
-								new Button(x3, y3, new Label(x3, y3, "off"), () -> musicOff())
+								new PushButton(x2, y2, new Label(x2, y2, "on"), () -> musicOn()),
+								new PushButton(x3, y3, new Label(x3, y3, "off"), () -> musicOff())
 								);
 	}
 	
