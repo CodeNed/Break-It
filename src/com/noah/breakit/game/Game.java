@@ -54,16 +54,16 @@ public class Game extends Canvas implements Runnable {
 		private static final long serialVersionUID = 1L;
 
 		{
-			add(new HiScore("aaa", 5000));
-			add(new HiScore("aaa", 3000));
-			add(new HiScore("aaa", 2000));
-			add(new HiScore("aaa", 1500));
-			add(new HiScore("aaa", 1200));
-			add(new HiScore("aaa", 1000));
-			add(new HiScore("aaa", 900));
-			add(new HiScore("aaa", 800));
-			add(new HiScore("aaa", 700));
-			add(new HiScore("aaa", 600));
+			add(new HiScore("aaa", 50000));
+			add(new HiScore("aaa", 30000));
+			add(new HiScore("aaa", 20000));
+			add(new HiScore("aaa", 15000));
+			add(new HiScore("aaa", 12000));
+			add(new HiScore("aaa", 10000));
+			add(new HiScore("aaa", 9000));
+			add(new HiScore("aaa", 8000));
+			add(new HiScore("aaa", 7000));
+			add(new HiScore("aaa", 6000));
 		}
 	};
 
