@@ -35,6 +35,8 @@ public abstract class Mob extends Entity {
 			state.init(this);
 	}
 	
+	public abstract void update();
+	
 	public final void moveX() {
 		x += xa;
 	}
@@ -49,6 +51,37 @@ public abstract class Mob extends Entity {
 	
 	public final void updateYa() {
 		ya = yspeed * ydir;
+	}
+
+	public final boolean collidesWith(Mob m) {
+
+		int ml = m.getx();
+		int mr = m.getx() + m.getWidth();
+		int mt = m.gety();
+		int mb = m.gety() + m.getHeight();
+		
+		int ystep = 1;
+		if(ya != 0) ystep = Util.clamp(ya, -1, 1);
+		
+		int xstep = 1;
+		if(xa != 0) xstep = Util.clamp(xa, -1, 1);
+		
+		for (int yi = 0; yi != ya + ystep; yi += ystep) {
+			int t = y + yi;
+			int b = y + yi + height;
+			for (int xi = 0; xi != xa + xstep; xi += xstep) {
+				int l = x + xi;
+				int r = x + xi + width;
+				if (l <= mr && r >= ml) {
+					if (b >= mt && t <= mb){
+						x += xi;
+						y += yi;
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	public final State getState() {
@@ -130,37 +163,4 @@ public abstract class Mob extends Entity {
 	public final void setCol(int col) {
 		this.col = col;
 	}
-
-	public final boolean collidesWith(Mob m) {
-
-		int ml = m.getx();
-		int mr = m.getx() + m.getWidth();
-		int mt = m.gety();
-		int mb = m.gety() + m.getHeight();
-		
-		int ystep = 1;
-		if(ya != 0) ystep = Util.clamp(ya, -1, 1);
-		
-		int xstep = 1;
-		if(xa != 0) xstep = Util.clamp(xa, -1, 1);
-		
-		for (int yi = 0; yi != ya + ystep; yi += ystep) {
-			int t = y + yi;
-			int b = y + yi + height;
-			for (int xi = 0; xi != xa + xstep; xi += xstep) {
-				int l = x + xi;
-				int r = x + xi + width;
-				if (l <= mr && r >= ml) {
-					if (b >= mt && t <= mb){
-						x += xi;
-						y += yi;
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	public abstract void update();
 }
