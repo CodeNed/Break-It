@@ -20,8 +20,11 @@ public class InitialsMenu extends GameState {
 	
 	private String chars = "abcdefghijklmnopqrstuvwxyz0123456789:-!?<>@ ";
 	
-	public InitialsMenu(Keyboard key, int rank) {
+	public InitialsMenu(Keyboard key, GameState parentGameState, int rank) {
 		this.key = key;
+		
+		pgs = parentGameState;
+		
 		this.rank = rank;
 		
 		int lw = "enter initials!".length() * 8;
@@ -79,6 +82,8 @@ public class InitialsMenu extends GameState {
 	public void updateTX() {
 		transition.update(pixels);
 		finished = transition.isFinished();
+		if (finished)
+			loadNextGameState();
 	}
 
 	public void renderTX(Screen screen) {
@@ -96,5 +101,7 @@ public class InitialsMenu extends GameState {
 	}
 	
 	protected void loadNextGameState() {
+		Playfield gs = (Playfield) pgs;
+		ngs = new GameOver(key, gs.getPlayerRank());
 	}
 }

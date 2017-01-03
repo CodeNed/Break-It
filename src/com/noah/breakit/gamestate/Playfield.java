@@ -341,16 +341,14 @@ public class Playfield extends GameState {
 				ngs = p;
 			}
 		} else {
-			System.out.println(player.getScore() + ", " + Game.HI_SCORES.get(Game.HI_SCORES.size() - 1).getScore());
-			if(player.getScore() > Game.HI_SCORES.get(Game.HI_SCORES.size() - 1).getScore()) {
-				updateHiScores();
-				InitialsMenu im = new InitialsMenu(player.getKey(), getPlayerRank());
+			updateHiScores();
+			if(getPlayerRank() < Game.HI_SCORES.size()) {
+				InitialsMenu im = new InitialsMenu(player.getKey(), this, getPlayerRank()); 
 				im.init();
-				Game.GSM.push(im);
-				return;
+				ngs = im;
 			}
-				
-			ngs = new GameOver(player.getKey(), getPlayerRank());
+			else
+				ngs = new GameOver(player.getKey(), getPlayerRank());
 		}
 	}
 	
@@ -360,7 +358,7 @@ public class Playfield extends GameState {
 			Game.HI_SCORES.remove(Game.HI_SCORES.size() - 1);
 	}
 	
-	private int getPlayerRank() {
+	public int getPlayerRank() {
 		int rank = -1;
 		int count = 0;
 		for (int i =0; i < Game.HI_SCORES.size(); i++) {
