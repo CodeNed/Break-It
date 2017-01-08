@@ -19,6 +19,8 @@ public class StatePrimaryPlayerAlive implements State {
 	
 	public void init(Mob m) {
 		p = (Player) m;
+		p.setWidth(32);
+		p.setCol(0x00ffff);
 	}
 
 	public void update() {
@@ -49,8 +51,8 @@ public class StatePrimaryPlayerAlive implements State {
 			SoundFX.LAUNCH.play();
 		}
 
-		p.updateXa();
-		p.moveX();
+		p.updatexa();
+		p.movex();
 
 		p.scoreStr = Hud.parseScore(p.score);
 		if (p.score >= p.toNext1UP) {

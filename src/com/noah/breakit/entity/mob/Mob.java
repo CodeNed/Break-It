@@ -29,7 +29,7 @@ public abstract class Mob extends Entity {
 		this.y = y;
 	}
 	
-	public final void init(Playfield playfield) {
+	public void init(Playfield playfield) {
 		super.init(playfield);
 		if(state != null)
 			state.init(this);
@@ -37,19 +37,19 @@ public abstract class Mob extends Entity {
 	
 	public abstract void update();
 	
-	public final void moveX() {
+	public final void movex() {
 		x += xa;
 	}
 	
-	public final void moveY() {
+	public final void movey() {
 		y += ya;
 	}
 	
-	public final void updateXa() {
+	public final void updatexa() {
 		xa = xspeed * xdir;
 	}
 	
-	public final void updateYa() {
+	public final void updateya() {
 		ya = yspeed * ydir;
 	}
 

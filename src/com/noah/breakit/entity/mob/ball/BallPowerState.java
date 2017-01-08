@@ -15,13 +15,18 @@ public class BallPowerState extends BallNormalState {
 	private int[] cols = { 0xff0000, 0xff7700, 0xffdd00, 0x00ff00, 0x0000ff, 0x8a2be2, 0xc77df3 };
 	
 	private int count = 0;
+	
+	public void init(Mob m) {
+		super.init(m);
+		adjustSize(4);
+	}
 
 	public void update() {
 		
 		b.processWallCollision();
 
-		b.updateXa();
-		b.updateYa();
+		b.updatexa();
+		b.updateya();
 
 		for(int i = NUM_TAILS - 1; i >= 1; i--) {
 			xlast[i] = xlast[i - 1];
@@ -31,8 +36,8 @@ public class BallPowerState extends BallNormalState {
 		xlast[0] = b.getx();
 		ylast[0] = b.gety();
 		
-		b.moveX();
-		b.moveY();
+		b.movex();
+		b.movey();
 		
 		b.portalSicknessTimer = Util.max(++b.portalSicknessTimer, Ball.PORTAL_SICKNESS_TIME);
 		

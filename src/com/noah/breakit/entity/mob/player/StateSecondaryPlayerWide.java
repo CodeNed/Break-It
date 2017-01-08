@@ -29,11 +29,8 @@ public class StateSecondaryPlayerWide implements State {
 		}
 		
 		if(count == 0) {
-//			p.setState(new PlayerPrimaryState());
-//			p.getState().init(p);
 			p.removeSecondaryState(this);
-			p.setCol(0x00ffff);
-			p.setWidth(32);
+			p.getPrimaryState().init(p);
 			SoundFX.POWER_DOWN.play();
 		}
 	}

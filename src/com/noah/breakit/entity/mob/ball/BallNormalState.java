@@ -18,19 +18,20 @@ public class BallNormalState implements State {
 	
 	public void init(Mob m) {
 		b = (Ball) m;
+		adjustSize(4);
 	}
 	
 	public void update() {
 		
 		b.processWallCollision();
 		
-		b.updateXa();
-		b.updateYa();
+		b.updatexa();
+		b.updateya();
 
 		if (!b.released) b.setxa(b.getPlayfield().getPlayer().getxa());
 
-		b.moveX();
-		b.moveY();
+		b.movex();
+		b.movey();
 		
 		b.portalSicknessTimer = Util.max(++b.portalSicknessTimer, Ball.PORTAL_SICKNESS_TIME);
 	}
@@ -114,5 +115,14 @@ public class BallNormalState implements State {
 
 	public Mob getMob() {
 		return b;
+	}
+	
+	protected void adjustSize(int size) {
+		int wOld = b.getWidth();
+		int hOld = b.getHeight();
+		b.setWidth(size);
+		b.setHeight(size);
+		b.setx(b.getx() - (b.getWidth() / 2) + (wOld / 2));
+		b.sety(b.gety() - (b.getHeight() / 2) + (hOld / 2));
 	}
 }

@@ -31,8 +31,6 @@ public class StateSecondaryPlayerShooting implements State {
 		
 		if(count == 0) {
 			p.removeSecondaryState(this);
-//			p.setState(new PlayerPrimaryState());
-//			p.getState().init(p);
 			SoundFX.POWER_DOWN.play();
 		}
 	}

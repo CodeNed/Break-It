@@ -40,8 +40,8 @@ public class PowerupState implements State {
 				break;
 			}
 		}
-		p.updateYa();
-		p.moveY();	
+		p.updateya();
+		p.movey();	
 	}
 
 	public void render(Screen s) {

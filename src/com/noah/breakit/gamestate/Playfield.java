@@ -334,7 +334,6 @@ public class Playfield extends GameState {
 				ngs = p;
 			} else {
 				player.setState(new StatePrimaryPlayerAlive());
-				player.getState().init(player);
 				Playfield p = new Playfield(player.setCoordinates(width / 2, height - 16),
 						stagePattern, stage, currSong);
 				p.init();

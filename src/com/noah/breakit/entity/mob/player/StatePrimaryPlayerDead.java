@@ -20,8 +20,6 @@ public class StatePrimaryPlayerDead implements State {
 	public void update() {
 		if (count-- == 0) {
 			p.addToLives(-1);
-			p.setState(new StatePrimaryPlayerAlive());
-			p.getState().init(p);
 			p.getPlayfield().captureScreen();
 			p.getPlayfield().setTransitioning(true, new PixelDrip(0xff00ff));     
 		}

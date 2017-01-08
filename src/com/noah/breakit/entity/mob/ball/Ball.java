@@ -95,7 +95,7 @@ public class Ball extends Mob {
 
 		for (int yi = 0; yi != ya + ystep; yi += ystep) {
 			int t = y + yi;
-			int b = y + yi + height;
+			int m = y + yi + height / 2;
 
 			if (t < 1) {
 				ya *= -1;
@@ -103,7 +103,7 @@ public class Ball extends Mob {
 				SoundFX.LO_BOUNCE.play();
 				break;
 			}
-			if (b > Game.HEIGHT) {
+			if (m > Game.HEIGHT) {
 				remove();
 				playfield.addSpawner(new ParticleSpawner(x + width / 2, y + height / 2, 100));
 				SoundFX.EXPLODE_2.play();

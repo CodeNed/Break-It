@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.state.State;
+import com.noah.breakit.gamestate.Playfield;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 
@@ -31,6 +32,14 @@ public class Player extends Mob {
 		width = 32;
 		height = 4;
 		col = 0x00ffff;
+	}
+	
+	public void init(Playfield playfield) {
+		super.init(playfield);
+		if(secondaryStates != null) {
+			for(State s : secondaryStates)
+				s.init(this);
+		}
 	}
 
 	public void update() {
@@ -77,6 +86,14 @@ public class Player extends Mob {
 	
 	public Keyboard getKey() {
 		return key;
+	}
+	
+	public State getPrimaryState() {
+		return state;
+	}
+	
+	public List<State> getSecondaryStates() {
+		return secondaryStates;
 	}
 	
 	public void addStateSecondaryPlayerShooting() {
