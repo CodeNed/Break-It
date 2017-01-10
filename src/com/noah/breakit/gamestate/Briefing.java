@@ -86,7 +86,7 @@ public class Briefing extends BreakitGameState {
 				~ColorFlasher.col, string);
 		
 		height +=20;
-		string = "first 1up at 10000";
+		string = "first 1up at " + Config.TO_FIRST_1UP;
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 		
@@ -96,12 +96,12 @@ public class Briefing extends BreakitGameState {
 				~ColorFlasher.col, string);
 		
 		height +=10;
-		string = "1ups each score";
+		string = "1ups each time";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 		
 		height +=10;
-		string = "doubling!";
+		string = "score doubles!";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 		
