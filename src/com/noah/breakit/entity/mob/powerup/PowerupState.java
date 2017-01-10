@@ -22,11 +22,12 @@ public class PowerupState implements State {
 		this.c = c;
 	}
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		p = (Powerup) m;
+		return this;
 	}
 
-	public final void update() {
+	public final State update() {
 		int ystep = 0;
 		ystep = Util.clamp(p.getya(), -1, 1);
 		for (int yi = 0; yi != p.getya() + ystep; yi += ystep) {
@@ -41,7 +42,8 @@ public class PowerupState implements State {
 			}
 		}
 		p.updateya();
-		p.movey();	
+		p.movey();
+		return this;
 	}
 
 	public void render(Screen s) {

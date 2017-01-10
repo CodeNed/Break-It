@@ -9,12 +9,14 @@ public class StatePrimaryPlayerDead implements State {
 	
 	private Player p = null;
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		p = (Player) m;
 		p.clearSecondaryStates();
+		return this;
 	}
 
-	public void update() {
+	public State update() {
+		return this;
 	}
 
 	public void render(Screen s) {

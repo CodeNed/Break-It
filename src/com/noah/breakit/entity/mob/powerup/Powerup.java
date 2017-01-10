@@ -52,10 +52,8 @@ public class Powerup extends Mob {
 	
 	private void giantBall() {
 		List<Ball> balls = playfield.getBalls();
-		for (Ball b : balls) {
-			b.setState(new BallGiantState());
-			b.getState().init(b);
-		}
+		for (Ball b : balls)
+			b.setState(new BallGiantState().init(b));
 	}
 	
 	private void multiBall() {
@@ -70,10 +68,8 @@ public class Powerup extends Mob {
 	
 	private void powerBall() {
 		List<Ball> balls = playfield.getBalls();
-		for (Ball b : balls) {
-			b.setState(new BallPowerState());
-			b.getState().init(b);
-		}
+		for (Ball b : balls)
+			b.setState(new BallPowerState().init(b));
 	}
 	
 	private void shooting() {

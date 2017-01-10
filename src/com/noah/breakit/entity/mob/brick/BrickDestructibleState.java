@@ -16,14 +16,15 @@ public class BrickDestructibleState implements State {
 	
 	int life = 1;
 
-	public void init(Mob m) {		
+	public State init(Mob m) {		
 		b = (Brick) m;
 		int[] colors = { 0xff0000, 0xff00ff, 0x0000ff, 0x00ffff, 0x00ff00, 0xffff00 };
 		b.setCol(colors[(b.gety() / 8 - 2) % 6]);
+		return this;
 	}
 	
-	public void update() {
-		// leave blank
+	public State update() {
+		return this;
 	}
 
 	public void render(Screen s) {		

@@ -5,6 +5,7 @@ import com.noah.breakit.entity.mob.brick.Brick;
 import com.noah.breakit.entity.mob.brick.BrickSolidState;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
+import com.noah.breakit.entity.state.State;
 import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Util;
 
@@ -14,20 +15,19 @@ public class BallGiantState extends BallNormalState {
 	
 	private int count = 0;
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		super.init(m);
 		adjustSize(12);
 		m.setx(Util.clamp(m.getx(), 0, Config.WINDOW_WIDTH - m.getWidth()));
 		m.setCol(0xff00ff);
+		return this;
 	}
 	
-	public void update() {
+	public State update() {
 		super.update();
-		
-		if(count++ == TTL) {
-			b.setState(new BallNormalState());
-			b.getState().init(b);
-		}
+		if(count++ == TTL)
+			return new BallNormalState().init(b);
+		return this;
 	}
 	
 	protected void processXCollision(Mob m) {

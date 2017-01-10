@@ -16,12 +16,14 @@ public class BallNormalState implements State {
 	
 	protected Ball b = null;
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		b = (Ball) m;
+		b.setCol(0xff00ff);
 		adjustSize(4);
+		return this;
 	}
 	
-	public void update() {
+	public State update() {
 		
 		b.processWallCollision();
 		
@@ -34,6 +36,8 @@ public class BallNormalState implements State {
 		b.movey();
 		
 		b.portalSicknessTimer = Util.max(++b.portalSicknessTimer, Ball.PORTAL_SICKNESS_TIME);
+		
+		return this;
 	}
 
 	public void render(Screen s) {

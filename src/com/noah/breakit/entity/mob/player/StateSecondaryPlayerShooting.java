@@ -14,11 +14,12 @@ public class StateSecondaryPlayerShooting implements State {
 	private int count = TTL;
 	private boolean toggle = false;
 	
-	public void init(Mob m) {
-		p = (Player) m; 
+	public State init(Mob m) {
+		p = (Player) m;
+		return this;
 	}
 	
-	public void update() {		
+	public State update() {		
 		if((count-- % (1 * 45)) == 0) {
 			if(toggle)
 				p.getPlayfield().addProjectile(new Projectile(p.getx(), p.gety()));
@@ -33,6 +34,8 @@ public class StateSecondaryPlayerShooting implements State {
 			p.removeSecondaryState(this);
 			SoundFX.POWER_DOWN.play();
 		}
+		
+		return this;
 	}
 
 	public void render(Screen s) {

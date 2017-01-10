@@ -18,28 +18,30 @@ public class StatePrimaryPlayerAlive implements State {
 	public StatePrimaryPlayerAlive() {
 	}
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		p = (Player) m;
 		p.setWidth(32);
 		p.setCol(0x00ffff);
+		return this;
 	}
 
-	public void update() {
+	public State update() {
 		                 
 		p.key.update();
 
 		p.setxdir(0);
 
-		if (p.key.left && p.getx() > 0 + p.getxspeed()) p.setxdir(-1);
+		if (p.key.left && p.getx() > 0 + p.getxspeed())
+			p.setxdir(-1);
 
-		if (p.key.right && p.getx() < Config.WINDOW_WIDTH - p.getWidth() - p.getxspeed()) p.setxdir(1);
+		if (p.key.right && p.getx() < Config.WINDOW_WIDTH - p.getWidth() - p.getxspeed())
+			p.setxdir(1);
 		
 		if((p.key.esc && !p.key.escLast) || (p.key.enter && !p.key.enterLast)) {
 			Jukebox.setVolume(Jukebox.MENU_VOLUME);
 			SoundFX.PAUSE.play();
-			p.getPlayfield().captureScreen();
 			PauseMenu pm = new PauseMenu(p.key, p.getPlayfield());
-			pm.init();
+			pm.captureScreen();
 			Game.GSM.push(pm);
 		}
 		
@@ -61,6 +63,8 @@ public class StatePrimaryPlayerAlive implements State {
 			p.toNext1UP *= 2;
 			SoundFX.ONE_UP.play();
 		}
+		
+		return this;
 	}
 
 	public void render(Screen s) {

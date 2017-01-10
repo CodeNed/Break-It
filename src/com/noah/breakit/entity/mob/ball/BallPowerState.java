@@ -2,6 +2,7 @@ package com.noah.breakit.entity.mob.ball;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.brick.BrickDestructibleState;
+import com.noah.breakit.entity.state.State;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.util.Util;
 
@@ -16,12 +17,13 @@ public class BallPowerState extends BallNormalState {
 	
 	private int count = 0;
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		super.init(m);
 		adjustSize(4);
+		return this;
 	}
 
-	public void update() {
+	public State update() {
 		
 		b.processWallCollision();
 
@@ -50,11 +52,10 @@ public class BallPowerState extends BallNormalState {
 			
 		}
 		
-		if(count == TTL) {
-			b.setState(new BallNormalState());
-			b.setCol(0xff00ff);
-			b.getState().init(b);
-		}
+		if(count == TTL)
+			return new BallNormalState().init(b);
+		
+		return this;
 	}
 
 	public void render(Screen s) {

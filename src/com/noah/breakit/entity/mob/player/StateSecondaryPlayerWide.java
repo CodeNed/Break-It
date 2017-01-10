@@ -12,13 +12,14 @@ public class StateSecondaryPlayerWide implements State {
 	private static final int TTL = 15 * 60;
 	private int count = TTL;
 	
-	public void init(Mob m) {
+	public State init(Mob m) {
 		p = (Player) m;
 		p.setWidth(48);
 		p.setCol(0x00ff00);
+		return this;
 	}
 
-	public void update() {
+	public State update() {
 		
 		if(count-- == 5 * 60)
 			p.setCol(0xffff00);
@@ -33,6 +34,8 @@ public class StateSecondaryPlayerWide implements State {
 			p.getPrimaryState().init(p);
 			SoundFX.POWER_DOWN.play();
 		}
+		
+		return this;
 	}
 
 	public void render(Screen s) {

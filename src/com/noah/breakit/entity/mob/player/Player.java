@@ -8,6 +8,7 @@ import com.noah.breakit.entity.state.State;
 import com.noah.breakit.gamestate.Playfield;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
+import com.noah.breakit.util.Config;
 
 public class Player extends Mob {
 
@@ -19,9 +20,8 @@ public class Player extends Mob {
 	int rank = -1;
 	String scoreStr = "";
 	
-	int toNext1UP = 10000;
-	
-	int lives = 3;
+	int toNext1UP = Config.TO_FIRST_1UP;
+	int lives = Config.STARTING_LIVES;
 
 	public Player(int x, int y, Keyboard key, State state) {
 		super(x, y, state);

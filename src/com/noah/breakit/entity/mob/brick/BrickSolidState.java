@@ -9,12 +9,14 @@ public class BrickSolidState implements State {
 	
 	private Brick b = null;
 			
-	public void init(Mob m) {
+	public State init(Mob m) {
 		b = (Brick) m;
 		b.setCol(0x909090);
+		return this;
 	}
 	
-	public void update() {
+	public State update() {
+		return this;
 	}
 
 	public void render(Screen s) {
