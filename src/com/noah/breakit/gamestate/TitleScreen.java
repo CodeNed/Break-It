@@ -79,8 +79,7 @@ public class TitleScreen extends BreakitGameState {
 		Outro o = null;
 		if (startGame) {
 			Player p = new Player(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT - 16 , key, new StatePrimaryPlayerAlive());
-			Playfield pf = new Playfield(p, 0, null, Jukebox.playfieldlist.get(0)); 
-			pf.init();
+			Playfield pf = new Playfield(p, 0, null, Jukebox.playfieldlist.get(0)).init(); 
 			o = new PixelSpatter(0xff00ff, pf);
 			o.captureScreen();
 			SoundFX.SELECT.play();

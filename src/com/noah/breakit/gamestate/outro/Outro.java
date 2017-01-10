@@ -6,7 +6,6 @@ import com.noah.breakit.util.Util;
 public abstract class Outro extends BreakitGameState {
 	
 	int col = 0x000000;
-	boolean finished = false;
 	
 	Outro(int col, BreakitGameState ngs) {
 		this.col = col;
@@ -65,10 +64,6 @@ public abstract class Outro extends BreakitGameState {
 			screen.renderPixel(pixels[i], i);
 		}
 	}
-	
-	public boolean isFinished() {
-		return finished;
-	}
-	
+
 	public abstract void update();
 }

@@ -3,15 +3,12 @@ package com.noah.breakit.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.noah.breakit.gamestate.BreakitGameState;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.util.ColorFlasher;
 
 public class Panel extends Component {
-	
-	private BreakitGameState gs = null;
 	
 	private Keyboard key = null;
 
@@ -131,13 +128,5 @@ public class Panel extends Component {
 	
 	public String getRotaryButtonValue(int index) {
 		return rotaryButtons.get(index).getChar().toString();
-	}
-	
-	public BreakitGameState getGameState() {
-		return gs;
-	}
-	
-	public void setGameState(BreakitGameState gs) {
-		this.gs = gs;
 	}
 }

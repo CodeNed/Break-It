@@ -74,12 +74,12 @@ public class Playfield extends BreakitGameState {
 		addBall(new Ball(player.getx() + (player.getWidth() / 2), player.gety() - player.getHeight()));
 	}
 
-	public void init() {
+	public Playfield init() {
 		powerupSpawner.init(this);
+		return this;
 	}
 
 	public void update() {
-		System.out.println(player.getLives());
 		Jukebox.play(currSong, true);
 
 		for (int i = 0; i < spawners.size(); i++)
@@ -132,8 +132,7 @@ public class Playfield extends BreakitGameState {
 
 		if (balls.size() == 0) {
 			if (!(player.getState() instanceof StatePrimaryPlayerDead)) {
-				player.setState(new StatePrimaryPlayerDead());
-				player.getState().init(player);
+				player.setState(new StatePrimaryPlayerDead().init(player));
 				addSpawner(new ParticleSpawner(player.getx() + player.getWidth() / 2,
 						player.gety() + player.getHeight() / 2, 100));
 			}
@@ -302,20 +301,19 @@ public class Playfield extends BreakitGameState {
 		
 		Outro o = null;
 
-		if (player.getLives() > 0) {
+		System.out.println(player.getLives());
+		if (player.getLives() > 1) {
 			if (player.getState() instanceof StatePrimaryPlayerAlive) {
 				if (++stage > 29) stage = 0;
 
 				Playfield p = new Playfield(player.setCoordinates(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT - 16), stage, forceField,
-						Jukebox.playfieldlist.get(Jukebox.getNextPlayfieldSong()));
-				p.init();
+						Jukebox.playfieldlist.get(Jukebox.getNextPlayfieldSong())).init();
 				o = new PixelSpatter(0xff00ff, p);
 			} else {
 				player.addToLives(-1);
 				player.setState(new StatePrimaryPlayerAlive());
 				Playfield p = new Playfield(player.setCoordinates(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT - 16), stagePattern,
-						stage, currSong);
-				p.init();
+						stage, currSong).init();
 				o = new PixelDrip(0x00ffff, p);
 			}
 		} else {

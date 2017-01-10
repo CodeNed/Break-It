@@ -15,6 +15,8 @@ import com.noah.breakit.util.Config;
 
 public class PauseMenu extends BreakitGameState {
 	
+	private BreakitGameState pgs = null;
+	
 	private Keyboard key = null;
 	
 	private Panel panel = null;
@@ -24,8 +26,9 @@ public class PauseMenu extends BreakitGameState {
 	
 	public PauseMenu(Keyboard key, BreakitGameState parentGameState) {
 		this.key = key;
-		this.pixels = parentGameState.getPixels();
 		this.pgs = parentGameState;
+		
+		currSong = pgs.getCurrSong();
 		
 		int x = Config.WINDOW_WIDTH / 2 - w / 2;
 		int y = Config.WINDOW_HEIGHT / 2 - h / 2;
@@ -50,10 +53,6 @@ public class PauseMenu extends BreakitGameState {
 						  );
 	}
 	
-	public void init() {
-		panel.setGameState(this);
-	}
-	
 	public void update() {
 		
 		Jukebox.play(pgs.getCurrSong(), true);
@@ -73,14 +72,17 @@ public class PauseMenu extends BreakitGameState {
 	}
 	
 	private void musicMenu() {
-		captureScreen();
-		Game.GSM.push(new MusicMenu(key, this));
+		MusicMenu mm = new MusicMenu(key, this);
+		mm.captureScreen();
+		Game.GSM.push(mm);
 	}
 	
 	private void quitToTitle() {
 		Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
 		PixelDrip d = new PixelDrip(0xff00ff, new TitleScreen(key));
 		d.captureScreen();
+		pgs.setNextGameState(d);
+		pgs.setFinished(true);
 		finished = true;
 	}
 	

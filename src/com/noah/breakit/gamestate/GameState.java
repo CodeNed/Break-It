@@ -8,19 +8,17 @@ public interface GameState {
 	
 	public void render(Screen screen);
 	
-	public void captureScreen();
-	
 	public void renderScreenCap(Screen screen);
+	
+	public void captureScreen();
 	
 	public void loadNextGameState();
 	
-	public void setNextGameState(GameState gs);
-	
 	public GameState getNextGameState();
 	
-	public GameState getParentGameState();
-	
-	public String getCurrSong();
+	public void setNextGameState(GameState gs);
 	
 	public boolean isFinished();
+	
+	public void setFinished(boolean b);
 }

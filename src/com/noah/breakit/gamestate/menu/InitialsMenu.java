@@ -66,10 +66,6 @@ public class InitialsMenu extends BreakitGameState {
 				new PushButton(pbx, pby, new Label(pbx, pby, "confirm"), () -> confirm()));
 	}
 	
-	public void init() {
-		panel.setGameState(this);
-	}
-	
 	public void update() {
 		key.update();
 		panel.update();
@@ -90,7 +86,6 @@ public class InitialsMenu extends BreakitGameState {
 			result += panel.getRotaryButtonValue(i);
 		
 		Config.HI_SCORES.get(rank).setInitials(result);
-		captureScreen();
 		loadNextGameState();
 	}
 	
