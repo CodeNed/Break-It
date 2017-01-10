@@ -5,9 +5,9 @@ import com.noah.breakit.graphics.Screen;
 
 public interface State {
 	
-	public void init(Mob m);
+	public State init(Mob m);
 	
-	public void update();
+	public State update();
 	
 	public void render(Screen s);
 	
