@@ -11,7 +11,8 @@ public class Config {
 		public static final int WINDOW_HEIGHT = 260;
 		public static final int SCALE = 3;
 		public static final int NUM_HI_SCORES = 10;
-		public static final int TO_FIRST_1UP = 10000;
+		public static final int TO_FIRST_1UP = 20000;
+		public static final int STARTING_LIVES = 3;
 		
 		public static final List<HiScore> HI_SCORES = new ArrayList<HiScore>() {
 			
