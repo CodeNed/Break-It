@@ -2,71 +2,61 @@ package com.noah.breakit.gamestate;
 
 import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.entity.mob.player.StatePrimaryPlayerAlive;
-import com.noah.breakit.game.Game;
+import com.noah.breakit.gamestate.outro.Outro;
+import com.noah.breakit.gamestate.outro.PixelSpatter;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
-import com.noah.breakit.transition.PixelSpatter;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.FuzzRenderer;
 import com.noah.breakit.util.Hud;
 
-public class TitleScreen extends GameState {
+public class TitleScreen extends BreakitGameState {
 
 	private Keyboard key;
-
-	private String hiScoreStr = "";
-
+	
+	private String hiScoreStr = Hud.parseScore(Config.HI_SCORES.get(0).getScore());
+	
 	private final int[] title = { '#','#', 0 , 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0, '#', 0 , 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 ,'#','#','#',
-			                      '#', 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,'#', 0 ,
-			                      '#','#', 0 , 0 ,'#','#', 0 , 0, '#','#', 0 , 0 ,'#','#','#', 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
-			                      '#', 0 ,'#', 0 ,'#', 0 ,'#', 0, '#', 0 , 0 , 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
-			                      '#','#', 0 , 0 ,'#', 0, '#', 0, '#','#','#', 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 , 0, '#', 0 };
+            					  '#', 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0 ,'#', 0 ,
+            					  '#','#', 0 , 0 ,'#','#', 0 , 0, '#','#', 0 , 0 ,'#','#','#', 0 ,'#','#', 0 , 0 ,'#','#','#', 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
+            					  '#', 0 ,'#', 0 ,'#', 0 ,'#', 0, '#', 0 , 0 , 0 ,'#', 0 ,'#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 , 0 ,'#', 0 , 0 , 0, '#', 0 ,
+            					  '#','#', 0 , 0 ,'#', 0, '#', 0, '#','#','#', 0 ,'#', 0, '#', 0 ,'#', 0 ,'#', 0 , 0 , 0 , 0 , 0 ,'#','#','#', 0 , 0, '#', 0 };
 
 	private int titleHeight = 5;
 	private int titleWidth = 31;
-
+	
 	private int count = 0;
+	
 	private boolean startGame = false;
 
 	public TitleScreen(Keyboard key) {
 		this.key = key;
-		hiScoreStr = Hud.parseScore(Game.HI_SCORES.get(0).getScore());
 	}
-
-	public void updateGS() {
-		
+	
+	public void update() {
 		Jukebox.play("titlesong", true);
 
 		key.update();
-		if (key.enter && !key.enterLast) {
-			captureScreen();
+		
+		if ((key.enter && !key.enterLast)) {
 			startGame = true;
-			setTransitioning(true, new PixelSpatter(0xff00ff));
 			SoundFX.SELECT.play();
 		}
-
-		if (count++ == 60 * 15) {
-			captureScreen();
-			setTransitioning(true, new PixelSpatter(0x00ffff));
-		}
+		
+		if((count++ == 15 * 60) || startGame)
+			loadNextGameState();
 	}
-
-	public void updateTX() {
-		transition.update(pixels);
-		finished = Jukebox.fadeToBlack() && transition.isFinished();
-		if(finished) loadNextGameState();
-	}
-
-	public void renderGS(Screen screen) {
-
+	
+	public void render(Screen screen) {
 		FuzzRenderer.render(screen, 128);
 
 		int start = 0;
-		for (int y = start; y < Game.HEIGHT; y += 4) {
-			for (int x = start; x < Game.WIDTH; x += 4) {
-				if (x == start || x == Game.WIDTH - 4 || y == start || y == Game.HEIGHT - 4)
+		for (int y = start; y < Config.WINDOW_HEIGHT; y += 4) {
+			for (int x = start; x < Config.WINDOW_WIDTH; x += 4) {
+				if (x == start || x == Config.WINDOW_WIDTH - 4 || y == start || y == Config.WINDOW_HEIGHT - 4)
 					screen.fillRect(x, y, 4, 4, ColorFlasher.col);
 			}
 		}
@@ -84,18 +74,21 @@ public class TitleScreen extends GameState {
 
 		screen.renderString8x8(30, 125, ~ColorFlasher.col, "press enter!");
 	}
-
-	public void renderTX(Screen screen) {
-		renderScreenCap(screen);
-	}
 	
-	protected void loadNextGameState() {
+	public void loadNextGameState() {
+		Outro o = null;
 		if (startGame) {
-			Player p = new Player(Game.WIDTH / 2, Game.HEIGHT - 16 , key, new StatePrimaryPlayerAlive());
+			Player p = new Player(Config.WINDOW_WIDTH / 2, Config.WINDOW_HEIGHT - 16 , key, new StatePrimaryPlayerAlive());
 			Playfield pf = new Playfield(p, 0, null, Jukebox.playfieldlist.get(0)); 
 			pf.init();
-			ngs = pf;
+			o = new PixelSpatter(0xff00ff, pf);
+			o.captureScreen();
+			SoundFX.SELECT.play();
 		} else
-			ngs = new Briefing(key);
+			o = new PixelSpatter(0x00ffff, new Briefing(key));
+		o.captureScreen();
+		ngs = o;
+		
+		finished = true;
 	}
 }

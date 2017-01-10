@@ -7,9 +7,9 @@ import com.noah.breakit.entity.mob.brick.BrickSolidState;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
 import com.noah.breakit.entity.state.State;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Util;
 
 public class BallNormalState implements State {
@@ -45,8 +45,8 @@ public class BallNormalState implements State {
 		String s0 = "stage-" + (b.getPlayfield().getStage() + 1);
 		String s1 = "press <space>";
 		String s2 = "to launch!";
-		int xofs = Game.WIDTH >> 1;
-		int yofs = Game.HEIGHT >> 1;
+		int xofs = Config.WINDOW_WIDTH >> 1;
+		int yofs = Config.WINDOW_HEIGHT >> 1;
 
 		s.renderString8x8(xofs - ((s0.length() << 3) >> 1), yofs - 10, 0xffffff, s0);
 		s.renderString8x8(xofs - ((s1.length() << 3) >> 1), yofs, 0xffffff, s1);

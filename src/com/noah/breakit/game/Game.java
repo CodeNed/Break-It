@@ -8,8 +8,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -18,11 +16,11 @@ import javax.swing.JFrame;
 import com.noah.breakit.gamestate.CreditScreen;
 import com.noah.breakit.gamestate.GameState;
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.hiscore.HiScore;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.ShutdownThread;
 
 import kuusisto.tinysound.TinySound;
@@ -35,45 +33,23 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean running = false;
 
-	public static final int WIDTH = 160;
-	public static final int HEIGHT = 260;
-	private int scale = 3;
-
 	private JFrame frame = null;
-	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage image = new BufferedImage(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 	private Screen screen = null;
 
-	public static final Stack<GameState> GSM = new Stack<GameState>();
+	public static final Stack<GameState> GSM = new Stack<>();
 	
 	private final Keyboard key = new Keyboard();
 	
-	public static final List<HiScore> HI_SCORES = new ArrayList<HiScore>() {
-		
-		private static final long serialVersionUID = 1L;
-
-		{
-			add(new HiScore("aaa", 50000));
-			add(new HiScore("aaa", 30000));
-			add(new HiScore("aaa", 20000));
-			add(new HiScore("aaa", 15000));
-			add(new HiScore("aaa", 12000));
-			add(new HiScore("aaa", 10000));
-			add(new HiScore("aaa", 9000));
-			add(new HiScore("aaa", 8000));
-			add(new HiScore("aaa", 7000));
-			add(new HiScore("aaa", 6000));
-		}
-	};
-
 	Game() {
 		
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
 		
-		Dimension size = new Dimension(WIDTH * scale, HEIGHT * scale);
+		Dimension size = new Dimension(Config.WINDOW_WIDTH * Config.SCALE, Config.WINDOW_HEIGHT * Config.SCALE);
 		setPreferredSize(size);
-		screen = new Screen(WIDTH, HEIGHT);
+		screen = new Screen(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
 		frame = new JFrame();
 		addKeyListener(key);
 
@@ -170,8 +146,8 @@ public class Game extends Canvas implements Runnable {
 
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(new Color(0xff00ff));
-		g.fillRect(0, 0, WIDTH, HEIGHT);
-		g.drawImage(image, 0, 0, WIDTH * scale, HEIGHT * scale, null);
+		g.fillRect(0, 0, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+		g.drawImage(image, 0, 0, Config.WINDOW_WIDTH * Config.SCALE, Config.WINDOW_HEIGHT * Config.SCALE, null);
 		g.dispose();
 		bs.show();
 	}

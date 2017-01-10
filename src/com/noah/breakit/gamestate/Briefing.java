@@ -1,14 +1,15 @@
 package com.noah.breakit.gamestate;
 
-import com.noah.breakit.game.Game;
+import com.noah.breakit.gamestate.outro.Outro;
+import com.noah.breakit.gamestate.outro.PixelDrip;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.music.Jukebox;
-import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.FuzzRenderer;
 
-public class Briefing extends GameState {
+public class Briefing extends BreakitGameState {
 
 	private Keyboard key = null;
 	
@@ -19,35 +20,27 @@ public class Briefing extends GameState {
 	public Briefing(Keyboard key) {
 		this.key = key;
 	}
-
-	public void updateGS() {
-		
+	
+	public void update() {
 		Jukebox.play("briefingsong", true);
 		
 		key.update();
 		
 		if (key.enter) {
-			captureScreen();
 			toTitle = true;
-			setTransitioning(true, new PixelDrip(0xff00ff));
-			return;
+			loadNextGameState();
 		}
-		
-		if (count++ == 60 * 15) {
-			captureScreen();
-			setTransitioning(true, new PixelDrip(0x00ffff));
-			return;
-		}
+		if (count++ == 60 * 15)
+			loadNextGameState();
 	}
 
-	public void renderGS(Screen screen) {
-		
+	public void render(Screen screen) {
 		FuzzRenderer.render(screen, 128);
 
 		int start = 0;
-		for (int y = start; y < Game.HEIGHT; y += 4) {
-			for (int x = start; x < Game.WIDTH; x += 4) {
-				if (x == start || x == Game.WIDTH - 4 || y == start || y == Game.HEIGHT - 4)
+		for (int y = start; y < Config.WINDOW_HEIGHT; y += 4) {
+			for (int x = start; x < Config.WINDOW_WIDTH; x += 4) {
+				if (x == start || x == Config.WINDOW_WIDTH - 4 || y == start || y == Config.WINDOW_HEIGHT - 4)
 					screen.fillRect(x, y, 4, 4, ColorFlasher.col);
 			}
 		}
@@ -93,7 +86,7 @@ public class Briefing extends GameState {
 				~ColorFlasher.col, string);
 		
 		height +=20;
-		string = "first 1up at 20000";
+		string = "first 1up at 10000";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 		
@@ -103,12 +96,12 @@ public class Briefing extends GameState {
 				~ColorFlasher.col, string);
 		
 		height +=10;
-		string = "1ups each 30000";
+		string = "1ups each score";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 		
 		height +=10;
-		string = "pts!";
+		string = "doubling!";
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 		
@@ -117,20 +110,17 @@ public class Briefing extends GameState {
 		screen.renderString8x8((screen.getWidth() >> 1) - ((string.length() << 3) >> 1), height,
 				~ColorFlasher.col, string);
 	}
-
-	public void updateTX() {
-		transition.update(pixels);
-		finished = Jukebox.fadeToBlack() && transition.isFinished();
-		if(finished) loadNextGameState();
-	}
-
-	public void renderTX(Screen screen) {
-		renderScreenCap(screen);
-	}
 	
-	protected void loadNextGameState() {
-		if(toTitle)
-			ngs =  new TitleScreen(key);
-		else ngs = new GameOver(key, -1);
+	public void loadNextGameState() {
+		Outro o = null;
+		if(toTitle) {
+			o = new PixelDrip(0xff00ff, new TitleScreen(key));
+			o.captureScreen();
+		} else {
+			o = new PixelDrip(0x00ffff, new GameOver(key, -1));
+			o.captureScreen();
+		}
+		ngs = o;
+		finished = true;
 	}
 }

@@ -4,10 +4,11 @@ import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.ball.Ball;
 import com.noah.breakit.entity.state.State;
 import com.noah.breakit.game.Game;
-import com.noah.breakit.gamestate.PauseMenu;
+import com.noah.breakit.gamestate.menu.PauseMenu;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Hud;
 
 public class StatePrimaryPlayerAlive implements State {
@@ -31,7 +32,7 @@ public class StatePrimaryPlayerAlive implements State {
 
 		if (p.key.left && p.getx() > 0 + p.getxspeed()) p.setxdir(-1);
 
-		if (p.key.right && p.getx() < Game.WIDTH - p.getWidth() - p.getxspeed()) p.setxdir(1);
+		if (p.key.right && p.getx() < Config.WINDOW_WIDTH - p.getWidth() - p.getxspeed()) p.setxdir(1);
 		
 		if((p.key.esc && !p.key.escLast) || (p.key.enter && !p.key.enterLast)) {
 			Jukebox.setVolume(Jukebox.MENU_VOLUME);

@@ -1,17 +1,20 @@
-package com.noah.breakit.gamestate;
+package com.noah.breakit.gamestate.menu;
 
 import com.noah.breakit.component.Label;
 import com.noah.breakit.component.Panel;
 import com.noah.breakit.component.PushButton;
 import com.noah.breakit.component.RotaryButton;
-import com.noah.breakit.game.Game;
+import com.noah.breakit.gamestate.BreakitGameState;
+import com.noah.breakit.gamestate.GameOver;
+import com.noah.breakit.gamestate.outro.Outro;
+import com.noah.breakit.gamestate.outro.PixelSpatter;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
-import com.noah.breakit.transition.PixelDrip;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.FuzzRenderer;
 
-public class InitialsMenu extends GameState {
+public class InitialsMenu extends BreakitGameState {
 
 	private Keyboard key = null;
 	private Panel panel = null;
@@ -20,10 +23,10 @@ public class InitialsMenu extends GameState {
 	
 	private String chars = "abcdefghijklmnopqrstuvwxyz0123456789:-!?<>@ ";
 	
-	public InitialsMenu(Keyboard key, GameState parentGameState, int rank) {
+	private boolean soundPlayed = false;
+	
+	public InitialsMenu(Keyboard key, int rank) {
 		this.key = key;
-		
-		pgs = parentGameState;
 		
 		this.rank = rank;
 		
@@ -31,8 +34,8 @@ public class InitialsMenu extends GameState {
 		
 		int pw = lw + 16; // the width of the label plus 2 characters for margins
 		int ph = 75;
-		int px = Game.WIDTH / 2 - pw / 2;
-		int py = Game.HEIGHT / 2 - ph / 2;
+		int px = Config.WINDOW_WIDTH / 2 - pw / 2;
+		int py = Config.WINDOW_HEIGHT / 2 - ph / 2;
 		
 		int lx = px + pw / 2 - lw / 2;
 		int ly = py + 4;
@@ -61,33 +64,24 @@ public class InitialsMenu extends GameState {
 				new RotaryButton(bx1, by1, new Label(bx1, by1, " "), chars),
 				new RotaryButton(bx2, by2, new Label(bx2, by2, " "), chars),
 				new PushButton(pbx, pby, new Label(pbx, pby, "confirm"), () -> confirm()));
-		
-		SoundFX.HI_SCORE.play();
 	}
 	
 	public void init() {
 		panel.setGameState(this);
 	}
 	
-	public void updateGS() {
+	public void update() {
 		key.update();
 		panel.update();
+		if(!soundPlayed) {
+			SoundFX.HI_SCORE.play();
+			soundPlayed = true;
+		}
 	}
 
-	public void renderGS(Screen screen) {
+	public void render(Screen screen) {
 		FuzzRenderer.render(screen, 128);
 		panel.render(screen);
-	}
-
-	public void updateTX() {
-		transition.update(pixels);
-		finished = transition.isFinished();
-		if (finished)
-			loadNextGameState();
-	}
-
-	public void renderTX(Screen screen) {
-		renderScreenCap(screen);
 	}
 	
 	private void confirm() {
@@ -95,13 +89,15 @@ public class InitialsMenu extends GameState {
 		for(int i = 0; i < panel.getRotaryButtons().size(); i++)
 			result += panel.getRotaryButtonValue(i);
 		
-		Game.HI_SCORES.get(rank).setInitials(result);
+		Config.HI_SCORES.get(rank).setInitials(result);
 		captureScreen();
-		setTransitioning(true, new PixelDrip(0x00ffff));
+		loadNextGameState();
 	}
 	
-	protected void loadNextGameState() {
-		Playfield gs = (Playfield) pgs;
-		ngs = new GameOver(key, gs.getPlayerRank());
+	public void loadNextGameState() {
+		Outro o = new PixelSpatter(0x00ffff, new GameOver(key, rank));
+		o.captureScreen();
+		ngs = o;
+		finished = true;
 	}
 }

@@ -19,7 +19,7 @@ public class Player extends Mob {
 	int rank = -1;
 	String scoreStr = "";
 	
-	int toNext1UP = 20000;
+	int toNext1UP = 10000;
 	
 	int lives = 3;
 

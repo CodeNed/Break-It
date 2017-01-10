@@ -4,11 +4,11 @@ import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.decoration.FloatingText;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.entity.state.State;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Font8x8;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Util;
 
 public class PowerupState implements State {
@@ -33,7 +33,7 @@ public class PowerupState implements State {
 
 			int b = p.gety() + yi + p.getHeight();
 
-			if (b > Game.HEIGHT) {
+			if (b > Config.WINDOW_HEIGHT) {
 				p.remove();
 				p.getPlayfield().addSpawner(new ParticleSpawner(p.getx() + p.getWidth() / 2, p.gety() + p.getHeight() / 2, 100));
 				SoundFX.EXPLODE_2.play();

@@ -74,8 +74,7 @@ import kuusisto.tinysound.TinySound;
 	}
 	
 	boolean fadeToBlack() {
-		double val = -0.009D;
-		
+		double val = -0.005D;
 		adjustVolume(val);
 		if(getVolume() <= 0) {
 			stop();

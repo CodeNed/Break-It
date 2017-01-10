@@ -3,14 +3,11 @@ package com.noah.breakit.entity.mob.player;
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.state.State;
 import com.noah.breakit.graphics.Screen;
-import com.noah.breakit.transition.PixelDrip;
 import com.noah.breakit.util.Hud;
 
 public class StatePrimaryPlayerDead implements State {
 	
 	private Player p = null;
-	private static final int TTL = 60 * 2;
-	private int count = TTL;
 	
 	public void init(Mob m) {
 		p = (Player) m;
@@ -18,11 +15,6 @@ public class StatePrimaryPlayerDead implements State {
 	}
 
 	public void update() {
-		if (count-- == 0) {
-			p.addToLives(-1);
-			p.getPlayfield().captureScreen();
-			p.getPlayfield().setTransitioning(true, new PixelDrip(0xff00ff));     
-		}
 	}
 
 	public void render(Screen s) {

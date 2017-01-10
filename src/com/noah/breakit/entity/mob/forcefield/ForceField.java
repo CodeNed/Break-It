@@ -2,10 +2,10 @@ package com.noah.breakit.entity.mob.forcefield;
 
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.mob.ball.Ball;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Config;
 
 public class ForceField extends Mob {
 
@@ -13,7 +13,7 @@ public class ForceField extends Mob {
 	
 	public ForceField(int x, int y) {
 		super(x, y, null);
-		width = Game.WIDTH;
+		width = Config.WINDOW_WIDTH;
 		height = life;
 	}
 

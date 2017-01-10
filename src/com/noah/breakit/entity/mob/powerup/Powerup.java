@@ -8,10 +8,10 @@ import com.noah.breakit.entity.mob.ball.BallGiantState;
 import com.noah.breakit.entity.mob.ball.BallPowerState;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.state.State;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Font8x8;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.util.ColorFlasher;
+import com.noah.breakit.util.Config;
 
 public class Powerup extends Mob {
 	
@@ -47,7 +47,7 @@ public class Powerup extends Mob {
 	}
 	
 	private void forceField() {
-		playfield.addForceField(new ForceField(0, Game.HEIGHT - 4));
+		playfield.addForceField(new ForceField(0, Config.WINDOW_HEIGHT - 4));
 	}
 	
 	private void giantBall() {

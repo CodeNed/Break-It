@@ -45,7 +45,7 @@ public class Jukebox {
 		
 		looping = loop;
 		
-		if(currSong != null) // If a song is already loaded and playing, return. Else, set Jukebox.playing to false.
+		if(currSong != null)// If a song is already loaded and playing, return. Else, set Jukebox.playing to false.
 			if(currSong.playing())
 				return;
 			else

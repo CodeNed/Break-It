@@ -3,9 +3,9 @@ package com.noah.breakit.entity.mob.ball;
 import com.noah.breakit.entity.mob.Mob;
 import com.noah.breakit.entity.spawner.ParticleSpawner;
 import com.noah.breakit.entity.state.State;
-import com.noah.breakit.game.Game;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.sound.SoundFX;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Util;
 
 public class Ball extends Mob {
@@ -82,7 +82,7 @@ public class Ball extends Mob {
 			int l = x + xi;
 			int r = x + xi + width;
 
-			if (l < 1 || r > Game.WIDTH) {
+			if (l < 1 || r > Config.WINDOW_WIDTH) {
 				xdir *= -1;
 				xa *= -1;
 				SoundFX.LO_BOUNCE.play();
@@ -103,7 +103,7 @@ public class Ball extends Mob {
 				SoundFX.LO_BOUNCE.play();
 				break;
 			}
-			if (m > Game.HEIGHT) {
+			if (m > Config.WINDOW_HEIGHT) {
 				remove();
 				playfield.addSpawner(new ParticleSpawner(x + width / 2, y + height / 2, 100));
 				SoundFX.EXPLODE_2.play();

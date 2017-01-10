@@ -1,28 +1,29 @@
-package com.noah.breakit.transition;
+package com.noah.breakit.gamestate.outro;
 
-import com.noah.breakit.game.Game;
+import com.noah.breakit.gamestate.BreakitGameState;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Util;
 
-public class SpiralIn extends Transition {
+public class SpiralIn extends Outro {
 
 	private int x = 0, y = 0;
 	private int xstep = 0, ystep = 0;
 	private int squarew = 4, squareh = 4;
 	private int leg = 0;
 	private int xdir = 1, ydir = 1;
-	private int legDistX = Game.WIDTH - squarew, legDistY = Game.HEIGHT - squareh;
+	private int legDistX = Config.WINDOW_WIDTH - squarew, legDistY = Config.WINDOW_HEIGHT - squareh;
 
-	public SpiralIn(int col) {
-		super(col);
+	public SpiralIn(int col, BreakitGameState ngs) {
+		super(col, ngs);
 	}
 	
-	public void update(int pixels[]) {
+	public void update() {
 
 		for (int i = 0; i < 32; i++) {
 			if (legDistX != 0 && legDistY != 0) {
 				for (int yy = y; yy < y + squareh; yy++) {
 					for (int xx = x; xx < x + squarew; xx++) {
-						if (xx < Game.WIDTH && yy < Game.HEIGHT) pixels[xx + yy * Game.WIDTH] = col;
+						if (xx < Config.WINDOW_WIDTH && yy < Config.WINDOW_HEIGHT) pixels[xx + yy * Config.WINDOW_WIDTH] = col;
 					}
 				}
 			}
@@ -52,5 +53,8 @@ public class SpiralIn extends Transition {
 
 	public boolean isFinished(){
 		return finished;
+	}
+
+	public void loadNextGameState() {		
 	}
 }

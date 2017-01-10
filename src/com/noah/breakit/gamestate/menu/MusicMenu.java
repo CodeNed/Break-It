@@ -1,15 +1,16 @@
-package com.noah.breakit.gamestate;
+package com.noah.breakit.gamestate.menu;
 
 import com.noah.breakit.component.Label;
 import com.noah.breakit.component.Panel;
 import com.noah.breakit.component.PushButton;
-import com.noah.breakit.game.Game;
+import com.noah.breakit.gamestate.BreakitGameState;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
+import com.noah.breakit.util.Config;
 
-public class MusicMenu extends GameState
+public class MusicMenu extends BreakitGameState
 {
 	private Keyboard key = null;
 	private Panel panel = null;
@@ -18,15 +19,15 @@ public class MusicMenu extends GameState
 	private int h = 60;
 	
 	
-	public MusicMenu(Keyboard key, GameState parentGameState) {
+	public MusicMenu(Keyboard key, BreakitGameState parentGameState) {
 		this.key = key;
 		
 		this.pgs = parentGameState;
 		
-		pixels = pgs.pixels;
+		pixels = pgs.getPixels();
 		
-		int x = Game.WIDTH / 2 - w / 2;
-		int y = Game.HEIGHT / 2 - h / 2;
+		int x = Config.WINDOW_WIDTH / 2 - w / 2;
+		int y = Config.WINDOW_HEIGHT / 2 - h / 2;
 		
 		int x1 = x + w / 2 - "music".length() * 8 / 2;
 		int y1 = y + 8;
@@ -43,9 +44,9 @@ public class MusicMenu extends GameState
 								);
 	}
 	
-	public void updateGS() {
+	public void update() {
 		
-		Jukebox.play(pgs.pgs.currSong, true);
+		Jukebox.play(pgs.getParentGameState().getCurrSong(), true);
 		
 		key.update();
 		
@@ -57,7 +58,7 @@ public class MusicMenu extends GameState
 		panel.update();
 	}
 
-	public void renderGS(Screen screen) {
+	public void render(Screen screen) {
 		renderScreenCap(screen);
 		panel.render(screen);
 		
@@ -73,13 +74,7 @@ public class MusicMenu extends GameState
 		Jukebox.setStandbyMode(true);
 		Jukebox.stop();
 	}
-
-	public void updateTX() {
-	}
-
-	public void renderTX(Screen screen) {
-	}
 	
-	protected void loadNextGameState() {
+	public void loadNextGameState() {
 	}
 }

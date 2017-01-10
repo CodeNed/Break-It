@@ -5,7 +5,7 @@ import com.noah.breakit.entity.mob.brick.Brick;
 import com.noah.breakit.entity.mob.brick.BrickSolidState;
 import com.noah.breakit.entity.mob.forcefield.ForceField;
 import com.noah.breakit.entity.mob.player.Player;
-import com.noah.breakit.game.Game;
+import com.noah.breakit.util.Config;
 import com.noah.breakit.util.Util;
 
 public class BallGiantState extends BallNormalState {
@@ -17,7 +17,7 @@ public class BallGiantState extends BallNormalState {
 	public void init(Mob m) {
 		super.init(m);
 		adjustSize(12);
-		m.setx(Util.clamp(m.getx(), 0, Game.WIDTH));
+		m.setx(Util.clamp(m.getx(), 0, Config.WINDOW_WIDTH - m.getWidth()));
 		m.setCol(0xff00ff);
 	}
 	
@@ -31,7 +31,6 @@ public class BallGiantState extends BallNormalState {
 	}
 	
 	protected void processXCollision(Mob m) {
-		
 		int xDist = (b.getx() + (b.getWidth() / 3) / 2) - (m.getx() + m.getWidth() / 2);
 		b.setxspeed(Math.abs(xDist / (4 * 2)));
 		

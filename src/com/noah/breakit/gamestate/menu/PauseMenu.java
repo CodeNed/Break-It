@@ -1,16 +1,19 @@
-package com.noah.breakit.gamestate;
+package com.noah.breakit.gamestate.menu;
 
 import com.noah.breakit.component.Label;
 import com.noah.breakit.component.Panel;
 import com.noah.breakit.component.PushButton;
 import com.noah.breakit.game.Game;
+import com.noah.breakit.gamestate.BreakitGameState;
+import com.noah.breakit.gamestate.TitleScreen;
+import com.noah.breakit.gamestate.outro.PixelDrip;
 import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.input.Keyboard;
 import com.noah.breakit.sound.SoundFX;
 import com.noah.breakit.sound.music.Jukebox;
-import com.noah.breakit.transition.PixelDrip;
+import com.noah.breakit.util.Config;
 
-public class PauseMenu extends GameState {
+public class PauseMenu extends BreakitGameState {
 	
 	private Keyboard key = null;
 	
@@ -19,13 +22,13 @@ public class PauseMenu extends GameState {
 	private int w = 120;
 	private int h = 90;
 	
-	public PauseMenu(Keyboard key, GameState parentGameState) {
+	public PauseMenu(Keyboard key, BreakitGameState parentGameState) {
 		this.key = key;
-		this.pixels = parentGameState.pixels;
+		this.pixels = parentGameState.getPixels();
 		this.pgs = parentGameState;
 		
-		int x = Game.WIDTH / 2 - w / 2;
-		int y = Game.HEIGHT / 2 - h / 2;
+		int x = Config.WINDOW_WIDTH / 2 - w / 2;
+		int y = Config.WINDOW_HEIGHT / 2 - h / 2;
 		
 		int x1 = x + w / 2 - ("pause".length() * 8) / 2;
 		int y1 = y + 8;
@@ -51,9 +54,9 @@ public class PauseMenu extends GameState {
 		panel.setGameState(this);
 	}
 	
-	public void updateGS() {
+	public void update() {
 		
-		Jukebox.play(pgs.currSong, true);
+		Jukebox.play(pgs.getCurrSong(), true);
 		
 		key.update();
 		if(key.esc && !key.escLast) {
@@ -64,17 +67,9 @@ public class PauseMenu extends GameState {
 		panel.update();
 	}
 
-	public void renderGS(Screen screen) {
+	public void render(Screen screen) {
 		renderScreenCap(screen);
 		panel.render(screen);
-	}
-
-	public void updateTX() {
-		
-	}
-
-	public void renderTX(Screen screen) {
-		
 	}
 	
 	private void musicMenu() {
@@ -84,8 +79,8 @@ public class PauseMenu extends GameState {
 	
 	private void quitToTitle() {
 		Jukebox.setVolume(Jukebox.DEFAULT_VOLUME);
-		pgs.setNextGameState(new TitleScreen(key));
-		pgs.setTransitioning(true, new PixelDrip(0xff00ff));
+		PixelDrip d = new PixelDrip(0xff00ff, new TitleScreen(key));
+		d.captureScreen();
 		finished = true;
 	}
 	
@@ -93,7 +88,7 @@ public class PauseMenu extends GameState {
 		System.exit(0);
 	}
 	
-	protected void loadNextGameState() {
+	public void loadNextGameState() {
 		//leave blank
 	}
 }

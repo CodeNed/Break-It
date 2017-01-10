@@ -1,19 +1,19 @@
-package com.noah.breakit.transition;
+package com.noah.breakit.gamestate.outro;
 
-import java.util.Random;
-
+import com.noah.breakit.gamestate.BreakitGameState;
+import com.noah.breakit.graphics.Screen;
 import com.noah.breakit.util.Util;
-public abstract class Transition {
+public abstract class Outro extends BreakitGameState {
 	
 	int col = 0x000000;
-	static Random random = new Random();
 	boolean finished = false;
 	
-	Transition(int col) {
+	Outro(int col, BreakitGameState ngs) {
 		this.col = col;
+		this.ngs = ngs;
 	}
 	
-	void fadeToBlack(int rate, int[] pixels) {
+	boolean fadeToBlack(int rate, int[] pixels) {
 		for (int i = 0; i < pixels.length; i++) {
 			int r = (pixels[i] & 0xff0000) >> 16;
 			int g = (pixels[i] & 0xff00) >> 8;
@@ -31,10 +31,10 @@ public abstract class Transition {
 		}
 
 		for (int i = 0; i < pixels.length; i++) {
-			if (pixels[i] > 0x000000) return;
+			if (pixels[i] > 0x000000) return false;
 		}
 		
-		finished = true;
+		return true;
 	}
 	
 	void fadeToWhite(int rate, int[] pixels) {
@@ -60,7 +60,15 @@ public abstract class Transition {
 		finished = true;
 	}
 	
-	public abstract void update(int[] pixels);
+	public void render(Screen screen) {
+		for (int i = 0; i < pixels.length; i++) {
+			screen.renderPixel(pixels[i], i);
+		}
+	}
 	
-	public abstract boolean isFinished();
+	public boolean isFinished() {
+		return finished;
+	}
+	
+	public abstract void update();
 }
