@@ -33,12 +33,12 @@ public class CreditScreen extends BreakitGameState{
 	}
 	
 	public void render(Screen screen) {
-		screen.renderCol(0x559955);
+		screen.renderCol(0x00bbbb);
 		
 		String str = "a bitburger";
-		screen.renderString8x8(50, 30, 0x000000, str);
+		screen.renderString8x8(50, 38, 0x000000, str);
 		str =  "production";
-		screen.renderString8x8(50, 40, 0x000000, str);
+		screen.renderString8x8(50, 48, 0x000000, str);
 		
 		str = "sfx courtesy of";
 		screen.renderString8x8(Config.WINDOW_WIDTH / 2  - (str.length() * 8) / 2, 92, 0x000000, str);
