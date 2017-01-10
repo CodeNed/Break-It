@@ -79,6 +79,7 @@ public class Playfield extends BreakitGameState {
 	}
 
 	public void update() {
+		System.out.println(player.getLives());
 		Jukebox.play(currSong, true);
 
 		for (int i = 0; i < spawners.size(); i++)
@@ -301,7 +302,7 @@ public class Playfield extends BreakitGameState {
 		
 		Outro o = null;
 
-		if (player.getLives() > 1) {
+		if (player.getLives() > 0) {
 			if (player.getState() instanceof StatePrimaryPlayerAlive) {
 				if (++stage > 29) stage = 0;
 
